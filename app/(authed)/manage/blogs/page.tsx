@@ -1,10 +1,10 @@
 import { IconMessageCircle } from "@tabler/icons-react";
-import { ManageHeader } from "@/components/manage-header";
+import { PageHeader } from "@/components/shared/PageHeader";
 
 export default function BlogsPage() {
   return (
     <div className="flex-1 space-y-4 p-8 pt-6">
-      <ManageHeader
+      <PageHeader
         title="Tin tức & Blogs"
         description="Quản lý các bài viết, thông báo và tin tức giáo dục trên hệ thống."
       />

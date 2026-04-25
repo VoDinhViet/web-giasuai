@@ -57,7 +57,7 @@ export function CourseActionCard({ course }: CourseActionCardProps) {
         <CardContent className="space-y-8 p-8 pt-4">
           <div className="space-y-3">
             <Button size="lg" className="w-full shadow-lg shadow-primary/20" asChild>
-              <Link href={`/courses/${course.courseId}/learn/1`}>
+              <Link href={`/courses/${course.id}/learn/1`}>
                 <IconPlayerPlay size={18} fill="currentColor" className="mr-2" />
                 Vào học ngay
               </Link>
@@ -65,7 +65,7 @@ export function CourseActionCard({ course }: CourseActionCardProps) {
 
             <PermissionGuard role={UserRole.TEACHER}>
               <Button size="lg" className="w-full" variant="secondary" asChild>
-                <Link href={`/manage/courses/${course.courseId}/assign`}>
+                <Link href={`/manage/courses/${course.id}/assign`}>
                   Gán vào lớp học
                   <IconArrowRight className="ml-2 h-4 w-4" />
                 </Link>
@@ -73,7 +73,7 @@ export function CourseActionCard({ course }: CourseActionCardProps) {
             </PermissionGuard>
 
             <Button size="lg" className="w-full" variant="outline" asChild>
-              <Link href={`/manage/courses/edit/${course.courseId}`}>
+              <Link href={`/manage/courses/${course.id}`}>
                 Chỉnh sửa khóa học
               </Link>
             </Button>

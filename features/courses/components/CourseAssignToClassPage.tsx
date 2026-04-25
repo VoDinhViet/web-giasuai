@@ -69,7 +69,7 @@ export function CourseAssignToClassPage({
     }
   };
 
-  if (!isTeacher) {
+  if (!canAssign) {
     return (
       <div className="space-y-6 pb-16">
         <Button
@@ -77,7 +77,7 @@ export function CourseAssignToClassPage({
           variant="outline"
           className="h-10 rounded-xl border-zinc-200 bg-white shadow-none dark:border-zinc-800 dark:bg-zinc-950"
         >
-          <Link href={`/manage/courses/${course.courseId}`}>
+          <Link href={`/manage/courses/${course.id}`}>
             <IconArrowLeft size={16} className="mr-2" />
             {"Quay l\u1EA1i chi ti\u1EBFt kh\u00F3a h\u1ECDc"}
           </Link>
@@ -106,7 +106,7 @@ export function CourseAssignToClassPage({
         variant="outline"
         className="h-10 rounded-xl border-zinc-200 bg-white shadow-none dark:border-zinc-800 dark:bg-zinc-950"
       >
-        <Link href={`/manage/courses/${course.courseId}`}>
+        <Link href={`/manage/courses/${course.id}`}>
           <IconArrowLeft size={16} className="mr-2" />
           {"Quay l\u1EA1i chi ti\u1EBFt kh\u00F3a h\u1ECDc"}
         </Link>

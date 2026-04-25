@@ -128,10 +128,10 @@ export function AssignCourseDialog({ classId, onSuccess }: AssignCourseDialogPro
                 ) : (
                   <div className="grid gap-4">
                     {filteredCourses.map((course) => {
-                      const assigning = isAssigning === course.courseId;
+                      const assigning = isAssigning === course.id;
                       return (
                         <div 
-                          key={course.courseId}
+                          key={course.id}
                           className={cn(
                             "group flex items-center justify-between p-6 rounded-[2rem] border border-zinc-100 hover:border-zinc-900 hover:bg-zinc-50 transition-all duration-300",
                             assigning && "opacity-50 pointer-events-none"
@@ -167,7 +167,7 @@ export function AssignCourseDialog({ classId, onSuccess }: AssignCourseDialogPro
                           </div>
 
                           <Button
-                            onClick={() => handleAssign(course.courseId, course.title)}
+                            onClick={() => handleAssign(course.id, course.title)}
                             disabled={!!isAssigning}
                             className={cn(
                               "rounded-full font-black text-[10px] uppercase tracking-widest px-8 h-12 shadow-none transition-all duration-300",

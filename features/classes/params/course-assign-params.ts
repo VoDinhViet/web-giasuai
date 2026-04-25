@@ -1,4 +1,9 @@
-import { parseAsInteger, parseAsString, createSearchParamsCache, type InferRenderType } from "nuqs/server";
+import {
+  createSearchParamsCache,
+  parseAsInteger,
+  parseAsString,
+  type inferParserType,
+} from "nuqs/server";
 
 export const courseAssignParamsSchema = {
   page: parseAsInteger.withDefault(1),
@@ -6,6 +11,8 @@ export const courseAssignParamsSchema = {
   q: parseAsString.withDefault(""),
 };
 
-export type CourseAssignParams = InferRenderType<typeof courseAssignParamsSchema>;
+export type CourseAssignParams = inferParserType<
+  typeof courseAssignParamsSchema
+>;
 
 export const courseAssignSearchParamsCache = createSearchParamsCache(courseAssignParamsSchema);

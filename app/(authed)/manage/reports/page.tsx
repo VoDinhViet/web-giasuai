@@ -1,10 +1,10 @@
 import { IconChartBar } from "@tabler/icons-react";
-import { ManageHeader } from "@/components/manage-header";
+import { PageHeader } from "@/components/shared/PageHeader";
 
 export default function ReportsPage() {
   return (
     <div className="flex-1 space-y-4 p-8 pt-6">
-      <ManageHeader
+      <PageHeader
         title="Báo cáo & Thống kê"
         description="Phân tích dữ liệu học tập, hiệu quả giảng dạy và sự tiến bộ của học viên."
       />

@@ -1,10 +1,10 @@
 import { IconCalendarEvent } from "@tabler/icons-react";
-import { ManageHeader } from "@/components/manage-header";
+import { PageHeader } from "@/components/shared/PageHeader";
 
 export default function SchedulePage() {
   return (
     <div className="flex-1 space-y-4 p-8 pt-6">
-      <ManageHeader
+      <PageHeader
         title="Lịch giảng dạy"
         description="Theo dõi và quản lý lịch trình dạy học của các giảng viên."
       />

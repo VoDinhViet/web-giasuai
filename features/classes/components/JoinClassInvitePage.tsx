@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
+import type { Route } from "next";
 import { IconArrowRight, IconLoader2, IconSchool } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -138,7 +139,7 @@ export function JoinClassInvitePage({
                   className="h-14 w-full rounded-2xl bg-primary text-base font-black shadow-lg shadow-primary/20 transition-all active:scale-[0.98] hover:bg-primary/90"
                   asChild
                 >
-                  <Link href={loginHref}>
+                  <Link href={loginHref as Route}>
                     Đăng nhập để tham gia
                     <IconArrowRight className="ml-2 h-5 w-5" stroke={2.5} />
                   </Link>

@@ -64,5 +64,5 @@ export async function loginWithEmailPassword(
   const safeRedirect =
     redirectTo && redirectTo.startsWith("/") ? redirectTo : "/manage/users";
 
-  redirect(safeRedirect);
+  redirect(safeRedirect as any);
 }

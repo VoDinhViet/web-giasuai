@@ -1,10 +1,10 @@
 import { IconSettings } from "@tabler/icons-react";
-import { ManageHeader } from "@/components/manage-header";
+import { PageHeader } from "@/components/shared/PageHeader";
 
 export default function SettingsPage() {
   return (
     <div className="flex-1 space-y-4 p-8 pt-6">
-      <ManageHeader
+      <PageHeader
         title="Cài đặt hệ thống"
         description="Cấu hình các tham số vận hành, bảo mật và giao diện của nền tảng."
       />

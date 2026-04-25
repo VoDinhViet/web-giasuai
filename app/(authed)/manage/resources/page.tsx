@@ -1,10 +1,10 @@
 import { IconDatabase } from "@tabler/icons-react";
-import { ManageHeader } from "@/components/manage-header";
+import { PageHeader } from "@/components/shared/PageHeader";
 
 export default function ResourcesPage() {
   return (
     <div className="flex-1 space-y-4 p-8 pt-6">
-      <ManageHeader
+      <PageHeader
         title="Thư viện học liệu"
         description="Quản lý tài liệu, bài giảng và tài nguyên giáo dục."
       />

@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import type { Route } from "next";
 import { LessonHeader } from "@/features/courses/components/learn/LessonHeader";
 import { LessonNavigation } from "@/features/courses/components/learn/LessonNavigation";
 import { LessonStepIndicator } from "@/features/courses/components/learn/LessonStepIndicator";
@@ -49,7 +50,7 @@ export default function LessonLearnPage({
       <LessonHeader
         courseTitle="Next.js 15 Pro Max"
         progress={Math.round(((currentIndex + 1) / totalSteps) * 100)}
-        backUrl={`/manage/courses/${courseId}`}
+        backUrl={`/manage/courses/${courseId}` as Route}
       />
 
       <div className="flex-1 flex overflow-hidden">

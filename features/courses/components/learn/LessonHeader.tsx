@@ -1,5 +1,6 @@
 "use client";
 
+import type { Route } from "next";
 import Link from "next/link";
 import { IconChevronLeft, IconCertificate, IconSettings } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
@@ -8,7 +9,7 @@ import { Progress } from "@/components/ui/progress";
 interface LessonHeaderProps {
   courseTitle: string;
   progress: number;
-  backUrl: string;
+  backUrl: Route;
 }
 
 export function LessonHeader({ courseTitle, progress, backUrl }: LessonHeaderProps) {

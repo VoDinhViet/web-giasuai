@@ -1,10 +1,10 @@
 import { IconBrandOpenai } from "@tabler/icons-react";
-import { ManageHeader } from "@/components/manage-header";
+import { PageHeader } from "@/components/shared/PageHeader";
 
 export default function AIAssistantPage() {
   return (
     <div className="flex-1 space-y-4 p-8 pt-6">
-      <ManageHeader
+      <PageHeader
         title="AI Assistant"
         description="Trò chuyện và nhận hỗ trợ từ trợ lý ảo thông minh."
       />

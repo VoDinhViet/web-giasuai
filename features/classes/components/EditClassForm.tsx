@@ -48,8 +48,11 @@ export function EditClassForm({ classData, onSuccess }: EditClassFormProps) {
     onSubmit: async ({ value }) => {
       startTransition(async () => {
         const result = await updateClass(classData.id, value);
-        if (!result.success) return toast.error(result.message);
-        
+        if (!result.success) {
+          toast.error(result.message);
+          return;
+        }
+
         toast.success(result.message);
         router.refresh();
         onSuccess?.();
