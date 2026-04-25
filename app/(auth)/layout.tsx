@@ -8,7 +8,7 @@ export default function AuthLayout({
   return (
     <div className="flex w-full flex-col lg:flex-row-reverse">
       {/* Hero Column (TailAdmin Inspired) */}
-      <div className="relative hidden h-screen w-full items-center bg-[#002e5b] lg:grid lg:w-1/2">
+      <div className="relative hidden h-screen w-full items-center bg-primary lg:grid lg:w-1/2">
         <div className="relative z-1 flex items-center justify-center h-full">
           {/* Common Grid Shapes */}
           <div className="absolute right-0 top-0 z-0 w-full max-w-[250px] xl:max-w-[450px] opacity-20">
@@ -29,10 +29,10 @@ export default function AuthLayout({
               </div>
 
               <div className="space-y-2 text-center">
-                <h2 className="text-xl font-black tracking-tight text-white sm:text-2xl lg:text-3xl">
-                  CÔNG NGHỆ - GIÁO DỤC - SỐ HÓA
+                <h2 className="text-3xl font-black tracking-tighter text-white sm:text-4xl lg:text-5xl">
+                  GIA SƯ AI
                 </h2>
-                <p className="text-sm font-bold text-[#00a1e4] sm:text-base lg:text-lg">
+                <p className="text-sm font-bold text-primary-foreground/80 sm:text-base lg:text-lg">
                   Trợ lý số hóa dành cho giáo viên
                 </p>
               </div>
