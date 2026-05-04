@@ -18,22 +18,9 @@ export default async function EditCoursePage({ params }: EditCoursePageProps) {
 
   const course = result.data;
 
-  // Map API response to Form Values
-  const initialData = {
-    title: course.title,
-    description: course.description,
-    levelId: course.levelId,
-    gradeId: course.gradeId,
-    majorId: course.majorId,
-    subjectId: course.subjectId,
-    learningOutcomes: course.learningOutcomes || [],
-    thumbnail: course.thumbnailUrl || null,
-  };
-
   return (
     <CourseGeneralInfoForm 
       courseId={courseId}
-      initialData={initialData}
     />
   );
 }

@@ -53,10 +53,12 @@
     from {
       transform: translateX(-100%);
     }
+
     to {
       transform: translateX(100%);
     }
   }
+
   --animate-shimmer: shimmer 2s infinite linear;
 }
 
@@ -149,16 +151,27 @@
 .tiptap-editor {
   @apply prose prose-zinc dark:prose-invert max-w-none focus:outline-none;
   @apply selection:bg-indigo-100 selection:text-indigo-900;
-  
+
   /* Vibrant Typography */
-  h1, h2, h3, h4 {
+  h1,
+  h2,
+  h3,
+  h4 {
     @apply font-black tracking-tight text-zinc-900;
   }
-  
-  h1 { @apply text-4xl mb-8 mt-12; }
-  h2 { @apply text-3xl mb-6 mt-10; }
-  h3 { @apply text-2xl mb-4 mt-8; }
-  
+
+  h1 {
+    @apply text-4xl mb-8 mt-12;
+  }
+
+  h2 {
+    @apply text-3xl mb-6 mt-10;
+  }
+
+  h3 {
+    @apply text-2xl mb-4 mt-8;
+  }
+
   p {
     @apply text-zinc-700 leading-relaxed font-medium mb-6;
     font-size: 1.05rem;
@@ -172,28 +185,43 @@
   /* Tables - Modern Look */
   table {
     @apply border-collapse border border-zinc-200 rounded-2xl overflow-hidden my-8 w-full shadow-sm bg-white;
-    
+
     th {
       @apply bg-zinc-50 font-black text-[11px] uppercase tracking-[0.2em] text-zinc-500 border border-zinc-200 p-4 text-left;
     }
-    
+
     td {
       @apply border border-zinc-100 p-4 text-zinc-600 font-medium;
     }
   }
 
   /* Lists */
-  ul { @apply list-disc space-y-2 pl-6; }
-  ol { @apply list-decimal space-y-2 pl-6; }
-  li p { @apply m-0; }
+  ul {
+    @apply list-disc space-y-2 pl-6;
+  }
+
+  ol {
+    @apply list-decimal space-y-2 pl-6;
+  }
+
+  li p {
+    @apply m-0;
+  }
 
   /* Task List */
   ul[data-type="taskList"] {
     @apply list-none pl-0 space-y-4;
+
     li {
       @apply flex items-start gap-4;
-      label { @apply flex-shrink-0 mt-1; }
-      div { @apply flex-1; }
+
+      label {
+        @apply flex-shrink-0 mt-1;
+      }
+
+      div {
+        @apply flex-1;
+      }
     }
   }
 
@@ -203,12 +231,29 @@
   }
 }
 
+@layer components {
+  .stat-box {
+    @apply rounded-lg bg-zinc-50 px-3 py-3 dark:bg-zinc-900/70 border border-zinc-100/50 dark:border-zinc-800/50 shadow-xs;
+  }
+
+  .stat-box-label {
+    @apply text-[10px] font-black uppercase tracking-wider text-zinc-400;
+  }
+
+  .stat-box-value {
+    @apply mt-2 flex items-center gap-2 text-zinc-700 dark:text-zinc-200;
+  }
+
+}
+
 .custom-scrollbar::-webkit-scrollbar {
   width: 6px;
 }
+
 .custom-scrollbar::-webkit-scrollbar-track {
   background: transparent;
 }
+
 .custom-scrollbar::-webkit-scrollbar-thumb {
   @apply bg-zinc-200 rounded-full hover:bg-zinc-300 transition-colors;
 }

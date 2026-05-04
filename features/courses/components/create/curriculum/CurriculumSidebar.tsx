@@ -30,9 +30,8 @@ import { Button } from '@/components/ui/button'
 import { useRouter } from 'next/navigation'
 import { FieldApi } from '@tanstack/react-form'
 import {
-  CourseCurriculumSyncFormApi,
   CourseCurriculumSyncValues,
-} from '@/features/courses/schemas/create-course.schema'
+} from '@/features/courses/schemas/course-curriculum.schema'
 import { Section, CurriculumView } from '@/features/courses/types/curriculum'
 
 /* ─── Interfaces ────────────────────────────────────────────────────────── */

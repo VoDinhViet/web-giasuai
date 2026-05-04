@@ -21,6 +21,9 @@ const buttonVariants = cva(
         link: 'text-primary underline-offset-4 hover:underline',
         dashed:
           'border-dashed border-border bg-muted/30 text-muted-foreground hover:border-foreground hover:bg-background hover:text-foreground dark:bg-transparent',
+        glass:
+          'border-none bg-white/10 text-white backdrop-blur-md hover:bg-white/20 active:bg-white/5 transition-all duration-300 dark:bg-black/20 dark:hover:bg-black/30',
+        flat: 'border-none bg-zinc-100 text-zinc-900 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-100 dark:hover:bg-zinc-700',
       },
       size: {
         default:

@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { createFormHook, createFormHookContexts } from "@tanstack/react-form";
-import { CourseCurriculumSyncValues } from "../../../schemas/create-course.schema";
+import { CourseCurriculumSyncValues } from "../../../schemas/course-curriculum.schema";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Field, FieldLabel, FieldError } from "@/components/ui/field";

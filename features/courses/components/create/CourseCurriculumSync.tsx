@@ -7,7 +7,7 @@ import { toast } from 'sonner'
 import {
   CourseCurriculumSyncValues,
   courseCurriculumSyncSchema,
-} from '../../schemas/create-course.schema'
+} from '../../schemas/course-curriculum.schema'
 import {
   useAppForm,
   DefaultCurriculumValues,

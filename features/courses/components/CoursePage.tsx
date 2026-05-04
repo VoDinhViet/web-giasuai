@@ -11,12 +11,6 @@ interface CoursePageProps {
   pagination: PaginationInfo;
 }
 
-const COURSE_GRADIENTS = [
-  "from-sky-600/85 to-cyan-500/85",
-  "from-indigo-600/85 to-violet-500/85",
-  "from-emerald-600/85 to-teal-500/85",
-  "from-orange-500/85 to-rose-500/85",
-];
 
 export function CoursePage({
   courses,
@@ -38,7 +32,6 @@ export function CoursePage({
       <CourseGrid
         courses={courses}
         pagination={pagination}
-        gradients={COURSE_GRADIENTS}
       />
     </div>
   );

@@ -32,12 +32,11 @@ import {
   EmptyMedia,
 } from "@/components/ui/empty";
 
-import { useAppForm } from "../../utils/course-form-config";
+import { useAppForm } from "../../utils/course-general-form-config";
 import {
   courseCurriculumSchema,
-  type CourseCurriculumFormApi,
   type CourseCurriculumFormValues,
-} from "../../schemas/create-course.schema";
+} from "../../schemas/course-curriculum.schema";
 import {
   deleteCourseAction,
   syncCourseCurriculumAction,

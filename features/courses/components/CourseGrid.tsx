@@ -12,13 +12,11 @@ import { CoursesPagination } from "./CoursesPagination";
 interface CourseGridProps {
   courses: Course[];
   pagination: PaginationInfo;
-  gradients: string[];
 }
 
 export function CourseGrid({
   courses,
   pagination,
-  gradients,
 }: CourseGridProps) {
   if (!courses.length) {
     return (
@@ -41,7 +39,6 @@ export function CourseGrid({
           <CourseCard
             key={course.id}
             course={course}
-            gradient={gradients[index % gradients.length]}
           />
         ))}
       </div>

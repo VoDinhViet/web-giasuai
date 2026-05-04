@@ -1,12 +1,10 @@
 "use client";
 
+/* ── Dependencies ────────────────────────────────────────────────────────── */
+
 import * as React from "react";
-import { createFormHook, createFormHookContexts, FormApi } from "@tanstack/react-form";
-import { 
-  CreateCourseFormValues, 
-  CourseCurriculumFormValues, 
-  CourseCurriculumSyncValues 
-} from "../schemas/create-course.schema";
+import { createFormHook, createFormHookContexts } from "@tanstack/react-form";
+import { CreateCourseFormValues } from "../schemas/course-info.schema";
 import { CatalogItem } from "../types/catalog.type";
 import { IconLoader2 } from "@tabler/icons-react";
 import { Input } from "@/components/ui/input";
@@ -20,6 +18,8 @@ import {
 } from "@/components/ui/select";
 import { Field, FieldLabel, FieldError } from "@/components/ui/field";
 import { Button } from "@/components/ui/button";
+
+/* ── Contexts ────────────────────────────────────────────────────────────── */
 
 export const { fieldContext, formContext, useFormContext, useFieldContext } =
   createFormHookContexts();
@@ -48,7 +48,11 @@ function FormItem({ label, children, errors }: FormItemProps) {
 
 /* ── Field Components ────────────────────────────────────────────────────── */
 
-const FormInput = ({ label, ...props }: { label?: string } & React.ComponentProps<typeof Input>) => {
+interface FormInputProps extends React.ComponentProps<typeof Input> {
+  label?: string;
+}
+
+const FormInput = ({ label, ...props }: FormInputProps) => {
   const field = useFieldContext();
   return (
     <FormItem label={label} errors={field.state.meta.errors}>
@@ -62,7 +66,11 @@ const FormInput = ({ label, ...props }: { label?: string } & React.ComponentProp
   );
 };
 
-const FormTextarea = ({ label, ...props }: { label?: string } & React.ComponentProps<typeof Textarea>) => {
+interface FormTextareaProps extends React.ComponentProps<typeof Textarea> {
+  label?: string;
+}
+
+const FormTextarea = ({ label, ...props }: FormTextareaProps) => {
   const field = useFieldContext();
   return (
     <FormItem label={label} errors={field.state.meta.errors}>
@@ -76,21 +84,28 @@ const FormTextarea = ({ label, ...props }: { label?: string } & React.ComponentP
   );
 };
 
-interface FormSelectProps {
+interface FormSelectProps extends Omit<React.ComponentProps<typeof Select>, "children"> {
   label?: string;
   options?: CatalogItem[];
-  onValueChange?: (value: string) => void;
-  placeholder?: string;
   loading?: boolean;
+  placeholder?: string;
 }
 
-const FormSelect = ({ label, options = [], onValueChange, loading, placeholder }: FormSelectProps) => {
+const FormSelect = ({
+  label,
+  options = [],
+  onValueChange,
+  loading,
+  placeholder,
+  ...props
+}: FormSelectProps) => {
   const field = useFieldContext();
   return (
     <FormItem label={label} errors={field.state.meta.errors}>
       <Select
         disabled={loading}
-        value={(field.state.value as string) || ""}
+        {...props}
+        value={(field.state.value as string) || undefined}
         onValueChange={(val) => {
           field.handleChange(val);
           onValueChange?.(val);
@@ -125,31 +140,19 @@ export const { useAppForm, withForm } = createFormHook({
     Textarea: FormTextarea,
     Select: FormSelect,
   },
-  formComponents: {
-    SubmitButton: ({ children, ...props }: React.ComponentProps<typeof Button>) => {
-      const form = useFormContext();
-      return (
-        <Button {...props} onClick={() => form.handleSubmit()}>
-          {children}
-        </Button>
-      );
-    },
-  },
+  formComponents: {},
   fieldContext,
   formContext,
 });
+/* ── Default Values ──────────────────────────────────────────────────────── */
 
-export const  courseDefaultValues: CreateCourseFormValues = {
-  title: "Khóa học Next.js Masterclass 2026",
-  description: "Hướng dẫn xây dựng ứng dụng thực tế với Next.js, TypeScript và Tailwind CSS từ cơ bản đến nâng cao.",
-  levelId: "DAI_HOC",
-  gradeId: "NAM_1",
-  majorId: "CNTT",
-  subjectId: "WEB_DEV",
-  learningOutcomes: [
-    "Nắm vững kiến thức cốt lõi về React Server Components",
-    "Xây dựng ứng dụng Full-stack với Server Actions",
-    "Tối ưu hóa hiệu năng và SEO cho website",
-  ],
+export const courseDefaultValues: CreateCourseFormValues = {
+  title: "",
+  description: "",
+  levelId: "",
+  gradeId: "",
+  majorId: "",
+  subjectId: "",
+  learningOutcomes: [""],
   thumbnail: null,
 };

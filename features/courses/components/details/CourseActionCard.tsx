@@ -74,16 +74,6 @@ export function CourseActionCard({ course }: CourseActionCardProps) {
               </Button>
             </PermissionGuard>
 
-            <Button
-              asChild
-              variant="outline"
-              className="w-full h-12 rounded-xl font-bold gap-2"
-            >
-              <Link href={`/courses/${course.id}/edit`}>
-                <IconEdit size={18} />
-                {"Chỉnh sửa khóa học"}
-              </Link>
-            </Button>
           </div>
 
           <div className="space-y-5">

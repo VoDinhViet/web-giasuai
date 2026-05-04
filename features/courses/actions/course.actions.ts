@@ -1,14 +1,14 @@
 "use server";
 
 import { api } from "@/lib/api";
-import { CreateCourseFormValues } from "../schemas/create-course.schema";
+import { CreateCourseFormValues } from "../schemas/course-info.schema";
 import { ActionResponse } from "@/types/api";
 
 /**
  * Fetch school levels
  */
-export async function getSchoolLevelsAction() {
-  return await api("/api/v1/academic-catalog/school-levels", {
+export async function getLevelsAction() {
+  return await api("/api/v1/categories/levels", {
     method: "GET",
   });
 }
@@ -17,7 +17,7 @@ export async function getSchoolLevelsAction() {
  * Fetch grades filtered by school level
  */
 export async function getGradesAction(levelId?: string) {
-  return await api("/api/v1/academic-catalog/grades", {
+  return await api("/api/v1/categories/grades", {
     method: "GET",
     query: { levelId },
   });
@@ -27,7 +27,7 @@ export async function getGradesAction(levelId?: string) {
  * Fetch majors filtered by school level
  */
 export async function getMajorsAction(levelId?: string) {
-  return await api("/api/v1/academic-catalog/majors", {
+  return await api("/api/v1/categories/majors", {
     method: "GET",
     query: { levelId },
   });
@@ -42,7 +42,7 @@ export async function getSubjectsAction(params: {
   majorId?: string;
   q?: string;
 }) {
-  return await api("/api/v1/academic-catalog/subjects", {
+  return await api("/api/v1/categories/subjects", {
     method: "GET",
     query: params,
   });
