@@ -67,7 +67,7 @@ export function UserFilters({
               <SelectItem value="all">Tất cả</SelectItem>
               <SelectItem value="ADMIN">Quản trị viên</SelectItem>
               <SelectItem value="TEACHER">Giáo viên</SelectItem>
-              <SelectItem value="USER">Học viên</SelectItem>
+              <SelectItem value="STUDENT">Học viên</SelectItem>
             </SelectContent>
           </Select>
         </div>

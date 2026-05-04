@@ -4,11 +4,17 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   IconArrowRight,
+  IconBook,
   IconCircleCheck,
   IconClock,
+  IconPencil,
   IconPlus,
   IconSparkles,
+  IconTrash,
 } from "@tabler/icons-react";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { deleteCourseAction } from "../actions/course.actions";
 
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Badge } from "@/components/ui/badge";
@@ -23,28 +29,21 @@ import { Separator } from "@/components/ui/separator";
 import type { Course } from "@/features/classes/types/course.type";
 import { cn } from "@/lib/utils";
 
-interface CourseLibraryCardProps {
+interface CourseCardProps {
   course: Course;
   gradient: string;
 }
 
-const formatDuration = (minutes: number) => {
-  if (!minutes) return "Chưa cập nhật";
-  const hours = Math.floor(minutes / 60);
-  const remainingMinutes = minutes % 60;
-  if (!hours) return `${remainingMinutes} phút`;
-  if (!remainingMinutes) return `${hours} giờ`;
-  return `${hours} giờ ${remainingMinutes} phút`;
-};
 
-export function CourseLibraryCard({
+
+export function CourseCard({
   course,
   gradient,
-}: CourseLibraryCardProps) {
+}: CourseCardProps) {
+  const router = useRouter();
   const summary =
-    course.shortDescription ||
     course.description ||
-    "Khóa học chưa có mô tả ngắn.";
+    "Khóa học chưa có mô tả.";
 
   return (
     <Card
@@ -76,9 +75,6 @@ export function CourseLibraryCard({
 
           {/* Badges Overlay */}
           <div className="absolute left-4 top-4 flex flex-wrap items-center gap-2">
-            <Badge className="border-none bg-white/15 px-2.5 py-1 text-[9px] font-black uppercase tracking-widest text-white backdrop-blur-md">
-              {course.level.replaceAll("_", " ")}
-            </Badge>
             <Badge
               className={cn(
                 "border-none px-2.5 py-1 text-[9px] font-black uppercase tracking-widest text-white",
@@ -87,6 +83,54 @@ export function CourseLibraryCard({
             >
               {course.isPublished ? "Đã xuất bản" : "Bản nháp"}
             </Badge>
+          </div>
+
+          {/* Management Actions */}
+          <div className="absolute right-4 top-4 flex gap-2 opacity-0 group-hover/card:opacity-100 transition-all duration-300 translate-y-1 group-hover/card:translate-y-0">
+            <Button
+              asChild
+              variant="ghost"
+              size="icon"
+              className="size-9 rounded-lg bg-black/20 backdrop-blur-md border border-white/10 text-white shadow-xl hover:bg-white hover:text-black transition-all duration-300"
+            >
+              <Link href={`/courses/${course.id}/curriculum`}>
+                <IconBook size={18} stroke={2.5} />
+              </Link>
+            </Button>
+
+            <Button
+              asChild
+              variant="ghost"
+              size="icon"
+              className="size-9 rounded-lg bg-black/20 backdrop-blur-md border border-white/10 text-white shadow-xl hover:bg-white hover:text-black transition-all duration-300"
+            >
+              <Link href={`/courses/${course.id}/edit`}>
+                <IconPencil size={18} stroke={2.5} />
+              </Link>
+            </Button>
+
+            <Button
+              variant="destructive"
+              size="icon"
+              className="size-9 rounded-lg bg-black/20 backdrop-blur-md border border-white/10 text-white shadow-xl hover:bg-red-600 hover:scale-105 transition-all duration-300"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                if (confirm("Bạn có chắc chắn muốn xóa khóa học này?")) {
+                  toast.promise(deleteCourseAction(course.id), {
+                    loading: "Đang xóa...",
+                    success: (result) => {
+                      if (!result.success) throw new Error(result.message);
+                      router.refresh();
+                      return "Khóa học đã được xóa!";
+                    },
+                    error: (err) => err.message || "Lỗi khi xóa khóa học.",
+                  });
+                }
+              }}
+            >
+              <IconTrash size={18} stroke={2.5} />
+            </Button>
           </div>
 
           {/* Content Overlay */}
@@ -146,8 +190,8 @@ export function CourseLibraryCard({
 
           <div className="grid grid-cols-2 gap-3">
             <StatBox
-              label="Thời lượng"
-              value={formatDuration(course.estimatedDurationMinutes)}
+              label="Cập nhật"
+              value={course.updatedAt ? new Date(course.updatedAt).toLocaleDateString("vi-VN") : "Vừa xong"}
               icon={<IconClock size={14} />}
             />
             <StatBox
@@ -166,7 +210,7 @@ export function CourseLibraryCard({
             />
           </div>
 
-          <div className="rounded-2xl border border-dashed border-zinc-200 bg-zinc-50/70 px-4 py-3 dark:border-zinc-800 dark:bg-zinc-900/50">
+          <div className="rounded-lg border border-dashed border-zinc-200 bg-zinc-50/70 px-4 py-3 dark:border-zinc-800 dark:bg-zinc-900/50">
             <p className="text-[10px] font-black uppercase tracking-[0.18em] text-zinc-400">
               Gợi ý dùng nhanh
             </p>
@@ -179,20 +223,11 @@ export function CourseLibraryCard({
       </CardContent>
 
       {/* Footer Section */}
-      <CardFooter className="grid gap-2 px-5 pt-0 pb-5 sm:grid-cols-2">
-        <Button asChild variant="outline" className="h-10 rounded-xl font-bold">
-          <Link href={`/manage/courses/${course.id}`}>
+      <CardFooter className="px-5 pt-0 pb-5">
+        <Button asChild size="lg" className="w-full">
+          <Link href={`/courses/${course.id}`}>
             Xem chi tiết
-            <IconArrowRight size={15} className="ml-2" />
-          </Link>
-        </Button>
-        <Button
-          asChild
-          className="h-10 rounded-xl font-bold shadow-lg shadow-primary/20"
-        >
-          <Link href={`/manage/courses/${course.id}/assign`}>
-            <IconPlus size={15} className="mr-2" />
-            Thêm vào lớp
+            <IconArrowRight size={16} className="ml-1" />
           </Link>
         </Button>
       </CardFooter>
@@ -210,7 +245,7 @@ function StatBox({
   icon: React.ReactNode;
 }) {
   return (
-    <div className="rounded-2xl bg-zinc-50 px-3 py-3 dark:bg-zinc-900/70 border border-zinc-100/50 dark:border-zinc-800/50 shadow-xs">
+    <div className="rounded-lg bg-zinc-50 px-3 py-3 dark:bg-zinc-900/70 border border-zinc-100/50 dark:border-zinc-800/50 shadow-xs">
       <p className="text-[10px] font-black uppercase tracking-wider text-zinc-400">
         {label}
       </p>

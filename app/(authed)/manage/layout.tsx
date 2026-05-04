@@ -13,7 +13,7 @@ export default function ManageLayout({
         <AppSidebar />
         <SidebarInset className="flex flex-col bg-transparent">
           <ManageHeader />
-          <main className="flex-1 px-6 py-6 w-full">
+          <main className="flex-1 min-h-0 w-full px-6 py-6">
             {children}
           </main>
         </SidebarInset>

@@ -3,6 +3,7 @@
 import * as React from "react";
 import { useForm } from "@tanstack/react-form";
 import Link from "next/link";
+import { useQueryState, parseAsBoolean } from "nuqs";
 import {
   IconEye,
   IconEyeOff,
@@ -24,13 +25,18 @@ import { Alert, AlertTitle } from "@/components/ui/alert";
 import { loginWithEmailPassword } from "../actions/login-with-email-password";
 
 interface LoginFormProps {
-  redirectTo?: string;
+  // Props are now handled via nuqs
 }
 
-export function LoginForm({ redirectTo }: LoginFormProps) {
+export function LoginForm({}: LoginFormProps) {
   const [isPending, startTransition] = useTransition();
   const [showPassword, setShowPassword] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
+  const [isRegistered] = useQueryState(
+    "registered",
+    parseAsBoolean.withDefault(false),
+  );
+  const [redirectTo] = useQueryState("redirectTo");
 
   const form = useForm({
     defaultValues: {
@@ -42,7 +48,7 @@ export function LoginForm({ redirectTo }: LoginFormProps) {
     },
     onSubmit: async ({ value }) => {
       startTransition(async () => {
-        const result = await loginWithEmailPassword(value, redirectTo);
+        const result = await loginWithEmailPassword(value, redirectTo ?? undefined);
         if (result?.success === false) {
           setError(result.message);
         }
@@ -58,7 +64,7 @@ export function LoginForm({ redirectTo }: LoginFormProps) {
             Đăng nhập
           </h2>
           <p className="text-slate-500 dark:text-slate-400">
-            Vui lòng nhập email và mật khẩu của bạn để đăng nhập!
+            Cộng sự giáo dục thông minh
           </p>
         </div>
 
@@ -77,6 +83,13 @@ export function LoginForm({ redirectTo }: LoginFormProps) {
               <AlertTitle>{error}</AlertTitle>
             </Alert>
           )}
+
+          {isRegistered && (
+            <Alert className="border-none bg-emerald-500/10 text-emerald-600 dark:bg-emerald-500/15">
+              <IconAlertOctagon className="size-4" />
+              <AlertTitle>Đăng ký thành công! Vui lòng đăng nhập.</AlertTitle>
+            </Alert>
+          )}
           <FieldGroup className="gap-6">
             <form.Field name="emailOrUsername">
               {(field) => {
@@ -90,7 +103,8 @@ export function LoginForm({ redirectTo }: LoginFormProps) {
                       htmlFor={field.name}
                       className="text-sm font-bold text-slate-900 dark:text-slate-200"
                     >
-                      Email hoặc Tên đăng nhập <span className="text-red-500">*</span>
+                      Email hoặc Tên đăng nhập{" "}
+                      <span className="text-red-500">*</span>
                     </FieldLabel>
                     <Input
                       id={field.name}

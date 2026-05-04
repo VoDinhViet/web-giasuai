@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import type { Route } from "next";
 import {
   IconLayoutDashboard,
@@ -313,8 +314,14 @@ export function AppSidebar() {
     >
       <SidebarHeader className="flex h-16 items-center px-4 py-4">
         <Link href="/manage" className="group flex items-center gap-2.5">
-          <div className="flex aspect-square size-9 items-center justify-center rounded-lg bg-primary text-white transition-transform group-hover:scale-105">
-            <IconCommand size={20} stroke={2.5} />
+          <div className="relative flex aspect-square size-9 items-center justify-center overflow-hidden rounded-lg bg-white transition-transform group-hover:scale-105 border border-zinc-200/50 dark:border-zinc-800/50">
+            <Image 
+              src="/logo-new.png" 
+              alt="Logo" 
+              fill
+              sizes="36px"
+              className="p-1.5 object-contain" 
+            />
           </div>
           {!isCollapsed && (
             <span className="text-xl font-black leading-none tracking-tight text-zinc-950 dark:text-zinc-50">

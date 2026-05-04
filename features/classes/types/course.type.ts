@@ -12,16 +12,14 @@ export interface Course {
   title: string;
   slug: string;
   description: Nullable<string>;
-  shortDescription: Nullable<string>;
   thumbnailUrl: Nullable<string>;
-  introVideoUrl: Nullable<string>;
-  teacherId: Nullable<string>;
-  level: CourseLevel;
-  price: number;
-  estimatedDurationMinutes: number;
   tags: string[];
   learningOutcomes: string[];
   isPublished: boolean;
+  schoolLevelId: Nullable<string>;
+  gradeId: Nullable<string>;
+  majorId: Nullable<string>;
+  subjectId: Nullable<string>;
   createdAt?: string;
   updatedAt?: string;
 }

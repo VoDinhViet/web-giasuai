@@ -1,0 +1,10 @@
+# Ignore build artifacts
+.next/
+build/
+out/
+dist/
+
+# Ignore lock files (optional - Prettier can format them if you want)
+pnpm-lock.yaml
+
+# Optional: Ignore node_modules if you don't want Prettier to process it

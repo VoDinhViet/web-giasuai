@@ -41,7 +41,7 @@ export function CreateUserForm({ onSuccess }: CreateUserFormProps) {
       username: "",
       email: "",
       password: "",
-      role: UserRole.USER,
+      role: UserRole.STUDENT,
     },
     validators: {
       onSubmit: createUserSchema,
@@ -215,7 +215,7 @@ export function CreateUserForm({ onSuccess }: CreateUserFormProps) {
                       <SelectValue placeholder="Chọn vai trò" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value={UserRole.USER}>
+                      <SelectItem value={UserRole.STUDENT}>
                         Học viên
                       </SelectItem>
                       <SelectItem value={UserRole.TEACHER}>

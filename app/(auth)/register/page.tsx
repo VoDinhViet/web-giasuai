@@ -1,8 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { Suspense } from "react";
-import Link from "next/link";
 import { RegisterForm } from "@/features/auth/register/components/RegisterForm";
 import { ScrollArea } from "@/components/ui/scroll-area";
 

@@ -1,16 +1,16 @@
-"use client";
+'use client'
 
-import { createColumnHelper } from "@tanstack/react-table";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { User } from "@/types/user";
-import { Badge } from "@/components/ui/badge";
-import { UserTableActions } from "./UserTableActions";
-import { cn } from "@/lib/utils";
+import { createColumnHelper } from '@tanstack/react-table'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { User } from '@/types/user'
+import { Badge } from '@/components/ui/badge'
+import { UserTableActions } from './UserTableActions'
+import { cn } from '@/lib/utils'
 
-const columnHelper = createColumnHelper<User>();
+const columnHelper = createColumnHelper<User>()
 
 export const userTableColumns = [
-  columnHelper.accessor("fullName", {
+  columnHelper.accessor('fullName', {
     header: () => (
       <span className="text-[11px] font-bold uppercase tracking-widest text-zinc-400">
         Người dùng
@@ -24,7 +24,9 @@ export const userTableColumns = [
             className="grayscale opacity-80 hover:grayscale-0 transition-all duration-300"
           />
           <AvatarFallback className="bg-primary/10 text-primary font-bold">
-            {(info.getValue() || info.row.original.username).charAt(0).toUpperCase()}
+            {(info.getValue() || info.row.original.username)
+              .charAt(0)
+              .toUpperCase()}
           </AvatarFallback>
         </Avatar>
         <div className="flex flex-col">
@@ -38,7 +40,7 @@ export const userTableColumns = [
       </div>
     ),
   }),
-  columnHelper.accessor("email", {
+  columnHelper.accessor('email', {
     header: () => (
       <span className="text-[11px] font-bold uppercase tracking-widest text-zinc-400">
         Liên hệ
@@ -50,72 +52,83 @@ export const userTableColumns = [
       </span>
     ),
   }),
-  columnHelper.accessor("role", {
+  columnHelper.accessor('role', {
     header: () => (
       <span className="text-[11px] font-bold uppercase tracking-widest text-zinc-400">
         Vai trò
       </span>
     ),
     cell: (info) => {
-      const role = info.getValue();
-      const roleMap: Record<string, { label: string; variant: "default" | "secondary" | "destructive" | "outline" | "success" | "warning" | "info" }> = {
+      const role = info.getValue()
+      const roleMap: Record<
+        string,
+        {
+          label: string
+          variant:
+            | 'default'
+            | 'secondary'
+            | 'destructive'
+            | 'outline'
+            | 'success'
+            | 'warning'
+            | 'info'
+        }
+      > = {
         ADMIN: {
-          label: "Quản trị viên",
-          variant: "default",
+          label: 'Quản trị viên',
+          variant: 'default',
         },
         TEACHER: {
-          label: "Giáo viên",
-          variant: "info",
+          label: 'Giáo viên',
+          variant: 'info',
         },
-        USER: {
-          label: "Học viên",
-          variant: "secondary",
+        STUDENT: {
+          label: 'Học viên',
+          variant: 'secondary',
         },
-      };
-      
-      const normalizedRole = role.toUpperCase();
+      }
+
+      const normalizedRole = role.toUpperCase()
       const config = roleMap[normalizedRole] || {
         label: role,
-        variant: "secondary",
-      };
-      
-      return (
-        <Badge variant={config.variant}>
-          {config.label}
-        </Badge>
-      );
+        variant: 'secondary',
+      }
+
+      return <Badge variant={config.variant}>{config.label}</Badge>
     },
   }),
-  columnHelper.accessor("isLocked", {
+  columnHelper.accessor('isLocked', {
     header: () => (
       <span className="text-[11px] font-bold uppercase tracking-widest text-zinc-400">
         Trạng thái
       </span>
     ),
     cell: (info) => {
-      const isLocked = info.getValue();
+      const isLocked = info.getValue()
       return (
         <div className="flex items-center gap-2">
           <span
             className={cn(
-              "w-1.5 h-1.5 rounded-full",
-              isLocked ? "bg-rose-500" : "bg-emerald-500"
+              'w-1.5 h-1.5 rounded-full',
+              isLocked ? 'bg-rose-500' : 'bg-emerald-500',
             )}
           />
           <span
             className={cn(
-              "text-[13px] font-bold",
-              isLocked ? "text-rose-600 dark:text-rose-400" : "text-emerald-600 dark:text-emerald-400"
+              'text-[13px] font-bold',
+              isLocked
+                ? 'text-rose-600 dark:text-rose-400'
+                : 'text-emerald-600 dark:text-emerald-400',
             )}
           >
-            {isLocked ? "Bị khóa" : "Hoạt động"}
+            {isLocked ? 'Bị khóa' : 'Hoạt động'}
           </span>
         </div>
-      );
+      )
     },
   }),
   columnHelper.display({
-    id: "actions",
+    id: 'actions',
     header: () => (
       <div className="text-right text-[11px] font-bold uppercase tracking-widest text-zinc-400">
         Hành động
@@ -123,8 +136,8 @@ export const userTableColumns = [
     ),
     cell: (info) => (
       <div className="flex justify-end">
-        <UserTableActions user={info.row.original} />
+        <UserTableActions myUser={info.row.original} />
       </div>
     ),
   }),
-];
+]

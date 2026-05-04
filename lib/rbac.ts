@@ -28,7 +28,7 @@ export const ROLE_PERMISSIONS: Record<UserRole, AppPermission[]> = {
     "courses.update",
     "courses.publish",
   ],
-  [UserRole.USER]: ["courses.read", "classes.read"],
+  [UserRole.STUDENT]: ["courses.read", "classes.read"],
 };
 
 export function getPermissionsForRole(role: UserRole): AppPermission[] {

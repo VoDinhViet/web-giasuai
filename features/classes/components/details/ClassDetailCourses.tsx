@@ -55,7 +55,6 @@ const formatDuration = (minutes: number) => {
 };
 
 const getCourseDescription = (course: Course) =>
-  course.shortDescription ||
   course.description ||
   "Khóa học chưa có mô tả chi tiết.";
 
@@ -103,7 +102,7 @@ function CourseCard({ course, gradient }: { course: Course; gradient: string }) 
         
         <div className="absolute top-3 left-3 flex flex-wrap gap-2">
           <Badge className="bg-white/20 backdrop-blur-md text-white border-none text-[9px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider">
-            {course.level.replace("_", " ")}
+            KHÓA HỌC
           </Badge>
           {course.isPublished && (
             <Badge className="bg-emerald-500/90 text-white border-none text-[9px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider">
@@ -133,9 +132,9 @@ function CourseCard({ course, gradient }: { course: Course; gradient: string }) 
         <div className="flex items-center justify-between border-t border-zinc-100 pt-4 dark:border-zinc-800/50">
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-1.5 text-zinc-400">
-              <IconClock size={14} className="text-zinc-500" />
+              <IconBook size={14} className="text-zinc-500" />
               <span className="text-[10px] font-bold uppercase tracking-tight">
-                {formatDuration(course.estimatedDurationMinutes)}
+                Học liệu AI
               </span>
             </div>
             

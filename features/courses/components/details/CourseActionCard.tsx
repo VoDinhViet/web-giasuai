@@ -8,6 +8,8 @@ import {
   IconFileText,
   IconHelpCircle,
   IconPlayerPlay,
+  IconPlus,
+  IconEdit,
 } from "@tabler/icons-react";
 
 import { PermissionGuard } from "@/components/auth/PermissionGuard";
@@ -64,17 +66,22 @@ export function CourseActionCard({ course }: CourseActionCardProps) {
             </Button>
 
             <PermissionGuard role={UserRole.TEACHER}>
-              <Button size="lg" className="w-full" variant="secondary" asChild>
-                <Link href={`/manage/courses/${course.id}/assign`}>
-                  Gán vào lớp học
-                  <IconArrowRight className="ml-2 h-4 w-4" />
+              <Button asChild className="w-full h-12 rounded-xl font-bold gap-2">
+                <Link href={`/courses/${course.id}/assign`}>
+                  <IconPlus size={18} />
+                  {"Thêm vào lớp học"}
                 </Link>
               </Button>
             </PermissionGuard>
 
-            <Button size="lg" className="w-full" variant="outline" asChild>
-              <Link href={`/manage/courses/${course.id}`}>
-                Chỉnh sửa khóa học
+            <Button
+              asChild
+              variant="outline"
+              className="w-full h-12 rounded-xl font-bold gap-2"
+            >
+              <Link href={`/courses/${course.id}/edit`}>
+                <IconEdit size={18} />
+                {"Chỉnh sửa khóa học"}
               </Link>
             </Button>
           </div>

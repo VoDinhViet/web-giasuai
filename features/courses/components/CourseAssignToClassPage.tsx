@@ -77,7 +77,7 @@ export function CourseAssignToClassPage({
           variant="outline"
           className="h-10 rounded-xl border-zinc-200 bg-white shadow-none dark:border-zinc-800 dark:bg-zinc-950"
         >
-          <Link href={`/manage/courses/${course.id}`}>
+          <Link href={`/courses/${course.id}`}>
             <IconArrowLeft size={16} className="mr-2" />
             {"Quay l\u1EA1i chi ti\u1EBFt kh\u00F3a h\u1ECDc"}
           </Link>
@@ -101,16 +101,23 @@ export function CourseAssignToClassPage({
 
   return (
     <div className="space-y-8 pb-16">
-      <Button
-        asChild
-        variant="outline"
-        className="h-10 rounded-xl border-zinc-200 bg-white shadow-none dark:border-zinc-800 dark:bg-zinc-950"
-      >
-        <Link href={`/manage/courses/${course.id}`}>
-          <IconArrowLeft size={16} className="mr-2" />
-          {"Quay l\u1EA1i chi ti\u1EBFt kh\u00F3a h\u1ECDc"}
-        </Link>
-      </Button>
+      <div className="flex gap-2">
+        <Button
+          asChild
+          variant="outline"
+          className="h-10 flex-1 justify-start rounded-xl border-zinc-200 bg-white shadow-none dark:border-zinc-800 dark:bg-zinc-950"
+        >
+          <Link href={`/courses/${course.id}`}>
+            <IconArrowLeft size={16} className="mr-2" />
+            {"Quay l\u1EA1i chi ti\u1EBFt kh\u00F3a h\u1ECDc"}
+          </Link>
+        </Button>
+        <Button asChild variant="secondary" size="icon" className="rounded-xl">
+          <Link href={`/courses/${course.id}`} target="_blank">
+            <IconEye size={18} stroke={2} />
+          </Link>
+        </Button>
+      </div>
 
       <Card className="overflow-hidden rounded-[2rem] border-zinc-200/80 dark:border-zinc-800">
         <CardHeader className="space-y-4">
@@ -142,8 +149,8 @@ export function CourseAssignToClassPage({
             icon={<IconCheck size={14} />}
           />
           <InfoPill
-            label={"M\u1EE9c \u0111\u1ED9"}
-            value={course.level.replaceAll("_", " ")}
+            label={"Loại học liệu"}
+            value={"Khóa học AI"}
             icon={<IconBook2 size={14} />}
           />
           <InfoPill

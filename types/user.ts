@@ -1,7 +1,7 @@
 export enum UserRole {
   ADMIN = "ADMIN",
   TEACHER = "TEACHER",
-  USER = "USER",
+  STUDENT = "STUDENT",
 }
 
 export type AppPermission =

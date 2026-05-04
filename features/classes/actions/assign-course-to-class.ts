@@ -15,9 +15,9 @@ export async function assignCourseToClass(
     });
 
     revalidatePath("/manage/classes");
-    revalidatePath("/manage/courses");
+    revalidatePath("/courses");
     revalidatePath(`/manage/classes/${classId}`);
-    revalidatePath(`/manage/courses/${courseId}`);
+    revalidatePath(`/courses/${courseId}`);
 
     return {
       success: true,

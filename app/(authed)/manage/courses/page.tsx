@@ -1,5 +1,5 @@
 import { getCourses } from "@/features/classes/actions/get-courses";
-import { CoursesManagementPage } from "@/features/courses/components/CoursesManagementPage";
+import { CoursePage } from "@/features/courses/components/CoursePage";
 import { courseParamsCache } from "@/features/courses/params/course-params";
 import { requireRole } from "@/lib/guards";
 import { UserRole } from "@/types/user";
@@ -17,7 +17,7 @@ export default async function CoursesManagePage({
   const result = await getCourses(params);
 
   return (
-    <CoursesManagementPage
+    <CoursePage
       courses={result.data}
       pagination={result.pagination}
     />

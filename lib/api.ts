@@ -3,9 +3,6 @@ import { env } from "./env";
 
 export const api = ofetch.create({
   baseURL: env.API_URL,
-  headers: {
-    "Content-Type": "application/json",
-  },
   async onRequest({ options }) {
     try {
       const { getSession } = await import("./session");

@@ -39,10 +39,7 @@ export function CourseAssignItem({
   isAlreadyAssigned,
   onAssign,
 }: CourseAssignItemProps) {
-  const formattedPrice = new Intl.NumberFormat("vi-VN", {
-    style: "currency",
-    currency: "VND",
-  }).format(course.price);
+  const formattedPrice = "Miễn phí";
 
   return (
     <Card
@@ -77,17 +74,11 @@ export function CourseAssignItem({
             variant="secondary"
             className="text-[9px] font-black uppercase tracking-widest px-2 py-1 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-sm"
           >
-            {course.level.replace("_", " ")}
+            HỌC LIỆU
           </Badge>
         </div>
 
-        {course.price > 0 && !isAlreadyAssigned && (
-          <div className="absolute bottom-3 right-3">
-            <Badge className="bg-primary text-white border-none shadow-md text-[10px] font-bold px-3 py-1 rounded-full">
-              {formattedPrice}
-            </Badge>
-          </div>
-        )}
+        {/* Price badge removed as price field is deleted */}
         
         {isAlreadyAssigned && (
           <div className="absolute inset-0 bg-white/40 dark:bg-black/40 backdrop-blur-[1px] flex items-center justify-center">
@@ -105,9 +96,9 @@ export function CourseAssignItem({
         )}>
           {course.title}
         </CardTitle>
-        {course.shortDescription && (
+        {course.description && (
           <CardDescription className="text-xs text-zinc-500 font-medium leading-relaxed line-clamp-2 min-h-[2rem]">
-            {course.shortDescription}
+            {course.description}
           </CardDescription>
         )}
       </CardHeader>
@@ -115,9 +106,9 @@ export function CourseAssignItem({
       <CardContent className="px-4 pb-4 mt-auto">
         <div className="flex flex-wrap items-center gap-2">
           <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-100 dark:border-zinc-800 text-zinc-500">
-            <IconClock size={12} stroke={2} />
+            <IconTag size={12} stroke={2} />
             <span className="text-[10px] font-bold uppercase tracking-wider">
-              {course.estimatedDurationMinutes}m
+              Khóa học AI
             </span>
           </div>
           {course.isPublished && (
@@ -133,7 +124,7 @@ export function CourseAssignItem({
 
       <CardFooter className="px-4 pb-4 pt-0 flex items-center gap-2">
         <Button asChild variant="secondary" size="icon" className="rounded-xl">
-          <Link href={`/manage/courses/${course.id}`} target="_blank">
+          <Link href={`/courses/${course.id}`} target="_blank">
             <IconEye size={18} stroke={2} />
           </Link>
         </Button>

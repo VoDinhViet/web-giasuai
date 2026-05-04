@@ -2,11 +2,11 @@
 
 import type { PaginationInfo } from "@/types/api";
 import type { Course } from "@/features/classes/types/course.type";
-import { CoursesLibraryGrid } from "./CoursesLibraryGrid";
-import { CoursesLibraryHero } from "./CoursesLibraryHero";
+import { CourseGrid } from "./CourseGrid";
+import { CourseHero } from "./CourseHero";
 import { CoursesStatsGrid } from "./CoursesStatsGrid";
 
-interface CoursesManagementPageProps {
+interface CoursePageProps {
   courses: Course[];
   pagination: PaginationInfo;
 }
@@ -18,13 +18,13 @@ const COURSE_GRADIENTS = [
   "from-orange-500/85 to-rose-500/85",
 ];
 
-export function CoursesManagementPage({
+export function CoursePage({
   courses,
   pagination,
-}: CoursesManagementPageProps) {
+}: CoursePageProps) {
   return (
     <div className="space-y-10 pb-20">
-      <CoursesLibraryHero
+      <CourseHero
         totalRecords={pagination.totalRecords}
         currentPage={pagination.currentPage}
         totalPages={pagination.totalPages}
@@ -35,7 +35,7 @@ export function CoursesManagementPage({
         totalRecords={pagination.totalRecords}
       />
 
-      <CoursesLibraryGrid
+      <CourseGrid
         courses={courses}
         pagination={pagination}
         gradients={COURSE_GRADIENTS}

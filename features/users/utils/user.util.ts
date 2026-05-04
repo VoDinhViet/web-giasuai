@@ -21,7 +21,7 @@ export function getRoleLabel(role?: string | null): string {
   const ROLE_MAP: Record<string, string> = {
     ADMIN: "Quản trị viên",
     TEACHER: "Giáo viên",
-    USER: "Học viên",
+    STUDENT: "Học viên",
   };
   
   return (role && ROLE_MAP[role]) || "-";

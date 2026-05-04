@@ -1,7 +1,18 @@
 "use client";
 
-import { IconLock } from "@tabler/icons-react";
+import { IconLock, IconCheck, IconPlayerPlay } from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
+import { 
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
+} from "@/components/ui/sidebar";
+
+/* ─── Types ─────────────────────────────────────────────────────────────── */
 
 interface Lesson {
   id: string;
@@ -21,73 +32,90 @@ interface LessonCurriculumsProps {
   activeLessonId: string;
 }
 
-import { 
-  Accordion, 
-  AccordionContent, 
-  AccordionItem, 
-  AccordionTrigger 
-} from "@/components/ui/accordion";
+/* ─── Sub-Components ────────────────────────────────────────────────────── */
+
+const ChapterHeader = ({ index, title }: { index: number; title: string }) => (
+  <div className="flex items-center gap-2 px-2 mb-2">
+    <span className="text-[10px] font-bold text-zinc-300 dark:text-zinc-700 uppercase tracking-tighter">
+      {index + 1 < 10 ? `0${index + 1}` : index + 1}
+    </span>
+    <h3 className="text-[11px] font-bold text-zinc-900 uppercase tracking-tight dark:text-zinc-100">
+      {title}
+    </h3>
+  </div>
+);
+
+const LessonItem = ({ 
+  lesson, 
+  isActive 
+}: { 
+  lesson: Lesson; 
+  isActive: boolean 
+}) => (
+  <SidebarMenuSubItem className="px-1">
+    <SidebarMenuSubButton
+      isActive={isActive}
+      className={cn(
+        "h-auto py-2.5 px-3 rounded-md transition-all duration-200 border",
+        lesson.isLocked ? "opacity-30 pointer-events-none" : "cursor-pointer",
+        isActive 
+          ? "bg-zinc-900 border-zinc-900 text-white dark:bg-zinc-100 dark:border-zinc-100 dark:text-zinc-900 shadow-sm" 
+          : "bg-white border-zinc-100 text-zinc-600 hover:bg-zinc-100 hover:border-zinc-200 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-800"
+      )}
+    >
+      <div className="flex flex-col gap-0.5 min-w-0 pr-2">
+        <div className="flex items-center gap-2">
+          {isActive ? (
+            <IconPlayerPlay size={10} stroke={3} className="fill-current" />
+          ) : (
+            lesson.isCompleted && <IconCheck size={12} stroke={3} className="text-emerald-500" />
+          )}
+          <span className={cn(
+            "text-[12.5px] leading-snug transition-colors tracking-tight line-clamp-1",
+            isActive ? "font-bold" : "font-semibold"
+          )}>
+            {lesson.title}
+          </span>
+        </div>
+        <span className={cn(
+          "text-[10px] font-medium",
+          isActive ? "text-white/60 dark:text-zinc-900/60" : "text-zinc-400"
+        )}>
+          {lesson.duration}
+        </span>
+      </div>
+
+      {lesson.isLocked && !isActive && (
+        <IconLock size={12} stroke={1.5} className="ml-auto text-zinc-300" />
+      )}
+    </SidebarMenuSubButton>
+  </SidebarMenuSubItem>
+);
+
+/* ─── Main Component ────────────────────────────────────────────────────── */
 
 export function LessonCurriculums({ curriculum, activeLessonId }: LessonCurriculumsProps) {
   return (
-    <Accordion type="multiple" defaultValue={["item-0"]} className="w-full space-y-2">
-      {curriculum.map((chapter, idx) => (
-        <AccordionItem key={idx} value={`item-${idx}`} className="border-none">
-          <AccordionTrigger className="hover:no-underline py-4 group">
-            <div className="flex items-baseline gap-4 text-left">
-              <span className="text-[10px] font-black text-zinc-300 uppercase tracking-[0.2em] shrink-0">
-                0{idx + 1}
-              </span>
-              <h3 className="text-xs font-bold uppercase tracking-widest text-zinc-900 leading-tight group-hover:text-zinc-600 transition-colors">
-                {chapter.title}
-              </h3>
-            </div>
-          </AccordionTrigger>
-          
-          <AccordionContent className="pb-6">
-            <div className="ml-[1.1rem] pl-6 border-l border-zinc-100 space-y-6 pt-2">
-              {chapter.lessons.map((lesson) => {
-                const isActive = lesson.id === activeLessonId;
-                return (
-                  <div 
+    <SidebarGroup className="p-0">
+      <SidebarGroupContent>
+        <SidebarMenu className="gap-4">
+          {curriculum.map((chapter, idx) => (
+            <SidebarMenuItem key={idx}>
+              <ChapterHeader index={idx} title={chapter.title} />
+              
+              <SidebarMenuSub className="ml-0 border-none space-y-0.5">
+                {chapter.lessons.map((lesson) => (
+                  <LessonItem 
                     key={lesson.id} 
-                    className={cn(
-                      "relative group flex items-baseline justify-between gap-4 transition-colors",
-                      lesson.isLocked ? "opacity-30 pointer-events-none" : "cursor-pointer"
-                    )}
-                  >
-                    {/* Subtle Active Indicator Dot */}
-                    {isActive && (
-                      <div className="absolute -left-[1.85rem] top-[0.45rem] size-1.5 rounded-full bg-zinc-900" />
-                    )}
-
-                    <div className="flex flex-col gap-1">
-                      <span className={cn(
-                        "text-[13px] leading-snug transition-colors tracking-tight",
-                        isActive ? "font-bold text-zinc-900" : "font-medium text-zinc-500 group-hover:text-zinc-800"
-                      )}>
-                        {lesson.title}
-                      </span>
-                      <div className="flex items-center gap-3">
-                        <span className="text-[10px] text-zinc-400 font-bold uppercase tracking-widest">
-                          {lesson.duration}
-                        </span>
-                        {lesson.isCompleted && !isActive && (
-                          <div className="size-1 rounded-full bg-emerald-500" />
-                        )}
-                      </div>
-                    </div>
-
-                    {lesson.isLocked && (
-                      <IconLock size={12} className="text-zinc-300 shrink-0 mt-1" />
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          </AccordionContent>
-        </AccordionItem>
-      ))}
-    </Accordion>
+                    lesson={lesson} 
+                    isActive={lesson.id === activeLessonId} 
+                  />
+                ))}
+              </SidebarMenuSub>
+            </SidebarMenuItem>
+          ))}
+        </SidebarMenu>
+      </SidebarGroupContent>
+    </SidebarGroup>
   );
 }

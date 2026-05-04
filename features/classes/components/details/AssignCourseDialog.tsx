@@ -149,14 +149,14 @@ export function AssignCourseDialog({ classId, onSuccess }: AssignCourseDialogPro
                                   {course.title}
                                 </h4>
                                 <Badge className="bg-emerald-50 text-emerald-600 border-none text-[8px] font-black px-2.5 py-1 rounded-full uppercase tracking-widest">
-                                  {course.level.replace('_', ' ')}
+                                  KHÓA HỌC
                                 </Badge>
                               </div>
                               
                               <div className="flex items-center gap-4 text-zinc-400">
                                 <div className="flex items-center gap-1.5">
-                                  <IconClock size={14} />
-                                  <span className="text-[10px] font-bold uppercase tracking-wider">{course.estimatedDurationMinutes} phút</span>
+                                  <IconBook size={14} />
+                                  <span className="text-[10px] font-bold uppercase tracking-wider">Học liệu</span>
                                 </div>
                                 <div className="flex items-center gap-1.5">
                                   <IconCircleCheck size={14} className="text-emerald-500" />

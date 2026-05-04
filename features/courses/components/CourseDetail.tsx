@@ -165,7 +165,7 @@ export function CourseDetail({ course }: CourseDetailProps) {
                   asChild
                   className="flex items-center gap-1.5 hover:text-primary transition-colors text-xs font-medium"
                 >
-                  <Link href="/manage">
+                  <Link href="/">
                     <IconHome size={14} stroke={2} />
                   </Link>
                 </BreadcrumbLink>
@@ -178,7 +178,9 @@ export function CourseDetail({ course }: CourseDetailProps) {
                   asChild
                   className="hover:text-primary transition-colors text-xs font-medium"
                 >
-                  <Link href="/manage/courses">Thư viện khóa học</Link>
+                  <Link href="/manage/courses">
+                    Thư viện khóa học
+                  </Link>
                 </BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator className="text-muted-foreground/30">
@@ -217,7 +219,7 @@ export function CourseDetail({ course }: CourseDetailProps) {
             <div className="space-y-3">
               <div className="flex flex-wrap items-center gap-2">
                 <Badge className="bg-primary/10 text-primary hover:bg-primary/15 border-none px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider">
-                  {course.level.replaceAll("_", " ")}
+                  Học liệu AI
                 </Badge>
                 <Badge
                   variant="secondary"
@@ -238,7 +240,7 @@ export function CourseDetail({ course }: CourseDetailProps) {
                 {course.title}
               </h1>
               <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl">
-                {course.shortDescription ||
+                {course.description ||
                   "Khóa học chuyên sâu giúp bạn làm chủ các kỹ năng cần thiết một cách bài bản và thực tế nhất."}
               </p>
             </div>
@@ -273,10 +275,10 @@ export function CourseDetail({ course }: CourseDetailProps) {
                 </div>
                 <div>
                   <p className="font-bold">
-                    {Math.floor(course.estimatedDurationMinutes / 60)} giờ học
+                    Tự do
                   </p>
                   <p className="text-[10px] text-muted-foreground uppercase tracking-wider">
-                    Thời lượng
+                    Lộ trình học
                   </p>
                 </div>
               </div>
