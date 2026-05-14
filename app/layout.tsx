@@ -1,10 +1,12 @@
 import { Geist, Geist_Mono, Inter } from "next/font/google"
+import { NuqsAdapter } from "nuqs/adapters/next/app"
 
+// @ts-ignore
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils"
 
-const inter = Inter({subsets:['latin'],variable:'--font-sans'})
+const inter = Inter({ subsets: ["latin"], variable: "--font-sans" })
 
 const fontMono = Geist_Mono({
   subsets: ["latin"],
@@ -20,10 +22,17 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={cn("antialiased", fontMono.variable, "font-sans", inter.variable)}
+      className={cn(
+        "antialiased",
+        fontMono.variable,
+        "font-sans",
+        inter.variable
+      )}
     >
       <body>
-        <ThemeProvider>{children}</ThemeProvider>
+        <NuqsAdapter>
+          <ThemeProvider>{children}</ThemeProvider>
+        </NuqsAdapter>
       </body>
     </html>
   )
