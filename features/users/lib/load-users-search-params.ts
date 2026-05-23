@@ -1,0 +1,13 @@
+import { createLoader, parseAsInteger, parseAsString } from "nuqs/server"
+
+const usersServerSearchParams = {
+  limit: parseAsInteger.withDefault(10),
+  page: parseAsInteger.withDefault(1),
+  search: parseAsString.withDefault(""),
+  position: parseAsString.withDefault("all"),
+  status: parseAsString.withDefault("all"),
+}
+
+export const loadUsersSearchParams = createLoader(usersServerSearchParams)
+
+export type UsersSearchParams = Awaited<ReturnType<typeof loadUsersSearchParams>>

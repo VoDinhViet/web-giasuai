@@ -6,7 +6,7 @@ export const env = createEnv({
     IRON_SESSION_PASSWORD: z.string().min(32),
   },
   client: {
-    NEXT_PUBLIC_API_URL: z.string().url().optional(),
+    NEXT_PUBLIC_API_URL: z.string().url(),
   },
   runtimeEnv: {
     IRON_SESSION_PASSWORD: process.env.IRON_SESSION_PASSWORD,

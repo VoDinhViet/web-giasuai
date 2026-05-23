@@ -9,8 +9,6 @@ import {
   IconLoader2,
   IconAlertOctagon,
   IconUserPlus,
-  IconSchool,
-  IconUsers,
 } from "@tabler/icons-react";
 
 import { Button } from "@/components/ui/button";
@@ -28,12 +26,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Label } from "@/components/ui/label";
-import { registerSchema, type RegisterInput } from "../schemas/register.schema";
+import { registerSchema } from "../schemas/register.schema";
 import { useTransition } from "react";
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import { registerWithEmailPassword } from "../actions/register-with-email-password";
-import { cn } from "@/lib/utils";
 import { UserRole } from "@/types/user";
 
 export function RegisterForm() {
@@ -288,7 +284,7 @@ export function RegisterForm() {
                   </FieldLabel>
                   <Select
                     value={field.state.value}
-                    onValueChange={(val) => field.handleChange(val as any)}
+                    onValueChange={(val) => field.handleChange(val as UserRole)}
                     disabled={isPending}
                   >
                     <SelectTrigger className="h-11">

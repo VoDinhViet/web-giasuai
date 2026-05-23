@@ -1,59 +1,48 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import type { Route } from "next";
 
 import { api } from "@/lib/api";
 import { getSession } from "@/lib/session";
-import { getPermissionsForRole } from "@/lib/rbac";
 import type { ActionResponse } from "@/types/api";
-import type { User } from "@/types/user";
 import type { LoginInput } from "../schemas/login.schema";
 
 interface LoginResponse {
   userId: string;
+  roleCode: string;
+  permissions: string[];
   accessToken: string;
   refreshToken: string;
   tokenExpires: number;
 }
 
 export async function loginWithEmailPassword(
-  data: LoginInput,
+  reqDto: LoginInput,
   redirectTo?: string
 ): Promise<ActionResponse<LoginResponse>> {
   try {
-    const result = await api<LoginResponse>("/api/v1/auth/login", {
+    const loginResponse = await api<LoginResponse>("/api/auth/login", {
       method: "POST",
       body: {
-        emailOrUsername: data.emailOrUsername,
-        password: data.password,
+        email: reqDto.email,
+        password: reqDto.password,
       },
     });
-
-    const me = await api<User>("/api/v1/users/me", {
-      headers: {
-        Authorization: `Bearer ${result.accessToken}`,
-      },
-    });
-
-    if (!me?.role) {
-      return {
-        success: false,
-        message: "Không thể xác định vai trò người dùng sau khi đăng nhập.",
-      };
-    }
 
     const session = await getSession();
 
-    session.userId = me.id;
-    session.role = me.role;
-    session.permissions = me.permissions ?? getPermissionsForRole(me.role);
-    session.accessToken = result.accessToken;
-    session.refreshToken = result.refreshToken;
+    session.userId = loginResponse.userId;
+    session.roleCode = loginResponse.roleCode;
+    session.permissions = loginResponse.permissions;
+    session.accessToken = loginResponse.accessToken;
+    session.refreshToken = loginResponse.refreshToken;
+    session.tokenExpires = loginResponse.tokenExpires;
     session.isLoggedIn = true;
 
     await session.save();
-  } catch (error: unknown) {
-    console.error("Login error:", error);
+  } catch (loginError: unknown) {
+    console.error("Login error:", loginError);
 
     return {
       success: false,
@@ -64,5 +53,5 @@ export async function loginWithEmailPassword(
   const safeRedirect =
     redirectTo && redirectTo.startsWith("/") ? redirectTo : "/manage/users";
 
-  redirect(safeRedirect as any);
+  redirect(safeRedirect as Route);
 }
