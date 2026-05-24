@@ -4,10 +4,9 @@ import { redirect } from "next/navigation";
 
 import { api } from "@/lib/api";
 import { getSession } from "@/lib/session";
-import { getPermissionsForRole } from "@/lib/rbac";
 import type { ActionResponse } from "@/types/api";
-import type { User } from "@/types/user";
 import type { LoginInput } from "../schemas/login.schema";
+import { Route } from "next";
 
 interface LoginResponse {
   userId: string;
@@ -29,24 +28,9 @@ export async function loginWithEmailPassword(
       },
     });
 
-    const me = await api<User>("/api/v1/users/me", {
-      headers: {
-        Authorization: `Bearer ${result.accessToken}`,
-      },
-    });
-
-    if (!me?.role) {
-      return {
-        success: false,
-        message: "Không thể xác định vai trò người dùng sau khi đăng nhập.",
-      };
-    }
-
     const session = await getSession();
 
-    session.userId = me.id;
-    session.role = me.role;
-    session.permissions = me.permissions ?? getPermissionsForRole(me.role);
+    session.userId = result.userId;
     session.accessToken = result.accessToken;
     session.refreshToken = result.refreshToken;
     session.isLoggedIn = true;
@@ -64,5 +48,5 @@ export async function loginWithEmailPassword(
   const safeRedirect =
     redirectTo && redirectTo.startsWith("/") ? redirectTo : "/manage/users";
 
-  redirect(safeRedirect as any);
+  redirect(safeRedirect as Route<string>);
 }

@@ -10,7 +10,7 @@ import { Class } from "@/types/class";
 import { TeacherInfo } from "./TeacherInfo";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { formatDate } from "@/lib/utils";
+import { formatDate } from "@/lib/date";
 import {
   Tooltip,
   TooltipContent,

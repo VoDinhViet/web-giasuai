@@ -1,38 +1,34 @@
-"use client";
+import * as React from "react"
+import { cva, type VariantProps } from "class-variance-authority"
+import { Slot } from "radix-ui"
 
-import * as React from "react";
-import { cva, type VariantProps } from "class-variance-authority";
-import { Slot } from "radix-ui";
-
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils"
 
 const badgeVariants = cva(
-  "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-bold transition-all duration-300 focus:outline-none select-none",
+  "group/badge inline-flex h-6 w-fit shrink-0 items-center justify-center gap-1 overflow-hidden rounded-lg border border-transparent px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide whitespace-nowrap transition-all focus-visible:border-primary/40 focus-visible:ring-[3px] focus-visible:ring-primary/10 has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 [&>svg]:pointer-events-none [&>svg]:size-3!",
   {
     variants: {
       variant: {
         default:
-          "border-transparent bg-primary text-primary-foreground shadow-sm hover:bg-primary/90",
+          "bg-primary/10 text-primary ring-1 ring-primary/15 [a]:hover:bg-primary/15",
         secondary:
-          "border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80",
+          "bg-muted text-foreground ring-1 ring-border/70 [a]:hover:bg-muted/80",
         destructive:
-          "border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80",
-        outline:
-          "text-foreground border-border hover:bg-zinc-100 dark:hover:bg-zinc-800",
-        ghost:
-          "border-none bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400 hover:bg-zinc-200",
-        premium:
-          "border-none font-black uppercase tracking-[0.12em] text-white shadow-xl",
+          "bg-destructive/10 text-destructive ring-1 ring-destructive/15 focus-visible:ring-destructive/20 dark:bg-destructive/20 dark:focus-visible:ring-destructive/40 [a]:hover:bg-destructive/20",
         success:
-          "border-transparent bg-emerald-500/10 text-emerald-700 dark:text-emerald-400",
-        warning:
-          "border-transparent bg-amber-500/10 text-amber-700 dark:text-amber-400",
-        info: "border-transparent bg-blue-500/10 text-blue-700 dark:text-blue-400",
+          "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-100 dark:bg-emerald-500/10 dark:text-emerald-300 dark:ring-emerald-500/20",
+        premium:
+          "bg-primary text-primary-foreground shadow-sm shadow-primary/15",
+        outline:
+          "border-border/70 text-foreground [a]:hover:bg-muted [a]:hover:text-muted-foreground",
+        ghost:
+          "hover:bg-muted hover:text-muted-foreground dark:hover:bg-muted/50",
+        link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
-        default: "px-3 py-1",
-        sm: "px-2 py-0.5 text-[10px]",
-        xs: "px-2 py-0.5 text-[8px] leading-none",
+        default: "h-6 px-2.5 py-1 text-[11px]",
+        xs: "h-5 rounded-md px-2 py-0.5 text-[10px]",
+        sm: "h-6 px-2.5 py-1 text-[11px]",
       },
     },
     defaultVariants: {
@@ -40,24 +36,27 @@ const badgeVariants = cva(
       size: "default",
     },
   }
-);
+)
 
-export interface BadgeProps
-  extends React.HTMLAttributes<HTMLDivElement>,
-  VariantProps<typeof badgeVariants> {
-  asChild?: boolean;
-}
-
-function Badge({ className, variant, asChild = false, ...props }: BadgeProps) {
-  const Comp = asChild ? Slot.Root : "div";
+function Badge({
+  className,
+  variant = "default",
+  size = "default",
+  asChild = false,
+  ...props
+}: React.ComponentProps<"span"> &
+  VariantProps<typeof badgeVariants> & { asChild?: boolean }) {
+  const Comp = asChild ? Slot.Root : "span"
 
   return (
-    <div
+    <Comp
       data-slot="badge"
-      className={cn(badgeVariants({ variant }), className)}
+      data-variant={variant}
+      data-size={size}
+      className={cn(badgeVariants({ variant, size }), className)}
       {...props}
     />
-  );
+  )
 }
 
-export { Badge, badgeVariants };
+export { Badge, badgeVariants }

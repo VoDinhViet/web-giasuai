@@ -2,17 +2,13 @@
 
 import * as React from "react";
 import Link from "next/link";
-import Image from "next/image";
 import type { Route } from "next";
 import {
   IconLayoutDashboard,
   IconUsers,
   IconSettings,
-  IconLogout,
-  IconCommand,
   IconChevronDown,
   IconMessageCircle,
-  IconTicket,
   IconBrandOpenai,
   IconChartBar,
   IconCalendarEvent,
@@ -24,7 +20,6 @@ import {
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
@@ -34,7 +29,6 @@ import {
   SidebarGroupContent,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import {
   Collapsible,
@@ -193,7 +187,7 @@ const NavMenu = ({
   };
 
   return (
-    <SidebarMenu className="gap-1 px-2">
+    <SidebarMenu>
       {items.map((item) => {
         const isActive =
           isActivePath(item.url) ||
@@ -205,21 +199,14 @@ const NavMenu = ({
               key={item.title}
               asChild
               defaultOpen={isActive}
-              className="group/collapsible"
             >
               <SidebarMenuItem>
                 <CollapsibleTrigger asChild>
                   <SidebarMenuButton
                     isActive={isActive}
                     tooltip={item.title}
-                    className={cn(
-                      "h-11 rounded-lg px-3.5 transition-all group",
-                      isActive
-                        ? "bg-primary! text-white! font-bold shadow-sm"
-                        : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800/50 hover:text-primary dark:hover:text-zinc-100",
-                    )}
                   >
-                    <item.icon size={21} stroke={2} className="shrink-0" />
+                    <item.icon size={21} stroke={2} />
                     {!isCollapsed && (
                       <>
                         <span className="ml-1 flex-1 text-[14px]">
@@ -227,14 +214,13 @@ const NavMenu = ({
                         </span>
                         <IconChevronDown
                           size={16}
-                          className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180"
                         />
                       </>
                     )}
                   </SidebarMenuButton>
                 </CollapsibleTrigger>
                 <CollapsibleContent>
-                  <SidebarMenu className="mt-1 gap-1 pl-6">
+                  <SidebarMenu>
                     {item.children.map((subItem) => {
                       const isSubActive = isActivePath(subItem.url);
                       return (
@@ -242,24 +228,14 @@ const NavMenu = ({
                           <SidebarMenuButton
                             asChild
                             isActive={isSubActive}
-                            className={cn(
-                              "h-10 rounded-lg px-3 transition-all",
-                              isSubActive
-                                ? "bg-primary/10 font-bold text-primary dark:bg-zinc-800 dark:text-white"
-                                : "text-zinc-500 hover:bg-zinc-50 hover:text-primary dark:text-zinc-500 dark:hover:bg-zinc-800/50 dark:hover:text-zinc-200",
-                            )}
                           >
-                            <Link
-                              href={subItem.url}
-                              className="flex items-center gap-3"
-                            >
+                              <Link href={subItem.url}>
                               <div
-                                className={cn(
-                                  "size-1.5 rounded-full border-2 transition-all",
+                                className={
                                   isSubActive
-                                    ? "border-primary bg-primary"
-                                    : "border-zinc-300 dark:border-zinc-700",
-                                )}
+                                    ? "size-1.5 rounded-full border-2 border-primary bg-primary transition-all"
+                                    : "size-1.5 rounded-full border-2 border-sidebar-foreground/30 transition-all"
+                                }
                               />
                               <span className="text-[13px]">
                                 {subItem.title}
@@ -282,15 +258,9 @@ const NavMenu = ({
               asChild
               isActive={isActive}
               tooltip={item.title}
-              className={cn(
-                "h-11 rounded-lg px-3.5 transition-all group",
-                isActive
-                  ? "bg-primary! text-white! font-bold shadow-sm"
-                  : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800/50 hover:text-primary dark:hover:text-zinc-100",
-              )}
             >
-              <Link href={item.url} className="flex items-center gap-3">
-                <item.icon size={21} stroke={2} className="shrink-0" />
+              <Link href={item.url}>
+                <item.icon size={21} stroke={2} />
                 {!isCollapsed && <span className="ml-1 text-[14px]">{item.title}</span>}
               </Link>
             </SidebarMenuButton>
@@ -308,30 +278,33 @@ export function AppSidebar() {
   const { myUser } = useAuth();
 
   return (
-    <Sidebar
-      collapsible="icon"
-      className="border-r border-zinc-200/50 bg-sidebar shadow-none dark:border-zinc-800/50"
-    >
-      <SidebarHeader className="flex h-16 items-center px-4 py-4">
-        <Link href="/manage" className="group flex items-center gap-2.5">
-          <div className="relative flex aspect-square size-9 items-center justify-center overflow-hidden rounded-lg bg-white transition-transform group-hover:scale-105 border border-zinc-200/50 dark:border-zinc-800/50">
-            <Image 
-              src="/logo-new.png" 
-              alt="Logo" 
-              fill
-              sizes="36px"
-              className="p-1.5 object-contain" 
-            />
+    <Sidebar collapsible="icon">
+      <SidebarHeader>
+        <Link
+          href="/manage"
+          className={
+            isCollapsed
+              ? "flex items-center justify-center"
+              : "flex min-w-0 items-center gap-3 rounded-lg px-2 py-1.5"
+          }
+        >
+          <div className="flex size-10 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-primary text-primary-foreground shadow-sm shadow-primary/25">
+            <IconBrandOpenai size={22} stroke={2.2} />
           </div>
           {!isCollapsed && (
-            <span className="text-xl font-black leading-none tracking-tight text-zinc-950 dark:text-zinc-50">
-              Gia Sư AI
-            </span>
+            <div className="min-w-0">
+              <div className="truncate text-[15px] font-black leading-tight text-white">
+                Gia Sư AI
+              </div>
+              <div className="truncate text-[11px] font-bold uppercase tracking-widest text-sidebar-foreground/45">
+                Quản trị đào tạo
+              </div>
+            </div>
           )}
         </Link>
       </SidebarHeader>
 
-      <SidebarContent className="gap-6 pb-6">
+      <SidebarContent>
         {NAV_GROUPS.map((group) => {
           const items = filterNavItems(
             group.items,
@@ -344,9 +317,9 @@ export function AppSidebar() {
           }
 
           return (
-            <SidebarGroup key={group.label} className="p-0">
+            <SidebarGroup key={group.label}>
               {!isCollapsed && (
-                <SidebarGroupLabel className="px-6 py-4 text-[11px] font-bold uppercase tracking-widest text-zinc-400 dark:text-zinc-500">
+                <SidebarGroupLabel>
                   {group.label}
                 </SidebarGroupLabel>
               )}
@@ -361,17 +334,6 @@ export function AppSidebar() {
           );
         })}
       </SidebarContent>
-
-      <SidebarFooter className="border-t border-zinc-100 p-4 dark:border-zinc-800/50">
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton className="h-10 rounded-lg text-[13px] font-bold text-rose-500 transition-all hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-rose-500/10">
-              <IconLogout size={20} stroke={2} />
-              {!isCollapsed && <span>Đăng xuất</span>}
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarFooter>
     </Sidebar>
   );
 }

@@ -64,14 +64,14 @@ export function CreateUserForm({ onSuccess }: CreateUserFormProps) {
 
   return (
     <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        e.stopPropagation();
+      onSubmit={(event) => {
+        event.preventDefault();
+        event.stopPropagation();
         form.handleSubmit();
       }}
       className="space-y-6"
     >
-      <FieldGroup className="gap-5">
+      <FieldGroup>
         <form.Field name="fullName">
           {(field) => {
             const isInvalid =
@@ -80,15 +80,15 @@ export function CreateUserForm({ onSuccess }: CreateUserFormProps) {
 
             return (
               <Field data-invalid={isInvalid}>
-                <FieldLabel className="text-[13px] font-bold text-zinc-700 dark:text-zinc-300">
-                  Họ và tên <span className="text-rose-500">*</span>
+                <FieldLabel>
+                  Họ và tên <span className="text-destructive">*</span>
                 </FieldLabel>
                 <Input
                   placeholder="Nguyễn Văn A"
                   autoComplete="name"
                   value={field.state.value}
                   onBlur={field.handleBlur}
-                  onChange={(e) => field.handleChange(e.target.value)}
+                  onChange={(event) => field.handleChange(event.target.value)}
                   aria-invalid={isInvalid}
                   disabled={isPending}
                 />
@@ -110,15 +110,15 @@ export function CreateUserForm({ onSuccess }: CreateUserFormProps) {
 
               return (
                 <Field data-invalid={isInvalid}>
-                  <FieldLabel className="text-[13px] font-bold text-zinc-700 dark:text-zinc-300">
-                    Tên đăng nhập <span className="text-rose-500">*</span>
+                  <FieldLabel>
+                    Tên đăng nhập <span className="text-destructive">*</span>
                   </FieldLabel>
                   <Input
                     placeholder="username"
                     autoComplete="username"
                     value={field.state.value}
                     onBlur={field.handleBlur}
-                    onChange={(e) => field.handleChange(e.target.value)}
+                    onChange={(event) => field.handleChange(event.target.value)}
                     aria-invalid={isInvalid}
                     disabled={isPending}
                   />
@@ -139,8 +139,8 @@ export function CreateUserForm({ onSuccess }: CreateUserFormProps) {
 
               return (
                 <Field data-invalid={isInvalid}>
-                  <FieldLabel className="text-[13px] font-bold text-zinc-700 dark:text-zinc-300">
-                    Email <span className="text-rose-500">*</span>
+                  <FieldLabel>
+                    Email <span className="text-destructive">*</span>
                   </FieldLabel>
                   <Input
                     type="email"
@@ -148,12 +148,12 @@ export function CreateUserForm({ onSuccess }: CreateUserFormProps) {
                     autoComplete="email"
                     value={field.state.value}
                     onBlur={field.handleBlur}
-                    onChange={(e) => field.handleChange(e.target.value)}
+                    onChange={(event) => field.handleChange(event.target.value)}
                     aria-invalid={isInvalid}
                     disabled={isPending}
                   />
                   <FieldDescription>
-                    Email sẽ được dùng cho liên hệ và khôi phục tài khoản.
+                    Email dùng cho liên hệ và khôi phục tài khoản.
                   </FieldDescription>
                   <FieldError errors={field.state.meta.errors} />
                 </Field>
@@ -171,16 +171,16 @@ export function CreateUserForm({ onSuccess }: CreateUserFormProps) {
 
               return (
                 <Field data-invalid={isInvalid}>
-                  <FieldLabel className="text-[13px] font-bold text-zinc-700 dark:text-zinc-300">
-                    Mật khẩu <span className="text-rose-500">*</span>
+                  <FieldLabel>
+                    Mật khẩu <span className="text-destructive">*</span>
                   </FieldLabel>
                   <Input
                     type="password"
-                    placeholder={"••••••••"}
+                    placeholder="••••••••"
                     autoComplete="new-password"
                     value={field.state.value}
                     onBlur={field.handleBlur}
-                    onChange={(e) => field.handleChange(e.target.value)}
+                    onChange={(event) => field.handleChange(event.target.value)}
                     aria-invalid={isInvalid}
                     disabled={isPending}
                   />
@@ -201,8 +201,8 @@ export function CreateUserForm({ onSuccess }: CreateUserFormProps) {
 
               return (
                 <Field data-invalid={isInvalid}>
-                  <FieldLabel className="text-[13px] font-bold text-zinc-700 dark:text-zinc-300">
-                    Vai trò <span className="text-rose-500">*</span>
+                  <FieldLabel>
+                    Vai trò <span className="text-destructive">*</span>
                   </FieldLabel>
                   <Select
                     value={field.state.value}
@@ -215,12 +215,8 @@ export function CreateUserForm({ onSuccess }: CreateUserFormProps) {
                       <SelectValue placeholder="Chọn vai trò" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value={UserRole.STUDENT}>
-                        Học viên
-                      </SelectItem>
-                      <SelectItem value={UserRole.TEACHER}>
-                        Giáo viên
-                      </SelectItem>
+                      <SelectItem value={UserRole.STUDENT}>Học viên</SelectItem>
+                      <SelectItem value={UserRole.TEACHER}>Giáo viên</SelectItem>
                       <SelectItem value={UserRole.ADMIN}>
                         Quản trị viên
                       </SelectItem>
@@ -237,7 +233,7 @@ export function CreateUserForm({ onSuccess }: CreateUserFormProps) {
         </div>
       </FieldGroup>
 
-      <div className="flex justify-end border-t pt-5 dark:border-zinc-800">
+      <div className="flex justify-end">
         <form.Subscribe
           selector={(state) => [state.canSubmit, state.isSubmitting]}
         >
@@ -245,17 +241,17 @@ export function CreateUserForm({ onSuccess }: CreateUserFormProps) {
             <Button
               type="submit"
               size="lg"
-              className="min-w-[160px] font-bold"
+              className="min-w-[160px]"
               disabled={!canSubmit || isSubmitting || isPending}
             >
               {isSubmitting || isPending ? (
                 <>
-                  <IconLoader2 className="mr-2 h-4 w-4 animate-spin" />
+                  <IconLoader2 className="animate-spin" />
                   Đang tạo...
                 </>
               ) : (
                 <>
-                  <IconUserPlus className="mr-2 h-4 w-4" />
+                  <IconUserPlus />
                   Tạo người dùng
                 </>
               )}

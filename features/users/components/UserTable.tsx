@@ -1,9 +1,14 @@
 "use client";
 
-import { flexRender, useReactTable, getCoreRowModel } from "@tanstack/react-table";
-import { cn } from "@/lib/utils";
+import {
+  flexRender,
+  getCoreRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
+import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
 import type { ColumnDef } from "@tanstack/react-table";
-import { DataTablePagination } from "@/components/shared/DataTablePagination";
+
+import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -12,8 +17,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
 import { PaginationInfo } from "@/types/api";
+import { cn } from "@/lib/utils";
 
 interface UserTableProps<TData> {
   data: TData[];
@@ -61,46 +66,63 @@ export function UserTable<TData>({
     },
   });
 
+  const firstPage = Math.max(
+    1,
+    Math.min(meta.currentPage - 1, Math.max(meta.totalPages - 2, 1)),
+  );
+  const pageNumbers = Array.from(
+    { length: Math.min(meta.totalPages, 3) },
+    (_, index) => firstPage + index,
+  );
+  const startItem =
+    meta.totalRecords === 0 ? 0 : (meta.currentPage - 1) * meta.limit + 1;
+  const endItem = Math.min(meta.currentPage * meta.limit, meta.totalRecords);
+
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col overflow-hidden">
       <div
         className={cn(
           "relative transition-opacity duration-200",
-          isPending ? "opacity-60 pointer-events-none" : "opacity-100"
+          isPending ? "pointer-events-none opacity-60" : "opacity-100",
         )}
       >
-        <Table>
-          <TableHeader className="bg-zinc-50/80 dark:bg-zinc-900/50 border-b border-zinc-200/60 dark:border-zinc-800/60">
+        <Table className="min-w-[900px]">
+          <TableHeader className="border-b border-border/70 bg-muted/35">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow
                 key={headerGroup.id}
-                className="hover:bg-transparent border-none"
+                className="border-none hover:bg-transparent"
               >
                 {headerGroup.headers.map((header) => (
                   <TableHead
                     key={header.id}
-                    className="h-12 px-6 align-middle md:px-8 font-black text-zinc-950 dark:text-zinc-400 uppercase text-[10px] tracking-[0.15em]"
+                    className="h-14 px-6 align-middle text-left text-[11px] font-bold uppercase tracking-[0.1em] text-muted-foreground"
                   >
                     {header.isPlaceholder
                       ? null
-                      : flexRender(header.column.columnDef.header, header.getContext())}
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        )}
                   </TableHead>
                 ))}
               </TableRow>
             ))}
           </TableHeader>
-          <TableBody>
+
+          <TableBody className="divide-y divide-border/40">
             {data.length > 0 ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
-                  className="group border-b border-zinc-100/60 dark:border-zinc-800/60 transition-colors hover:bg-indigo-50/20 dark:hover:bg-zinc-900/50"
+                  className="group border-none bg-card transition-colors hover:bg-primary/5"
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className="px-6 py-4 align-middle md:px-8">
-                      <div className="transition-transform group-hover:translate-x-0.5 duration-200">
-                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                      </div>
+                    <TableCell
+                      key={cell.id}
+                      className="px-6 py-5 align-middle"
+                    >
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}
                 </TableRow>
@@ -109,9 +131,9 @@ export function UserTable<TData>({
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="h-52 px-8 text-center text-sm font-medium text-zinc-400 dark:text-zinc-500"
+                  className="h-44 px-8 text-center text-sm font-medium text-muted-foreground"
                 >
-                  Không tìm thấy thành viên nào.
+                  Không tìm thấy người dùng nào.
                 </TableCell>
               </TableRow>
             )}
@@ -119,13 +141,61 @@ export function UserTable<TData>({
         </Table>
       </div>
 
-      <div className="border-t border-zinc-100 dark:border-zinc-800/50 px-6 md:px-8">
-        <DataTablePagination
-          table={table}
-          totalItems={meta.totalRecords}
-          onPageChange={onPageChange}
-          onPageSizeChange={onPageSizeChange}
-        />
+      <div className="flex flex-col gap-4 border-t border-border/40 bg-muted/20 px-6 py-5 md:flex-row md:items-center md:justify-between">
+        <p className="text-sm font-medium text-muted-foreground">
+          Hiển thị{" "}
+          <span className="font-bold text-foreground">
+            {startItem} - {endItem}
+          </span>{" "}
+          trong tổng số{" "}
+          <span className="font-bold text-foreground">
+            {meta.totalRecords.toLocaleString("vi-VN")}
+          </span>{" "}
+          người dùng
+        </p>
+
+        <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            size="icon-lg"
+            className="rounded-xl border-border/70 disabled:opacity-40"
+            onClick={() => onPageChange(meta.currentPage - 1)}
+            disabled={meta.currentPage <= 1}
+          >
+            <IconChevronLeft size={18} stroke={2.2} />
+          </Button>
+
+          {pageNumbers.map((pageNumber) => (
+            <Button
+              key={pageNumber}
+              variant={pageNumber === meta.currentPage ? "default" : "outline"}
+              size="icon-lg"
+              className={cn(
+                "rounded-xl font-bold shadow-none",
+                pageNumber !== meta.currentPage && "border-border/70 bg-card",
+              )}
+              onClick={() => onPageChange(pageNumber)}
+            >
+              {pageNumber}
+            </Button>
+          ))}
+
+          {firstPage + pageNumbers.length - 1 < meta.totalPages ? (
+            <span className="px-2 text-sm font-semibold text-muted-foreground">
+              ...
+            </span>
+          ) : null}
+
+          <Button
+            variant="outline"
+            size="icon-lg"
+            className="rounded-xl border-border/70 disabled:opacity-40"
+            onClick={() => onPageChange(meta.currentPage + 1)}
+            disabled={meta.currentPage >= meta.totalPages}
+          >
+            <IconChevronRight size={18} stroke={2.2} />
+          </Button>
+        </div>
       </div>
     </div>
   );

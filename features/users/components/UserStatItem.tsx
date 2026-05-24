@@ -12,12 +12,12 @@ export function UserStatItem({
   className,
 }: UserStatItemProps) {
   return (
-    <div className={cn("px-8 py-6 space-y-1", className)}>
-      <p className="text-[13px] font-medium text-zinc-500">
+    <div className={cn("space-y-1 px-6 py-5", className)}>
+      <p className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
         {title}
       </p>
-      <h3 className="text-3xl font-bold tracking-tight text-zinc-950">
-        {typeof value === "number" ? value.toLocaleString() : value}
+      <h3 className="text-2xl font-bold tracking-tight text-foreground">
+        {typeof value === "number" ? value.toLocaleString("vi-VN") : value}
       </h3>
     </div>
   );

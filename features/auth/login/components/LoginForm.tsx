@@ -63,9 +63,6 @@ export function LoginForm({}: LoginFormProps) {
           <h2 className="mb-2 text-4xl font-bold tracking-tight text-slate-900 dark:text-white">
             Đăng nhập
           </h2>
-          <p className="text-slate-500 dark:text-slate-400">
-            Cộng sự giáo dục thông minh
-          </p>
         </div>
 
         <form

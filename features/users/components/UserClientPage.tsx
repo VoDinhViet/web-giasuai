@@ -1,73 +1,79 @@
-"use client";
+'use client'
 
-import * as React from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { useQueryStates } from "nuqs";
+import { IconChevronRight } from '@tabler/icons-react'
+import { useQueryStates } from 'nuqs'
 
-import { User } from "@/types/user";
-import { PaginationInfo } from "@/types/api";
-import { UserStatsGrid } from "./UserStatsGrid";
-import { UserFilters } from "./UserFilters";
-import { CreateUserDialog } from "./CreateUserDialog";
-import { UserTable } from "./UserTable";
-import { userTableColumns } from "./UserTableColumns";
+import { Card, CardContent } from '@/components/ui/card'
+import { User } from '@/types/user'
+import { PaginationInfo } from '@/types/api'
+import { UserStatsGrid } from './UserStatsGrid'
+import { UserFilters } from './UserFilters'
+import { CreateUserDialog } from './CreateUserDialog'
+import { UserTable } from './UserTable'
+import { userTableColumns } from './UserTableColumns'
 import {
   usersSearchParams,
   type UsersSearch,
-} from "../schemas/users-search-schema";
+} from '../schemas/users-search-schema'
 
 interface UserClientPageProps {
-  users: User[];
-  pagination: PaginationInfo;
+  users: User[]
+  pagination: PaginationInfo
 }
 
 export function UserClientPage({ users, pagination }: UserClientPageProps) {
   const [filters, setFilters] = useQueryStates(usersSearchParams, {
     shallow: false,
-  });
+  })
 
-  const handlePageChange = (page: number) => setFilters({ page });
+  const handlePageChange = (page: number) => setFilters({ page })
   const handlePageSizeChange = (pageSize: number) =>
-    setFilters({ limit: pageSize, page: 1 });
+    setFilters({ limit: pageSize, page: 1 })
   const handleFiltersChange = (newFilters: Partial<UsersSearch>) =>
-    setFilters({ ...newFilters, page: 1 });
+    setFilters({ ...newFilters, page: 1 })
 
   return (
-    <div className="space-y-10">
-      <UserStatsGrid />
+    <div className="space-y-8 text-foreground">
+      <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+        <div className="space-y-1">
+          <nav className="flex items-center gap-2 text-[12px] font-semibold uppercase tracking-wider text-muted-foreground">
+            <span>Hệ thống</span>
+            <IconChevronRight size={16} stroke={2.2} />
+            <span className="text-foreground">Quản lý người dùng</span>
+          </nav>
 
-      <div className="space-y-6">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-          <div className="space-y-1">
-            <p className="text-[11px] font-black uppercase tracking-[0.22em] text-zinc-400">
-              Quản lý người dùng
-            </p>
-            <h1 className="text-2xl font-black tracking-tight text-zinc-950 dark:text-zinc-50">
-              Danh sách thành viên hệ thống
-            </h1>
-            <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">
-              Theo dõi, lọc và quản lý quyền truy cập của toàn bộ tài khoản.
-            </p>
-          </div>
-
-          <CreateUserDialog />
+          <h1 className="text-2xl font-bold tracking-tight text-foreground">
+            Danh sách người dùng
+          </h1>
+          <p className="max-w-2xl text-sm leading-6 text-muted-foreground">
+            Theo dõi tài khoản, vai trò và trạng thái truy cập trong hệ thống
+            Gia Sư AI.
+          </p>
         </div>
-        <Card>
-          <CardContent className="space-y-6">
+
+        <CreateUserDialog />
+      </div>
+
+      <UserStatsGrid users={users} totalUsers={pagination.totalRecords} />
+
+      <Card variant="flat" size="none" className="rounded-xl">
+        <CardContent className="p-0">
+          <div className="border-b border-border/70 bg-muted/20 p-6">
             <UserFilters
               filters={filters}
               onFiltersChange={handleFiltersChange}
             />
-            <UserTable
-              data={users}
-              columns={userTableColumns}
-              meta={pagination}
-              onPageChange={handlePageChange}
-              onPageSizeChange={handlePageSizeChange}
-            />
-          </CardContent>
-        </Card>
-      </div>
+          </div>
+
+          <UserTable
+            data={users}
+            columns={userTableColumns}
+            meta={pagination}
+            onPageChange={handlePageChange}
+            onPageSizeChange={handlePageSizeChange}
+          />
+        </CardContent>
+      </Card>
     </div>
-  );
+  )
 }

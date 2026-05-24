@@ -61,42 +61,41 @@ export function UserTableActions({ myUser }: UserTableActionsProps) {
           variant="ghost"
           size="icon"
           disabled={isPending}
-          className="size-8"
+          className="rounded-xl text-muted-foreground"
         >
           {isPending ? (
-            <IconLoader2 size={16} className="animate-spin" />
+            <IconLoader2 size={18} className="animate-spin" />
           ) : (
-            <IconDotsVertical size={16} />
+            <IconDotsVertical size={18} />
           )}
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-48">
-        <DropdownMenuItem className="gap-2" disabled={isPending}>
-          <IconEdit size={16} /> Sửa thông tin
+      <DropdownMenuContent align="end">
+        <DropdownMenuItem disabled={isPending}>
+          <IconEdit size={16} />
+          <span>Sửa thông tin</span>
         </DropdownMenuItem>
-        <DropdownMenuItem
-          className="gap-2"
-          onClick={handleToggle}
-          disabled={isPending}
-        >
+        <DropdownMenuItem onClick={handleToggle} disabled={isPending}>
           {myUser.isLocked ? (
             <>
-              <IconLockOpen size={16} /> Mở khóa
+              <IconLockOpen size={16} />
+              <span>Mở khóa</span>
             </>
           ) : (
             <>
-              <IconLock size={16} /> Khóa tài khoản
+              <IconLock size={16} />
+              <span>Khóa tài khoản</span>
             </>
           )}
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem
           variant="destructive"
-          className="gap-2"
           onClick={handleDelete}
           disabled={isPending}
         >
-          <IconTrash size={16} /> Xóa
+          <IconTrash size={16} />
+          <span>Xóa</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

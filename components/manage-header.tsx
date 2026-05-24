@@ -1,30 +1,36 @@
 "use client";
 
-import * as React from "react";
-import { SidebarTrigger } from "@/components/ui/sidebar";
+import { useSidebar } from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { ManageBreadcrumb } from "./manage-breadcrumb";
-import { UserMenu } from "./user-menu";
+import { AccountMenu } from "./account-menu";
+import { Menu } from "lucide-react";
+import { Button } from "./ui/button";
 
 interface ManageHeaderProps {
   className?: string;
 }
 
 export function ManageHeader({ className }: ManageHeaderProps) {
+
+  const { toggleSidebar } = useSidebar();
+
+
   return (
-    <header className={cn("sticky top-0 z-20 flex h-14 shrink-0 items-center bg-background px-6 backdrop-blur-md", className)}>
-      <div className="flex items-center gap-4">
-        <SidebarTrigger className="-ml-1 text-muted-foreground hover:text-foreground transition-colors" />
-        <ManageBreadcrumb />
-      </div>
+    <header
+      className={cn(
+        "sticky top-0 z-20 flex h-16 shrink-0 items-center gap-2 border-b border-zinc-200 bg-white px-4 dark:border-zinc-800 dark:bg-zinc-950 md:px-6",
+        className,
+      )}
+    >
+      <Button variant="ghost" size="icon-lg" onClick={toggleSidebar} >
+          <Menu size={18} />
+      </Button>
 
       <div className="flex-1" />
 
-      <div className="flex items-center gap-4">
-        <ThemeToggle />
-        <UserMenu />
-      </div>
+      <ThemeToggle />
+      <AccountMenu />
     </header>
   );
 }

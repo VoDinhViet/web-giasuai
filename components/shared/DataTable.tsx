@@ -93,8 +93,8 @@ export function DataTable<TData, TValue>({
       <div
         className={cn(
           "overflow-hidden transition-opacity",
-          !hideBorder && "rounded-lg border border-zinc-200 dark:border-zinc-800",
-          !hideBackground && "bg-white dark:bg-zinc-950",
+          !hideBorder && "rounded-lg border border-border",
+          !hideBackground && "bg-card",
           loading ? "opacity-50 pointer-events-none" : "opacity-100",
         )}
       >
@@ -103,12 +103,12 @@ export function DataTable<TData, TValue>({
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow
                 key={headerGroup.id}
-                className="bg-zinc-50/50 dark:bg-zinc-900/50 hover:bg-zinc-50/50 border-b border-zinc-100 dark:border-zinc-800 h-11"
+                className="h-11 border-b border-border bg-muted/35 hover:bg-muted/35"
               >
                 {headerGroup.headers.map((header) => (
                   <TableHead
                     key={header.id}
-                    className="px-5 text-[9px] font-black uppercase tracking-widest text-zinc-500"
+                    className="px-5 text-[9px] font-black uppercase tracking-widest text-muted-foreground"
                   >
                     {header.isPlaceholder
                       ? null
@@ -126,7 +126,7 @@ export function DataTable<TData, TValue>({
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
-                  className="group hover:bg-zinc-50/30 dark:hover:bg-zinc-900/20 transition-all duration-200 border-b border-zinc-50 dark:border-zinc-900 last:border-0 h-14"
+                  className="group h-14 border-b border-border/60 transition-all duration-200 hover:bg-muted/25 last:border-0"
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id} className="px-5">
@@ -142,7 +142,7 @@ export function DataTable<TData, TValue>({
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="h-24 text-center text-zinc-500"
+                  className="h-24 text-center text-muted-foreground"
                 >
                   {loading ? "Đang tải dữ liệu..." : "Không có dữ liệu."}
                 </TableCell>
@@ -152,7 +152,7 @@ export function DataTable<TData, TValue>({
         </Table>
 
         {/* Unified Pagination Component */}
-        <div className={cn("px-4 border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50/20", hideBorder && "px-8")}>
+        <div className={cn("border-t border-border bg-muted/20 px-4", hideBorder && "px-8")}>
           <DataTablePagination
             table={table}
             totalItems={totalCount}

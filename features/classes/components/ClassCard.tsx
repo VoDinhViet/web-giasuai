@@ -17,7 +17,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { InfoItem } from "@/components/shared/InfoItem";
-import { formatDate } from "@/lib/utils";
+import { formatDate } from "@/lib/date";
 
 import { EditClassDialog } from "./EditClassDialog";
 import { CLASS_STATUS_LABEL } from "../constants/class.constant";

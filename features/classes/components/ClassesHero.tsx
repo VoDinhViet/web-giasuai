@@ -64,7 +64,7 @@ export function ClassesHero({ statistics }: ClassesHeroProps) {
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
         {stats.map((item) => (
           <Card key={item.label}>
-            <CardContent>
+            <CardContent >
               <div className="flex items-start justify-between gap-4">
                 <div className="min-w-0 space-y-4">
                   <div className="space-y-2">

@@ -36,11 +36,10 @@ export default function RootLayout({
       lang="en"
       suppressHydrationWarning
       className={cn(
-        "h-full antialiased",
-        inter.variable,
-        geistSans.variable,
-        geistMono.variable
-      )}
+              "h-full antialiased",
+              geistSans.variable,
+              geistMono.variable
+            , "font-sans", inter.variable)}
     >
       <body className={cn("min-h-full flex flex-col font-sans", inter.className)}>
         <NuqsAdapter>

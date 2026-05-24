@@ -12,7 +12,7 @@ function Table({ className, ...props }: React.ComponentProps<"table">) {
     >
       <table
         data-slot="table"
-        className={cn("w-full caption-bottom text-sm", className)}
+        className={cn("w-full caption-bottom text-sm text-foreground", className)}
         {...props}
       />
     </div>
@@ -23,7 +23,7 @@ function TableHeader({ className, ...props }: React.ComponentProps<"thead">) {
   return (
     <thead
       data-slot="table-header"
-      className={cn("[&_tr]:border-b", className)}
+      className={cn("border-b border-border/70 bg-muted/35 [&_tr]:border-b-0", className)}
       {...props}
     />
   )
@@ -57,7 +57,7 @@ function TableRow({ className, ...props }: React.ComponentProps<"tr">) {
     <tr
       data-slot="table-row"
       className={cn(
-        "border-b border-zinc-100 transition-colors hover:bg-zinc-50/50 data-[state=selected]:bg-zinc-50 dark:border-zinc-800/50 dark:hover:bg-zinc-900/40",
+        "border-b border-border/40 transition-colors hover:bg-primary/5 has-aria-expanded:bg-muted/45 data-[state=selected]:bg-primary/5",
         className
       )}
       {...props}
@@ -70,7 +70,7 @@ function TableHead({ className, ...props }: React.ComponentProps<"th">) {
     <th
       data-slot="table-head"
       className={cn(
-        "h-11 px-4 text-left align-middle text-[11px] font-bold uppercase tracking-widest text-zinc-400 whitespace-nowrap [&:has([role=checkbox])]:pr-0 dark:text-zinc-500",
+        "h-14 px-6 text-left align-middle text-[11px] font-bold uppercase tracking-[0.1em] whitespace-nowrap text-muted-foreground [&:has([role=checkbox])]:pr-0",
         className
       )}
       {...props}
@@ -83,7 +83,7 @@ function TableCell({ className, ...props }: React.ComponentProps<"td">) {
     <td
       data-slot="table-cell"
       className={cn(
-        "p-4 align-middle whitespace-nowrap text-sm text-zinc-600 dark:text-zinc-400 [&:has([role=checkbox])]:pr-0",
+        "px-6 py-5 align-middle whitespace-nowrap text-foreground [&:has([role=checkbox])]:pr-0",
         className
       )}
       {...props}
