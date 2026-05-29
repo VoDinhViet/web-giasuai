@@ -12,8 +12,13 @@ import { genderLabel, statusLabel } from "../lib/user-table-constants"
 import { formatBirthDate } from "../lib/user-utils"
 import type { User, UserGender, UserStatus } from "../types"
 
+type CreateUsersTableColumnsProps = {
+  onToggleUserStatus: (userId: string, currentStatus?: string) => void
+}
 
-export function createUsersTableColumns(): ColumnDef<User>[] {
+export function createUsersTableColumns({
+  onToggleUserStatus,
+}: CreateUsersTableColumnsProps): ColumnDef<User>[] {
   return [
     {
       accessorKey: "fullName",
@@ -23,14 +28,14 @@ export function createUsersTableColumns(): ColumnDef<User>[] {
 
         return (
           <div className="flex items-center gap-3">
-            <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary-fixed text-xs font-semibold text-primary">
+            <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary-fixed text-[11px] font-semibold text-primary">
               {getUserInitials(user.fullName)}
             </span>
             <div className="min-w-0">
-              <p className="max-w-44 truncate text-sm font-bold leading-5 text-foreground">
+              <p className="max-w-40 truncate text-sm font-semibold leading-5 text-foreground">
                 {user.fullName}
               </p>
-              <p className="text-[11px] leading-4 text-muted-foreground">
+              <p className="text-[10px] leading-4 text-muted-foreground">
                 {formatEmployeeCode(user.id)}
               </p>
             </div>
@@ -43,10 +48,10 @@ export function createUsersTableColumns(): ColumnDef<User>[] {
       header: "Thông tin liên lạc",
       cell: ({ row }) => (
         <div className="min-w-0 text-sm">
-          <p className="truncate font-semibold leading-5 text-foreground">
+          <p className="max-w-44 truncate font-medium leading-5 text-foreground">
             {row.original.email}
           </p>
-          <p className="text-[11px] leading-4 text-muted-foreground">
+          <p className="text-[10px] leading-4 text-muted-foreground">
             {row.original.phoneNumber}
           </p>
         </div>
@@ -57,10 +62,10 @@ export function createUsersTableColumns(): ColumnDef<User>[] {
       header: "Ngày sinh / GT",
       cell: ({ row }) => (
         <div className="text-sm">
-          <p className="font-semibold leading-5 text-foreground">
+          <p className="font-medium leading-5 text-foreground">
             {formatBirthDate(row.original.birthDate || "")}
           </p>
-          <p className="text-[11px] font-bold uppercase leading-4 text-muted-foreground">
+          <p className="text-[10px] font-semibold uppercase leading-4 text-muted-foreground">
             {genderLabel[row.original.gender as UserGender] || "Khác"}
           </p>
         </div>
@@ -72,7 +77,7 @@ export function createUsersTableColumns(): ColumnDef<User>[] {
       cell: ({ row }) => (
         <span
           className={cn(
-            "inline-flex max-w-36 rounded-full px-3 py-1 text-center text-[10px] font-bold uppercase leading-4",
+            "inline-flex max-w-36 items-center justify-center rounded-(--radius) px-2.5 py-1 text-center text-[10px] font-semibold uppercase leading-4",
             getPositionBadgeClassName(row.original.role?.name || "Nhân viên")
           )}
         >
@@ -86,10 +91,10 @@ export function createUsersTableColumns(): ColumnDef<User>[] {
       cell: ({ row }) => (
         <span
           className={cn(
-            "inline-flex max-w-32 rounded-full px-4 py-1 text-center text-[10px] font-bold uppercase leading-4",
+            "inline-flex max-w-32 items-center justify-center rounded-(--radius) px-3 py-1 text-center text-[10px] font-semibold uppercase leading-4",
             row.original.status === "active"
-              ? "bg-success-container text-success ring-1 ring-success/20"
-              : "bg-error-container/45 text-destructive ring-1 ring-destructive/10"
+              ? "bg-success-container/80 text-success ring-1 ring-success/15"
+              : "bg-error-container/50 text-destructive ring-1 ring-destructive/10"
           )}
         >
           {statusLabel[row.original.status as UserStatus] || "Hoạt động"}
@@ -103,7 +108,7 @@ export function createUsersTableColumns(): ColumnDef<User>[] {
         const user = row.original
 
         return (
-          <div className="flex justify-end gap-1.5 text-muted-foreground">
+          <div className="flex justify-end gap-1 text-muted-foreground">
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
@@ -111,6 +116,7 @@ export function createUsersTableColumns(): ColumnDef<User>[] {
                   variant="ghost"
                   size="icon-xs"
                   aria-label={`Ch\u1ec9nh s\u1eeda ${user.fullName}`}
+                  className="text-muted-foreground hover:text-foreground"
                 >
                   <Pencil />
                 </Button>
@@ -123,6 +129,11 @@ export function createUsersTableColumns(): ColumnDef<User>[] {
                   type="button"
                   variant="ghost"
                   size="icon-xs"
+                  aria-label={
+                    user.status === "active" ? "Khóa nhân sự" : "Mở khóa"
+                  }
+                  className="text-muted-foreground hover:text-foreground"
+                  onClick={() => onToggleUserStatus(user.id, user.status)}
                 >
                   {user.status === "active" ? <Lock /> : <Unlock />}
                 </Button>
@@ -137,6 +148,8 @@ export function createUsersTableColumns(): ColumnDef<User>[] {
                   type="button"
                   variant="ghost"
                   size="icon-xs"
+                  aria-label="Thao tác khác"
+                  className="text-muted-foreground hover:text-foreground"
                 >
                   <MoreVertical />
                 </Button>
@@ -170,12 +183,12 @@ function getPositionBadgeClassName(position: string) {
   const normalizedPosition = position.toLowerCase()
 
   if (normalizedPosition.includes("kỹ") || normalizedPosition.includes("qc")) {
-    return "bg-tertiary-fixed text-tertiary-container"
+    return "bg-tertiary-fixed/80 text-on-tertiary-container"
   }
 
   if (normalizedPosition.includes("kho")) {
-    return "bg-primary-fixed text-on-primary-container/55"
+    return "bg-secondary-fixed/80 text-on-secondary-container"
   }
 
-  return "bg-secondary-fixed text-on-secondary-container"
+  return "bg-primary-fixed text-primary"
 }

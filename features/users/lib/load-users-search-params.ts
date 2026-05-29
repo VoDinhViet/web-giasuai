@@ -1,6 +1,6 @@
 import { createLoader, parseAsInteger, parseAsString } from "nuqs/server"
 
-const usersServerSearchParams = {
+export const usersServerSearchParams = {
   limit: parseAsInteger.withDefault(10),
   page: parseAsInteger.withDefault(1),
   search: parseAsString.withDefault(""),

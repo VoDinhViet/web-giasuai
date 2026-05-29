@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react"
 import { useForm } from "@tanstack/react-form"
 
 import { Button } from "@/components/ui/button"
@@ -17,11 +18,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import {
-  createUserSchema,
-  type CreateUserInput,
-} from "../schemas/user.schema"
 import { createUser } from "../actions/create-user"
+import { createUserSchema, type CreateUserInput } from "../schemas/user.schema"
 
 const positionOptions = [
   "Quản lý sản xuất",
@@ -41,25 +39,35 @@ type CreateUserFormProps = {
 const createUserDefaultValues: CreateUserInput = {
   fullName: "",
   email: "",
+  password: "",
   phoneNumber: "",
   position: "",
   status: "active",
 }
 
 export function CreateUserForm({ onCancel, onSuccess }: CreateUserFormProps) {
+  const [submitError, setSubmitError] = useState<string | null>(null)
+
   const form = useForm({
     defaultValues: createUserDefaultValues,
     validators: {
       onSubmit: createUserSchema,
     },
     onSubmit: async ({ value }) => {
-      await createUser(value)
-      onSuccess()
+      setSubmitError(null)
+
+      try {
+        await createUser(value)
+        onSuccess()
+      } catch {
+        setSubmitError("Không thể tạo nhân sự. Vui lòng thử lại.")
+      }
     },
   })
 
   return (
     <form
+      className="flex flex-col gap-6"
       onSubmit={(event) => {
         event.preventDefault()
         event.stopPropagation()
@@ -67,29 +75,22 @@ export function CreateUserForm({ onCancel, onSuccess }: CreateUserFormProps) {
       }}
       noValidate
     >
-      <FieldGroup className="grid gap-6 px-6 py-8 sm:grid-cols-2">
+      <FieldGroup className="grid gap-5 sm:grid-cols-2">
         <form.Field name="fullName">
           {(field) => {
             const isInvalid =
-              field.state.meta.isTouched &&
-              field.state.meta.errors.length > 0
+              field.state.meta.isTouched && field.state.meta.errors.length > 0
 
             return (
               <Field data-invalid={isInvalid} className="sm:col-span-2">
-                <FieldLabel
-                  htmlFor={field.name}
-                  className="text-xs font-bold uppercase text-muted-foreground"
-                >
-                  Họ và tên
-                </FieldLabel>
+                <FieldLabel htmlFor={field.name}>Họ và tên</FieldLabel>
                 <Input
                   id={field.name}
                   name={field.name}
                   value={field.state.value}
                   onBlur={field.handleBlur}
                   onChange={(event) => field.handleChange(event.target.value)}
-                  placeholder="Nhập đầy đủ họ tên..."
-                  className="h-11"
+                  placeholder="Nhập đầy đủ họ tên"
                   aria-invalid={isInvalid}
                 />
                 {isInvalid && <FieldError errors={field.state.meta.errors} />}
@@ -101,17 +102,11 @@ export function CreateUserForm({ onCancel, onSuccess }: CreateUserFormProps) {
         <form.Field name="phoneNumber">
           {(field) => {
             const isInvalid =
-              field.state.meta.isTouched &&
-              field.state.meta.errors.length > 0
+              field.state.meta.isTouched && field.state.meta.errors.length > 0
 
             return (
               <Field data-invalid={isInvalid}>
-                <FieldLabel
-                  htmlFor={field.name}
-                  className="text-xs font-bold uppercase text-muted-foreground"
-                >
-                  Số điện thoại
-                </FieldLabel>
+                <FieldLabel htmlFor={field.name}>Số điện thoại</FieldLabel>
                 <Input
                   id={field.name}
                   name={field.name}
@@ -119,7 +114,6 @@ export function CreateUserForm({ onCancel, onSuccess }: CreateUserFormProps) {
                   onBlur={field.handleBlur}
                   onChange={(event) => field.handleChange(event.target.value)}
                   placeholder="0xxx xxx xxx"
-                  className="h-11"
                   aria-invalid={isInvalid}
                 />
                 {isInvalid && <FieldError errors={field.state.meta.errors} />}
@@ -131,17 +125,11 @@ export function CreateUserForm({ onCancel, onSuccess }: CreateUserFormProps) {
         <form.Field name="email">
           {(field) => {
             const isInvalid =
-              field.state.meta.isTouched &&
-              field.state.meta.errors.length > 0
+              field.state.meta.isTouched && field.state.meta.errors.length > 0
 
             return (
               <Field data-invalid={isInvalid}>
-                <FieldLabel
-                  htmlFor={field.name}
-                  className="text-xs font-bold uppercase text-muted-foreground"
-                >
-                  Email
-                </FieldLabel>
+                <FieldLabel htmlFor={field.name}>Email</FieldLabel>
                 <Input
                   id={field.name}
                   name={field.name}
@@ -149,8 +137,32 @@ export function CreateUserForm({ onCancel, onSuccess }: CreateUserFormProps) {
                   value={field.state.value}
                   onBlur={field.handleBlur}
                   onChange={(event) => field.handleChange(event.target.value)}
-                  placeholder="example@erppro.com"
-                  className="h-11"
+                  placeholder="example@tienhuy.com"
+                  aria-invalid={isInvalid}
+                />
+                {isInvalid && <FieldError errors={field.state.meta.errors} />}
+              </Field>
+            )
+          }}
+        </form.Field>
+
+        <form.Field name="password">
+          {(field) => {
+            const isInvalid =
+              field.state.meta.isTouched && field.state.meta.errors.length > 0
+
+            return (
+              <Field data-invalid={isInvalid}>
+                <FieldLabel htmlFor={field.name}>Mật khẩu</FieldLabel>
+                <Input
+                  id={field.name}
+                  name={field.name}
+                  type="password"
+                  value={field.state.value}
+                  onBlur={field.handleBlur}
+                  onChange={(event) => field.handleChange(event.target.value)}
+                  placeholder="Tối thiểu 8 ký tự"
+                  autoComplete="new-password"
                   aria-invalid={isInvalid}
                 />
                 {isInvalid && <FieldError errors={field.state.meta.errors} />}
@@ -162,19 +174,16 @@ export function CreateUserForm({ onCancel, onSuccess }: CreateUserFormProps) {
         <form.Field name="position">
           {(field) => {
             const isInvalid =
-              field.state.meta.isTouched &&
-              field.state.meta.errors.length > 0
+              field.state.meta.isTouched && field.state.meta.errors.length > 0
 
             return (
               <Field data-invalid={isInvalid}>
-                <FieldLabel className="text-xs font-bold uppercase text-muted-foreground">
-                  Chức vụ
-                </FieldLabel>
+                <FieldLabel>Chức vụ</FieldLabel>
                 <Select
                   value={field.state.value}
                   onValueChange={field.handleChange}
                 >
-                  <SelectTrigger className="h-11 w-full" aria-invalid={isInvalid}>
+                  <SelectTrigger className="w-full" aria-invalid={isInvalid}>
                     <SelectValue placeholder="Chọn chức vụ" />
                   </SelectTrigger>
                   <SelectContent>
@@ -194,21 +203,18 @@ export function CreateUserForm({ onCancel, onSuccess }: CreateUserFormProps) {
         <form.Field name="status">
           {(field) => {
             const isInvalid =
-              field.state.meta.isTouched &&
-              field.state.meta.errors.length > 0
+              field.state.meta.isTouched && field.state.meta.errors.length > 0
 
             return (
               <Field data-invalid={isInvalid}>
-                <FieldLabel className="text-xs font-bold uppercase text-muted-foreground">
-                  Trạng thái
-                </FieldLabel>
+                <FieldLabel>Trạng thái</FieldLabel>
                 <Select
                   value={field.state.value}
                   onValueChange={(value) =>
                     field.handleChange(value as CreateUserInput["status"])
                   }
                 >
-                  <SelectTrigger className="h-11 w-full" aria-invalid={isInvalid}>
+                  <SelectTrigger className="w-full" aria-invalid={isInvalid}>
                     <SelectValue placeholder="Chọn trạng thái" />
                   </SelectTrigger>
                   <SelectContent>
@@ -221,30 +227,25 @@ export function CreateUserForm({ onCancel, onSuccess }: CreateUserFormProps) {
             )
           }}
         </form.Field>
-
       </FieldGroup>
+
+      {submitError ? <FieldError>{submitError}</FieldError> : null}
 
       <form.Subscribe
         selector={(state) => [state.canSubmit, state.isSubmitting]}
       >
         {([canSubmit, isSubmitting]) => (
-          <div className="flex justify-end gap-4 border-t border-border bg-muted/20 px-6 py-5">
+          <div className="flex justify-end gap-3 border-t border-border pt-5">
             <Button
               type="button"
-              variant="ghost"
-              size="lg"
-              className="font-bold"
+              variant="outline"
+              disabled={isSubmitting}
               onClick={onCancel}
             >
               Hủy bỏ
             </Button>
-            <Button
-              type="submit"
-              size="lg"
-              className="font-bold shadow-md"
-              disabled={!canSubmit || isSubmitting}
-            >
-              Lưu nhân sự
+            <Button type="submit" disabled={!canSubmit || isSubmitting}>
+              {isSubmitting ? "Đang lưu..." : "Lưu nhân sự"}
             </Button>
           </div>
         )}

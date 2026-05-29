@@ -1,4 +1,12 @@
-import { PageHeader } from "@/components/page-header"
+import { PageTitleBar } from "@/components/page-title-bar"
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb"
 import type { Pagination } from "@/types/api"
 import type { User } from "../types"
 import { CreateUserDialog } from "./create-user-dialog"
@@ -9,29 +17,26 @@ type UsersPageProps = {
   pagination: Pagination
 }
 
-const usersPageBreadcrumbs = [
-  { label: "Nhân sự" },
-  { label: "Quản lý nhân sự" },
-]
-
 export function UsersPage({ users, pagination }: UsersPageProps) {
   return (
-    <div className="flex flex-1 flex-col">
-      <main className="flex-1 px-4 py-6 sm:px-6 lg:px-8">
-        <div className="flex w-full flex-col gap-8">
-          <PageHeader
-            title="Danh sách nhân sự"
-            breadcrumbs={usersPageBreadcrumbs}
-            actions={<CreateUserDialog />}
-          />
+    <div className="flex w-full flex-col gap-8">
+      <div className="flex flex-col gap-2">
+        <Breadcrumb>
+          <BreadcrumbList className="font-medium">
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/manage/users">Nhân sự</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>Quản lý nhân sự</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+        <PageTitleBar
+          title="Danh sách nhân sự" actions={<CreateUserDialog />} />
+      </div>
 
-          <UsersTable users={users} pagination={pagination} />
-        </div>
-      </main>
-      <footer className="border-t border-border py-10 text-center text-sm font-semibold tracking-wide text-muted-foreground">
-        © 2024 ERP Pro Manufacturing Solution. Hệ thống quản trị công nghiệp
-        toàn diện.
-      </footer>
+      <UsersTable users={users} pagination={pagination} />
     </div>
   )
 }

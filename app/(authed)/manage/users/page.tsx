@@ -1,5 +1,5 @@
 import { getUsers } from "@/features/users/actions/get-users"
-import { UsersPage as UsersFeaturePage } from "@/features/users/components/users-page"
+import { UsersPage } from "@/features/users/components/users-page"
 import { loadUsersSearchParams } from "@/features/users/lib/load-users-search-params"
 
 type UsersRoutePageProps = {
@@ -8,11 +8,11 @@ type UsersRoutePageProps = {
 
 export const dynamic = "force-dynamic"
 
-export default async function UsersPage({
+export default async function UsersRoute({
   searchParams,
 }: UsersRoutePageProps) {
   const usersSearchParams = await loadUsersSearchParams(searchParams)
   const { data: users, pagination } = await getUsers(usersSearchParams)
 
-  return <UsersFeaturePage users={users} pagination={pagination} />
+  return <UsersPage users={users} pagination={pagination} />
 }

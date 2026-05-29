@@ -9,22 +9,16 @@ export const userStatusSchema = z.enum(["active", "locked"], {
 })
 
 export const createUserSchema = z.object({
-  fullName: z
+  fullName: z.string().trim().min(1, { message: "Vui lòng nhập họ tên" }),
+  email: z.string().trim().email({ message: "Email không hợp lệ" }),
+  password: z
     .string()
-    .trim()
-    .min(1, { message: "Vui lòng nhập họ tên" }),
-  email: z
-    .string()
-    .trim()
-    .email({ message: "Email không hợp lệ" }),
+    .min(8, { message: "Mật khẩu phải có ít nhất 8 ký tự" }),
   phoneNumber: z
     .string()
     .trim()
     .min(1, { message: "Vui lòng nhập số điện thoại" }),
-  position: z
-    .string()
-    .trim()
-    .min(1, { message: "Vui lòng chọn chức vụ" }),
+  position: z.string().trim().min(1, { message: "Vui lòng chọn chức vụ" }),
   status: userStatusSchema,
 })
 
