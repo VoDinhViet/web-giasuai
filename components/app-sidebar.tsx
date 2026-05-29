@@ -37,17 +37,13 @@ import {
 type MenuItem = {
   label: string
   icon: LucideIcon
-  href?: Route
+  href?: string
 }
 
 type MenuGroup = {
   label: string
   items: MenuItem[]
 }
-
-const clientsRoute = "/manage/clients" as Route
-const suppliersRoute = "/manage/suppliers" as Route
-const usersRoute = "/manage/users" as Route
 
 const menuGroups: MenuGroup[] = [
   {
@@ -78,9 +74,9 @@ const menuGroups: MenuGroup[] = [
     label: "Hệ thống",
     items: [
       { label: "Sản phẩm", icon: PackageSearch },
-      { label: "Khách hàng", icon: UserRound, href: clientsRoute },
-      { label: "Nhà cung cấp", icon: Truck, href: suppliersRoute },
-      { label: "Nhân sự", icon: Users, href: usersRoute },
+      { label: "Khách hàng", icon: UserRound, href: "/manage/clients" },
+      { label: "Nhà cung cấp", icon: Truck, href: "/manage/suppliers" },
+      { label: "Nhân sự", icon: Users, href: "/manage/users" },
       { label: "Cài đặt", icon: Settings },
     ],
   },
@@ -103,7 +99,7 @@ export function AppSidebar() {
               tooltip="Cơ khí Tiến Huy"
               className="h-auto justify-center p-0 hover:bg-transparent data-[active=true]:bg-transparent"
             >
-              <Link href={clientsRoute} className="flex justify-center">
+              <Link href="/manage/clients" className="flex justify-center">
                 <SidebarBrand />
                 <span className="hidden size-10 items-center justify-center rounded bg-sidebar-accent text-sm font-bold text-sidebar-accent-foreground group-data-[collapsible=icon]:flex">
                   TH
@@ -186,7 +182,7 @@ function MenuButton({ item, pathname }: { item: MenuItem; pathname: string }) {
         type={item.href ? undefined : "button"}
       >
         {item.href ? (
-          <Link href={item.href}>
+          <Link href={item.href as Route}>
             <Icon />
             <span>{item.label}</span>
           </Link>
