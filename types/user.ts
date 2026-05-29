@@ -21,6 +21,7 @@ export interface User {
   id: string;
   email: string;
   fullName: string;
+  code?: string;
   roleId?: string;
   status?: string;
   role: Role;

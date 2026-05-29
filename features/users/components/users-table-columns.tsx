@@ -41,7 +41,7 @@ export function createUsersTableColumns({
                 {user.fullName}
               </p>
               <p className="text-[10px] leading-4 text-muted-foreground">
-                {formatEmployeeCode(user.id)}
+                {user.code || "--"}
               </p>
             </div>
           </div>
@@ -203,11 +203,6 @@ function getUserInitials(fullName: string) {
     .toUpperCase()
 }
 
-function formatEmployeeCode(userId: string) {
-  const numericCode = userId.replace(/\D/g, "").padStart(3, "0")
-
-  return `ID: EMP${numericCode}`
-}
 
 function getPositionBadgeClassName(position: string) {
   const normalizedPosition = position.toLowerCase()
