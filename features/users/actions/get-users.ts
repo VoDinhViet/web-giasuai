@@ -3,16 +3,18 @@
 import { api } from "@/lib/api"
 import type { PaginatedResponse } from "@/types/api"
 import type { User } from "../types"
+import { usersCacheTag } from "../lib/user-cache.util"
 import type { UsersSearchParams } from "../lib/load-users-search-params"
-import { normalizeUserStatus } from "../lib/user-input.util"
 
 export async function getUsers(
   params: UsersSearchParams
 ): Promise<PaginatedResponse<User>> {
-  const status =
-    params.status === "all" ? undefined : normalizeUserStatus(params.status)
+  const status = params.status === "all" ? undefined : params.status
 
   return api<PaginatedResponse<User>>("/api/users", {
+    next: {
+      tags: [usersCacheTag],
+    },
     query: {
       page: params.page,
       limit: params.limit,

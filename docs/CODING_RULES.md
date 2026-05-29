@@ -141,7 +141,8 @@ pnpm.cmd lint
 
 ```bash
 pnpm.cmd typecheck
-pnpm.cmd build
 ```
+
+- Do not run `pnpm.cmd build` by default after every change. Run build only when explicitly requested, before release/deploy, or when a change touches build configuration, Next.js configuration, package dependencies, runtime environment, or another area where lint/typecheck cannot give enough confidence.
 
 - Report the exact commands run and whether they passed.

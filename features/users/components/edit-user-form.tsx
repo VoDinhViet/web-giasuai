@@ -21,11 +21,7 @@ import {
 } from "@/components/ui/select"
 import { updateUser } from "../actions/update-user"
 import { useRoles } from "../hooks/use-roles"
-import {
-  getGenderLabel,
-  normalizeUserGender,
-  normalizeUserStatus,
-} from "../lib/user-input.util"
+import { getGenderLabel } from "../lib/user-input.util"
 import { formatDateInputValue } from "../lib/user-date.util"
 import { updateUserSchema, type UpdateUserInput } from "../schemas/user.schema"
 import { UserGender, UserStatus, type User } from "../types"
@@ -53,6 +49,7 @@ export function EditUserForm({
 }: EditUserFormProps) {
   const [submitError, setSubmitError] = useState<string | null>(null)
   const { data: roles = [], isLoading: isLoadingRoles } = useRoles(initialRoles)
+  const gender = user.gender?.toUpperCase() as UserGender | undefined
 
   const form = useForm({
     defaultValues: {
@@ -60,9 +57,12 @@ export function EditUserForm({
       fullName: user.fullName,
       phoneNumber: user.phoneNumber ?? "",
       dateOfBirth: formatDateInputValue(user.birthDate),
-      gender: normalizeUserGender(user.gender),
+      gender: gender && userGenderOptions.includes(gender) ? gender : "",
       roleId: user.roleId || user.role?.id || "",
-      status: normalizeUserStatus(user.status),
+      status:
+        user.status === UserStatus.INACTIVE
+          ? UserStatus.INACTIVE
+          : UserStatus.ACTIVE,
     } satisfies UpdateUserInput,
     validators: {
       onSubmit: updateUserSchema,

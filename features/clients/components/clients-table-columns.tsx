@@ -3,7 +3,7 @@ import type { ColumnDef } from "@tanstack/react-table"
 import { cn } from "@/lib/utils"
 import { clientTypeLabel } from "../lib/client-table-constants"
 import { ClientType, type Client } from "../types"
-import { DeleteClientDialog } from "./delete-client-dialog"
+import { DeleteClientPopover } from "./delete-client-popover"
 import { EditClientDialog } from "./edit-client-dialog"
 
 export function createClientsTableColumns(): ColumnDef<Client>[] {
@@ -93,7 +93,7 @@ export function createClientsTableColumns(): ColumnDef<Client>[] {
       cell: ({ row }) => (
         <div className="flex justify-end gap-1 text-muted-foreground">
           <EditClientDialog client={row.original} />
-          <DeleteClientDialog client={row.original} />
+          <DeleteClientPopover client={row.original} />
         </div>
       ),
     },

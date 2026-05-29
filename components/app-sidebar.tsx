@@ -1,6 +1,5 @@
 "use client"
 
-import * as React from "react"
 import Image from "next/image"
 import Link from "next/link"
 import type { Route } from "next"
@@ -11,7 +10,6 @@ import {
   Factory,
   FileText,
   ListChecks,
-  LogOut,
   PackageSearch,
   ReceiptText,
   Settings,
@@ -23,12 +21,9 @@ import {
   type LucideIcon,
 } from "lucide-react"
 
-import { Button } from "@/components/ui/button"
-import { logout } from "@/features/auth/actions/logout"
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -51,6 +46,7 @@ type MenuGroup = {
 }
 
 const clientsRoute = "/manage/clients" as Route
+const suppliersRoute = "/manage/suppliers" as Route
 const usersRoute = "/manage/users" as Route
 
 const menuGroups: MenuGroup[] = [
@@ -83,6 +79,7 @@ const menuGroups: MenuGroup[] = [
     items: [
       { label: "Sản phẩm", icon: PackageSearch },
       { label: "Khách hàng", icon: UserRound, href: clientsRoute },
+      { label: "Nhà cung cấp", icon: Truck, href: suppliersRoute },
       { label: "Nhân sự", icon: Users, href: usersRoute },
       { label: "Cài đặt", icon: Settings },
     ],
@@ -90,14 +87,14 @@ const menuGroups: MenuGroup[] = [
 ]
 
 const menuButtonClass =
-  "h-10 px-3 text-base text-sidebar-foreground/70 hover:bg-white/8 hover:text-sidebar-foreground data-[active=true]:bg-sidebar-primary data-[active=true]:text-sidebar-primary-foreground [&_svg]:size-5"
+  "h-9 px-3 text-sm font-medium text-sidebar-foreground/70 hover:bg-white/8 hover:text-sidebar-foreground data-[active=true]:bg-sidebar-primary data-[active=true]:text-sidebar-primary-foreground [&_svg]:size-[18px]"
 
 export function AppSidebar() {
   const pathname = usePathname()
 
   return (
     <Sidebar variant="sidebar" collapsible="icon">
-      <SidebarHeader className="border-b border-sidebar-border px-0 py-8 group-data-[collapsible=icon]:px-2 group-data-[collapsible=icon]:py-4">
+      <SidebarHeader className="border-b border-sidebar-border px-0 py-5 group-data-[collapsible=icon]:px-2 group-data-[collapsible=icon]:py-3">
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton
@@ -117,13 +114,12 @@ export function AppSidebar() {
         </SidebarMenu>
       </SidebarHeader>
 
-      <SidebarContent className="gap-6 px-4">
+      <SidebarContent className="gap-4 px-3 py-4">
         {menuGroups.map((group) => (
           <MenuGroup key={group.label} group={group} pathname={pathname} />
         ))}
       </SidebarContent>
 
-      <LogoutButton />
       <SidebarRail />
     </Sidebar>
   )
@@ -135,17 +131,17 @@ function SidebarBrand() {
       <Image
         src="/tien-huy-logo-mark.png"
         alt="Cơ khí Tiến Huy"
-        width={104}
-        height={80}
-        className="mb-3 block h-20 w-26 object-contain"
+        width={80}
+        height={60}
+        className="mb-2 block h-14 w-20 object-contain"
         priority
       />
 
-      <span className="text-[23px] font-extrabold leading-7 tracking-[-0.01em] text-sidebar-foreground">
+      <span className="text-lg leading-6 font-bold tracking-tight text-sidebar-foreground">
         CƠ KHÍ TIẾN HUY
       </span>
 
-      <span className="mt-2 max-w-48 text-[11px] font-bold uppercase leading-5 tracking-[0.24em] text-sidebar-foreground/45">
+      <span className="mt-1 max-w-44 text-[9.5px] leading-4 font-semibold tracking-widest text-sidebar-foreground/40 uppercase">
         Hệ thống quản trị doanh nghiệp
       </span>
     </span>
@@ -160,13 +156,13 @@ function MenuGroup({
   pathname: string
 }) {
   return (
-    <SidebarGroup className="gap-4 p-0">
-      <SidebarGroupLabel className="px-3 text-xs font-bold uppercase tracking-[0.16em] text-sidebar-foreground/35">
+    <SidebarGroup className="gap-1.5 p-0">
+      <SidebarGroupLabel className="px-3 text-[10.5px] font-bold tracking-[0.12em] text-sidebar-foreground/40 uppercase">
         {group.label}
       </SidebarGroupLabel>
 
       <SidebarGroupContent>
-        <SidebarMenu className="gap-2">
+        <SidebarMenu className="gap-0.5">
           {group.items.map((item) => (
             <MenuButton key={item.label} item={item} pathname={pathname} />
           ))}
@@ -176,13 +172,7 @@ function MenuGroup({
   )
 }
 
-function MenuButton({
-  item,
-  pathname,
-}: {
-  item: MenuItem
-  pathname: string
-}) {
+function MenuButton({ item, pathname }: { item: MenuItem; pathname: string }) {
   const Icon = item.icon
   const isActive = item.href === pathname
 
@@ -208,30 +198,5 @@ function MenuButton({
         )}
       </SidebarMenuButton>
     </SidebarMenuItem>
-  )
-}
-
-function LogoutButton() {
-  const [isPending, startTransition] = React.useTransition()
-
-  const handleLogout = () => {
-    startTransition(async () => {
-      await logout()
-    })
-  }
-
-  return (
-    <SidebarFooter className="border-t border-sidebar-border px-4 py-6 group-data-[collapsible=icon]:p-2">
-      <Button
-        disabled={isPending}
-        onClick={handleLogout}
-        className="h-12 w-full gap-2 border border-red-500/20 bg-red-500/10 px-3 text-sm font-semibold text-red-400 transition-all duration-200 hover:bg-red-600 hover:text-white disabled:opacity-50 group-data-[collapsible=icon]:h-10 group-data-[collapsible=icon]:w-10 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:p-0"
-      >
-        <LogOut className="size-5 shrink-0" />
-        <span className="group-data-[collapsible=icon]:hidden">
-          {isPending ? "Đang đăng xuất..." : "Đăng xuất"}
-        </span>
-      </Button>
-    </SidebarFooter>
   )
 }

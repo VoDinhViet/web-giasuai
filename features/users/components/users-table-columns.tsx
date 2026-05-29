@@ -1,5 +1,5 @@
 import type { ColumnDef } from "@tanstack/react-table"
-import { Lock, MoreVertical, Unlock } from "lucide-react"
+import { Lock, Mail, MoreVertical, Phone, Unlock } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils"
 import type { Role } from "@/types/user"
 import { statusLabel } from "../lib/user-table-constants"
 import { formatBirthDate } from "../lib/user-date.util"
-import { getGenderLabel, normalizeUserStatus } from "../lib/user-input.util"
+import { getGenderLabel } from "../lib/user-input.util"
 import { UserStatus, type User } from "../types"
 import { EditUserDialog } from "./edit-user-dialog"
 
@@ -51,16 +51,39 @@ export function createUsersTableColumns({
     {
       id: "contact",
       header: "Thông tin liên lạc",
-      cell: ({ row }) => (
-        <div className="min-w-0 text-sm">
-          <p className="max-w-44 truncate leading-5 font-medium text-foreground">
-            {row.original.email}
-          </p>
-          <p className="text-[10px] leading-4 text-muted-foreground">
-            {row.original.phoneNumber}
-          </p>
-        </div>
-      ),
+      cell: ({ row }) => {
+        const email = row.original.email || "--"
+        const phoneNumber = row.original.phoneNumber || "--"
+
+        return (
+          <div className="flex min-w-0 flex-col gap-1.5 text-sm">
+            <div className="flex min-w-0 items-center gap-2">
+              <Mail className="size-3.5 shrink-0 text-muted-foreground" />
+              <span className="w-10 shrink-0 text-[10px] leading-4 font-semibold text-muted-foreground uppercase">
+                Email
+              </span>
+              <span
+                className="min-w-0 truncate leading-5 font-medium text-foreground"
+                title={email}
+              >
+                {email}
+              </span>
+            </div>
+            <div className="flex min-w-0 items-center gap-2">
+              <Phone className="size-3.5 shrink-0 text-muted-foreground" />
+              <span className="w-10 shrink-0 text-[10px] leading-4 font-semibold text-muted-foreground uppercase">
+                SĐT
+              </span>
+              <span
+                className="min-w-0 truncate leading-5 text-muted-foreground"
+                title={phoneNumber}
+              >
+                {phoneNumber}
+              </span>
+            </div>
+          </div>
+        )
+      },
     },
     {
       id: "birthDateAndGender",
@@ -94,7 +117,10 @@ export function createUsersTableColumns({
       accessorKey: "status",
       header: "Trạng thái",
       cell: ({ row }) => {
-        const status = normalizeUserStatus(row.original.status)
+        const status =
+          row.original.status === UserStatus.INACTIVE
+            ? UserStatus.INACTIVE
+            : UserStatus.ACTIVE
 
         return (
           <span
@@ -115,7 +141,10 @@ export function createUsersTableColumns({
       header: () => <span className="block text-right">Thao tác</span>,
       cell: ({ row }) => {
         const user = row.original
-        const status = normalizeUserStatus(user.status)
+        const status =
+          user.status === UserStatus.INACTIVE
+            ? UserStatus.INACTIVE
+            : UserStatus.ACTIVE
 
         return (
           <div className="flex justify-end gap-1 text-muted-foreground">

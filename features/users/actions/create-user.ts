@@ -1,13 +1,14 @@
 "use server"
 
 import { api } from "@/lib/api"
+import { revalidateUsersCache } from "../lib/user-cache.util"
 import { createUserSchema, type CreateUserInput } from "../schemas/user.schema"
 import type { User } from "../types"
 
 export async function createUser(input: CreateUserInput): Promise<User> {
   const reqDto = createUserSchema.parse(input)
 
-  return api<User>("/api/users", {
+  const user = await api<User>("/api/users", {
     method: "POST",
     body: {
       email: reqDto.email,
@@ -19,4 +20,8 @@ export async function createUser(input: CreateUserInput): Promise<User> {
       status: reqDto.status,
     },
   })
+
+  revalidateUsersCache()
+
+  return user
 }

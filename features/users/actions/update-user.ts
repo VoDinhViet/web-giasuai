@@ -1,6 +1,7 @@
 "use server"
 
 import { api } from "@/lib/api"
+import { revalidateUsersCache } from "../lib/user-cache.util"
 import { updateUserSchema, type UpdateUserInput } from "../schemas/user.schema"
 import type { User } from "../types"
 
@@ -10,7 +11,7 @@ export async function updateUser(
 ): Promise<User> {
   const reqDto = updateUserSchema.parse(input)
 
-  return api<User>(`/api/users/${userId}`, {
+  const user = await api<User>(`/api/users/${userId}`, {
     method: "PATCH",
     body: {
       email: reqDto.email,
@@ -22,4 +23,8 @@ export async function updateUser(
       status: reqDto.status,
     },
   })
+
+  revalidateUsersCache()
+
+  return user
 }
