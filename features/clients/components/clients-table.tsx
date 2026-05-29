@@ -3,7 +3,7 @@
 import { useTransition } from "react"
 import { useQueryStates } from "nuqs"
 
-import { DataTable } from "@/components/data-table"
+import { DataTable } from "@/components/shared/data-table"
 import type { Pagination } from "@/types/api"
 import { clientsSearchParams } from "../lib/search-params"
 import type { Client } from "../types"

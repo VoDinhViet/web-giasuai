@@ -4,7 +4,7 @@ import { useTransition } from "react"
 import { useRouter } from "next/navigation"
 import { useQueryStates } from "nuqs"
 
-import { DataTable } from "@/components/data-table"
+import { DataTable } from "@/components/shared/data-table"
 import type { Pagination } from "@/types/api"
 import type { Role } from "@/types/user"
 import { toggleUserStatus as toggleUserStatusServer } from "../actions/toggle-user-status"

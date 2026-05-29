@@ -12,13 +12,13 @@
 
 - This is a Next.js App Router project using TypeScript, React, Tailwind CSS v4, and shadcn/ui.
 - shadcn/ui config is in `components.json`.
-- Detailed project coding rules are in `docs/CODING_RULES.md`.
+- Detailed project coding rules are in `docs/coding-rules.md`.
 - Prefer existing project patterns before adding new abstractions.
 
 ## Workflow
 
 - Read this file before making changes.
-- For code or UI work, also read `docs/CODING_RULES.md`.
+- For code or UI work, also read `docs/coding-rules.md`.
 - Inspect nearby files and existing patterns before editing.
 - Keep changes scoped to the user's request.
 - Do not create commits unless explicitly asked.
