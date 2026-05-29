@@ -37,9 +37,6 @@ export function SuppliersTable({ suppliers, pagination }: SuppliersTableProps) {
         columns={columns}
         rows={suppliers}
         pagination={pagination}
-        rowLabel="nhà cung cấp"
-        emptyTitle="Không có nhà cung cấp"
-        emptyDescription="Thử thay đổi từ khóa tìm kiếm."
         isLoading={isPending}
         tableClassName="min-w-205"
         onPageChange={(page) => setParams({ page })}

@@ -25,14 +25,32 @@ function EmptyHeader({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
-function EmptyMedia({ className, ...props }: React.ComponentProps<"div">) {
+import { cva, type VariantProps } from "class-variance-authority"
+
+const emptyMediaVariants = cva(
+  "flex shrink-0 items-center justify-center text-muted-foreground border border-border bg-muted/40",
+  {
+    variants: {
+      variant: {
+        default: "size-12 rounded-md",
+        icon: "size-12 rounded-full [&_svg]:size-6",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+    },
+  }
+)
+
+interface EmptyMediaProps
+  extends React.ComponentProps<"div">,
+    VariantProps<typeof emptyMediaVariants> {}
+
+function EmptyMedia({ className, variant, ...props }: EmptyMediaProps) {
   return (
     <div
       data-slot="empty-media"
-      className={cn(
-        "flex size-12 shrink-0 items-center justify-center rounded-md border border-border bg-muted/40 text-muted-foreground",
-        className
-      )}
+      className={cn(emptyMediaVariants({ variant, className }))}
       {...props}
     />
   )

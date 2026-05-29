@@ -8,13 +8,7 @@ import {
 } from "@tanstack/react-table"
 import { SearchX } from "lucide-react"
 
-import {
-  Empty,
-  EmptyDescription,
-  EmptyHeader,
-  EmptyMedia,
-  EmptyTitle,
-} from "@/components/ui/empty"
+import { EmptyTable } from "./empty-table"
 import {
   Table,
   TableBody,
@@ -31,26 +25,24 @@ type DataTableProps<TData, TValue> = {
   columns: ColumnDef<TData, TValue>[]
   rows: TData[]
   pagination: Pagination
-  rowLabel: string
-  emptyTitle: string
-  emptyDescription: string
   onPageChange: (page: number) => void
   onPageSizeChange?: (pageSize: number) => void
   tableClassName?: string
   isLoading?: boolean
+  actionLabel?: string
+  onAction?: () => void
 }
 
 export function DataTable<TData, TValue>({
   columns,
   rows,
   pagination,
-  rowLabel,
-  emptyTitle,
-  emptyDescription,
   onPageChange,
   onPageSizeChange,
   tableClassName,
   isLoading = false,
+  actionLabel,
+  onAction,
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data: rows,
@@ -116,17 +108,13 @@ export function DataTable<TData, TValue>({
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="h-72 text-center whitespace-normal"
+                  className="whitespace-normal p-0"
                 >
-                  <Empty>
-                    <EmptyHeader>
-                      <EmptyMedia>
-                        <SearchX className="size-6" />
-                      </EmptyMedia>
-                      <EmptyTitle>{emptyTitle}</EmptyTitle>
-                      <EmptyDescription>{emptyDescription}</EmptyDescription>
-                    </EmptyHeader>
-                  </Empty>
+                  <EmptyTable
+                    actionLabel={actionLabel}
+                    onAction={onAction}
+                    icon={<SearchX className="size-5" />}
+                  />
                 </TableCell>
               </TableRow>
             )}
@@ -135,7 +123,6 @@ export function DataTable<TData, TValue>({
       </div>
       <DataTablePagination
         pagination={pagination}
-        rowLabel={rowLabel}
         onPageChange={onPageChange}
         onPageSizeChange={onPageSizeChange}
         isDisabled={isLoading}

@@ -19,7 +19,7 @@ import type { Pagination } from "@/types/api"
 
 type DataTablePaginationProps = {
   pagination: Pagination
-  rowLabel: string
+  rowLabel?: string
   onPageChange: (page: number) => void
   onPageSizeChange?: (pageSize: number) => void
   pageSizeOptions?: number[]
@@ -28,7 +28,7 @@ type DataTablePaginationProps = {
 
 export function DataTablePagination({
   pagination,
-  rowLabel,
+  rowLabel = "bản ghi",
   onPageChange,
   onPageSizeChange,
   pageSizeOptions = [10, 20, 50],

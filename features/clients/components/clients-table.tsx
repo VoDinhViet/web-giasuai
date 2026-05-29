@@ -38,9 +38,6 @@ export function ClientsTable({ clients, pagination }: ClientsTableProps) {
         columns={columns}
         rows={clients}
         pagination={pagination}
-        rowLabel="khách hàng"
-        emptyTitle="Không có khách hàng"
-        emptyDescription="Thử thay đổi từ khóa tìm kiếm hoặc thêm khách hàng mới."
         isLoading={isPending}
         tableClassName="min-w-260"
         onPageChange={(page) => setParams({ page })}

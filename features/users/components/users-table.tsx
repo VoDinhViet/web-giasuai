@@ -57,9 +57,6 @@ export function UsersTable({ users, roles, pagination }: UsersTableProps) {
         columns={columns}
         rows={users}
         pagination={pagination}
-        rowLabel="nhân viên"
-        emptyTitle="Không có dữ liệu"
-        emptyDescription="Thử thay đổi từ khóa tìm kiếm hoặc thêm nhân sự mới."
         isLoading={isPending}
         onPageChange={(page) => setParams({ page })}
         onPageSizeChange={(limit) => setParams({ limit, page: 1 })}
