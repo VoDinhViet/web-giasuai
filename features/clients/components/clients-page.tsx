@@ -8,39 +8,37 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 import type { Pagination } from "@/types/api"
-import type { Role } from "@/types/user"
-import type { User } from "../types"
-import { CreateUserDialog } from "./create-user-dialog"
-import { UsersTable } from "./users-table"
+import type { Client } from "../types"
+import { ClientsTable } from "./clients-table"
+import { CreateClientDialog } from "./create-client-dialog"
 
-type UsersPageProps = {
-  users: User[]
-  roles: Role[]
+type ClientsPageProps = {
+  clients: Client[]
   pagination: Pagination
 }
 
-export function UsersPage({ users, roles, pagination }: UsersPageProps) {
+export function ClientsPage({ clients, pagination }: ClientsPageProps) {
   return (
     <div className="flex w-full flex-col gap-8">
       <div className="flex flex-col gap-2">
         <Breadcrumb>
           <BreadcrumbList className="font-medium">
             <BreadcrumbItem>
-              <BreadcrumbLink href="/manage/users">Nhân sự</BreadcrumbLink>
+              <BreadcrumbLink href="/manage/clients">Khách hàng</BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>Quản lý nhân sự</BreadcrumbPage>
+              <BreadcrumbPage>Quản lý khách hàng</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
         <PageTitleBar
-          title="Danh sách nhân sự"
-          actions={<CreateUserDialog initialRoles={roles} />}
+          title="Danh sách khách hàng"
+          actions={<CreateClientDialog />}
         />
       </div>
 
-      <UsersTable users={users} roles={roles} pagination={pagination} />
+      <ClientsTable clients={clients} pagination={pagination} />
     </div>
   )
 }

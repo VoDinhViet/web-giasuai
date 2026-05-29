@@ -1,16 +1,22 @@
 "use server"
 
 import { api } from "@/lib/api"
-import type { User } from "../types"
+import { UserStatus, type User } from "../types"
+import { normalizeUserStatus } from "../lib/user-input.util"
 
 export async function toggleUserStatus(
   userId: string,
-  currentStatus?: string
+  currentStatus?: UserStatus
 ): Promise<User> {
+  const normalizedStatus = normalizeUserStatus(currentStatus)
+
   return api<User>(`/api/users/${userId}`, {
     method: "PATCH",
     body: {
-      status: currentStatus === "active" ? "locked" : "active",
+      status:
+        normalizedStatus === UserStatus.ACTIVE
+          ? UserStatus.INACTIVE
+          : UserStatus.ACTIVE,
     },
   })
 }

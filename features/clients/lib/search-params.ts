@@ -1,9 +1,8 @@
 import { parseAsInteger, parseAsString } from "nuqs"
 
-export const usersSearchParams = {
+export const clientsSearchParams = {
   limit: parseAsInteger.withDefault(10),
   page: parseAsInteger.withDefault(1),
   q: parseAsString.withDefault(""),
-  roleId: parseAsString.withDefault("all"),
-  status: parseAsString.withDefault("all"),
+  clientType: parseAsString.withDefault("all"),
 }

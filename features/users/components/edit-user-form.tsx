@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, type ReactNode } from "react"
+import { useState } from "react"
 import { useForm } from "@tanstack/react-form"
 
 import { Button } from "@/components/ui/button"
@@ -12,7 +12,6 @@ import {
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import type { Role } from "@/types/user"
-import { useRoles } from "../hooks/use-roles"
 import {
   Select,
   SelectContent,
@@ -20,28 +19,24 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { createUser } from "../actions/create-user"
-import { getGenderLabel } from "../lib/user-input.util"
-import { createUserSchema, type CreateUserInput } from "../schemas/user.schema"
-import { UserGender, UserStatus } from "../types"
+import { updateUser } from "../actions/update-user"
+import { useRoles } from "../hooks/use-roles"
+import {
+  getGenderLabel,
+  normalizeUserGender,
+  normalizeUserStatus,
+} from "../lib/user-input.util"
+import { formatDateInputValue } from "../lib/user-date.util"
+import { updateUserSchema, type UpdateUserInput } from "../schemas/user.schema"
+import { UserGender, UserStatus, type User } from "../types"
 import { DateOfBirthPicker } from "./date-of-birth-picker"
 import { RoleSelectField } from "./role-select-field"
 
-type CreateUserFormProps = {
+type EditUserFormProps = {
+  user: User
   initialRoles: Role[]
   onCancel: () => void
   onSuccess: () => void
-}
-
-const createUserDefaultValues: CreateUserInput = {
-  fullName: "",
-  email: "",
-  password: "",
-  phoneNumber: "",
-  dateOfBirth: "",
-  gender: "",
-  roleId: "",
-  status: UserStatus.ACTIVE,
 }
 
 const userGenderOptions = [
@@ -50,27 +45,36 @@ const userGenderOptions = [
   UserGender.OTHER,
 ] as const
 
-export function CreateUserForm({
+export function EditUserForm({
+  user,
   initialRoles,
   onCancel,
   onSuccess,
-}: CreateUserFormProps) {
+}: EditUserFormProps) {
   const [submitError, setSubmitError] = useState<string | null>(null)
   const { data: roles = [], isLoading: isLoadingRoles } = useRoles(initialRoles)
 
   const form = useForm({
-    defaultValues: createUserDefaultValues,
+    defaultValues: {
+      email: user.email,
+      fullName: user.fullName,
+      phoneNumber: user.phoneNumber ?? "",
+      dateOfBirth: formatDateInputValue(user.birthDate),
+      gender: normalizeUserGender(user.gender),
+      roleId: user.roleId || user.role?.id || "",
+      status: normalizeUserStatus(user.status),
+    } satisfies UpdateUserInput,
     validators: {
-      onSubmit: createUserSchema,
+      onSubmit: updateUserSchema,
     },
     onSubmit: async ({ value }) => {
       setSubmitError(null)
 
       try {
-        await createUser(value)
+        await updateUser(user.id, value)
         onSuccess()
       } catch {
-        setSubmitError("Không thể tạo nhân sự. Vui lòng thử lại.")
+        setSubmitError("Không thể cập nhật nhân sự. Vui lòng thử lại.")
       }
     },
   })
@@ -93,9 +97,7 @@ export function CreateUserForm({
 
             return (
               <Field data-invalid={isInvalid} className="sm:col-span-2">
-                <RequiredFieldLabel htmlFor={field.name}>
-                  Họ và tên
-                </RequiredFieldLabel>
+                <FieldLabel htmlFor={field.name}>Họ và tên</FieldLabel>
                 <Input
                   id={field.name}
                   name={field.name}
@@ -118,9 +120,7 @@ export function CreateUserForm({
 
             return (
               <Field data-invalid={isInvalid}>
-                <RequiredFieldLabel htmlFor={field.name}>
-                  Số điện thoại
-                </RequiredFieldLabel>
+                <FieldLabel htmlFor={field.name}>Số điện thoại</FieldLabel>
                 <Input
                   id={field.name}
                   name={field.name}
@@ -143,9 +143,7 @@ export function CreateUserForm({
 
             return (
               <Field data-invalid={isInvalid}>
-                <RequiredFieldLabel htmlFor={field.name}>
-                  Email
-                </RequiredFieldLabel>
+                <FieldLabel htmlFor={field.name}>Email</FieldLabel>
                 <Input
                   id={field.name}
                   name={field.name}
@@ -160,44 +158,6 @@ export function CreateUserForm({
               </Field>
             )
           }}
-        </form.Field>
-
-        <form.Field name="password">
-          {(field) => {
-            const isInvalid =
-              field.state.meta.isTouched && field.state.meta.errors.length > 0
-
-            return (
-              <Field data-invalid={isInvalid}>
-                <RequiredFieldLabel htmlFor={field.name}>
-                  Mật khẩu
-                </RequiredFieldLabel>
-                <Input
-                  id={field.name}
-                  name={field.name}
-                  type="password"
-                  value={field.state.value}
-                  onBlur={field.handleBlur}
-                  onChange={(event) => field.handleChange(event.target.value)}
-                  placeholder="Tối thiểu 8 ký tự"
-                  autoComplete="new-password"
-                  aria-invalid={isInvalid}
-                />
-                {isInvalid && <FieldError errors={field.state.meta.errors} />}
-              </Field>
-            )
-          }}
-        </form.Field>
-
-        <form.Field name="roleId">
-          {(field) => (
-            <RoleSelectField
-              field={field}
-              roles={roles}
-              disabled={isLoadingRoles}
-              required
-            />
-          )}
         </form.Field>
 
         <form.Field name="dateOfBirth">
@@ -231,9 +191,9 @@ export function CreateUserForm({
               <Field data-invalid={isInvalid}>
                 <FieldLabel>Giới tính</FieldLabel>
                 <Select
-                  value={field.state.value ?? ""}
+                  value={field.state.value}
                   onValueChange={(value) =>
-                    field.handleChange(value as CreateUserInput["gender"])
+                    field.handleChange(value as UpdateUserInput["gender"])
                   }
                 >
                   <SelectTrigger className="w-full" aria-invalid={isInvalid}>
@@ -253,6 +213,16 @@ export function CreateUserForm({
           }}
         </form.Field>
 
+        <form.Field name="roleId">
+          {(field) => (
+            <RoleSelectField
+              field={field}
+              roles={roles}
+              disabled={isLoadingRoles}
+            />
+          )}
+        </form.Field>
+
         <form.Field name="status">
           {(field) => {
             const isInvalid =
@@ -260,11 +230,11 @@ export function CreateUserForm({
 
             return (
               <Field data-invalid={isInvalid}>
-                <RequiredFieldLabel>Trạng thái</RequiredFieldLabel>
+                <FieldLabel>Trạng thái</FieldLabel>
                 <Select
                   value={field.state.value}
                   onValueChange={(value) =>
-                    field.handleChange(value as CreateUserInput["status"])
+                    field.handleChange(value as UpdateUserInput["status"])
                   }
                 >
                   <SelectTrigger className="w-full" aria-invalid={isInvalid}>
@@ -300,25 +270,11 @@ export function CreateUserForm({
               Hủy bỏ
             </Button>
             <Button type="submit" disabled={!canSubmit || isSubmitting}>
-              {isSubmitting ? "Đang lưu..." : "Lưu nhân sự"}
+              {isSubmitting ? "Đang cập nhật..." : "Cập nhật nhân sự"}
             </Button>
           </div>
         )}
       </form.Subscribe>
     </form>
-  )
-}
-
-type RequiredFieldLabelProps = {
-  children: ReactNode
-  htmlFor?: string
-}
-
-function RequiredFieldLabel({ children, htmlFor }: RequiredFieldLabelProps) {
-  return (
-    <FieldLabel htmlFor={htmlFor}>
-      {children}
-      <span className="text-destructive">*</span>
-    </FieldLabel>
   )
 }

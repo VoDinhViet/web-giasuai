@@ -23,6 +23,7 @@ type DataTablePaginationProps = {
   onPageChange: (page: number) => void
   onPageSizeChange?: (pageSize: number) => void
   pageSizeOptions?: number[]
+  isDisabled?: boolean
 }
 
 export function DataTablePagination({
@@ -31,6 +32,7 @@ export function DataTablePagination({
   onPageChange,
   onPageSizeChange,
   pageSizeOptions = [10, 20, 50],
+  isDisabled = false,
 }: DataTablePaginationProps) {
   const totalRows = pagination.totalRecords
   const pageSize = pagination.limit
@@ -74,6 +76,7 @@ export function DataTablePagination({
             </p>
             <Select
               value={`${pageSize}`}
+              disabled={isDisabled}
               onValueChange={(value) => onPageSizeChange(Number(value))}
             >
               <SelectTrigger className="h-9 w-[84px]">
@@ -100,7 +103,7 @@ export function DataTablePagination({
             variant="outline"
             size="icon-sm"
             className="hidden lg:inline-flex"
-            disabled={!canPreviousPage}
+            disabled={isDisabled || !canPreviousPage}
             aria-label="Trang đầu"
             onClick={() => onPageChange(1)}
           >
@@ -111,7 +114,7 @@ export function DataTablePagination({
             type="button"
             variant="outline"
             size="icon-sm"
-            disabled={!canPreviousPage}
+            disabled={isDisabled || !canPreviousPage}
             aria-label="Trang trước"
             onClick={() => onPageChange(selectedPage - 1)}
           >
@@ -122,7 +125,7 @@ export function DataTablePagination({
             type="button"
             variant="outline"
             size="icon-sm"
-            disabled={!canNextPage}
+            disabled={isDisabled || !canNextPage}
             aria-label="Trang sau"
             onClick={() => onPageChange(selectedPage + 1)}
           >
@@ -134,7 +137,7 @@ export function DataTablePagination({
             variant="outline"
             size="icon-sm"
             className="hidden lg:inline-flex"
-            disabled={!canNextPage}
+            disabled={isDisabled || !canNextPage}
             aria-label="Trang cuối"
             onClick={() => onPageChange(pageCount)}
           >

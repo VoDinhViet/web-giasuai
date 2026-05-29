@@ -22,6 +22,16 @@
 - Put shared types under `types`.
 - Keep feature logic close to the feature folder when it is not reused globally.
 
+## 2.1 Utility Naming
+
+- Name utility files by purpose or domain with the `*.util.ts` suffix, such as `date.util.ts`, `string.util.ts`, `currency.util.ts`, `validation.util.ts`, `user-input.util.ts`, or `order-code.util.ts`.
+- Do not create generic utility files such as `utils.ts`, `helper.ts`, `helpers.ts`, `common.ts`, or `common.util.ts`; the existing `lib/utils.ts` is reserved for shadcn/ui `cn` only.
+- Put utilities used by only one domain inside that feature, for example `features/orders/lib/order-code.util.ts` or `features/users/lib/user-input.util.ts`.
+- Put truly shared utilities under `lib`, grouped by function such as `lib/date.util.ts`, `lib/string.util.ts`, `lib/number.util.ts`, `lib/file.util.ts`, or `lib/validation.util.ts`.
+- Name utility functions with a verb plus a business noun, such as `generateOrderCode`, `calculateDeliveryFee`, `formatCurrency`, `validateCoordinate`, `hashPassword`, or `comparePassword`.
+- Avoid vague function names such as `helper`, `common`, `currency`, `password`, `orderCode`, `data`, `value`, or `handle` when a business action name is available.
+- Reuse existing constants, enum maps, schemas, and typed labels before adding duplicated literal checks or duplicated mapping objects.
+
 ## 3. shadcn/ui Rules
 
 - Prefer existing shadcn/ui components before creating custom UI.
@@ -59,6 +69,7 @@ pnpm.cmd dlx shadcn@latest add <component-name>
 - Keep page components thin; move complex UI or behavior into feature components.
 - Name components with PascalCase, but name their files with kebab-case (e.g., `create-user-dialog.tsx` containing `export function CreateUserDialog() {}`).
 - Name files consistently using kebab-case.
+- Use uppercase enum members and values, such as `UserStatus.ACTIVE = "ACTIVE"` and `ClientType.COMPANY = "COMPANY"`.
 - Keep props typed with clear names.
 - Avoid vague variable names like `data`, `item`, `record`, `tmp`, `obj`, `val`, and `arr`.
 - Use entity-specific names such as `userId`, `employeeId`, `roleId`, and `orderId`.

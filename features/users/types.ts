@@ -1,8 +1,16 @@
 import type { User as CoreUser } from "@/types/user"
 
-export type UserStatus = "active" | "locked"
+export enum UserStatus {
+  ACTIVE = "ACTIVE",
+  INACTIVE = "INACTIVE",
+}
+
 export type StatusFilter = "all" | UserStatus
-export type UserGender = "male" | "female" | "other"
+export enum UserGender {
+  MALE = "MALE",
+  FEMALE = "FEMALE",
+  OTHER = "OTHER",
+}
 
 export type User = CoreUser
 

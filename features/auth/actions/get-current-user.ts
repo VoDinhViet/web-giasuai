@@ -16,11 +16,7 @@ export async function getCurrentUser(): Promise<ActionResponse<User>> {
   }
 
   try {
-    const currentUser = await api<User>("/api/auth/me", {
-      headers: {
-        Authorization: `Bearer ${session.accessToken}`,
-      },
-    })
+    const currentUser = await api<User>("/api/auth/me")
 
     return {
       success: true,

@@ -13,14 +13,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import type { Role } from "@/types/user"
-import { CreateUserForm } from "./create-user-form"
+import { createClient } from "../actions/create-client"
+import { ClientForm } from "./client-form"
 
-type CreateUserDialogProps = {
-  initialRoles: Role[]
-}
-
-export function CreateUserDialog({ initialRoles }: CreateUserDialogProps) {
+export function CreateClientDialog() {
   const [open, setOpen] = React.useState(false)
   const router = useRouter()
 
@@ -29,24 +25,26 @@ export function CreateUserDialog({ initialRoles }: CreateUserDialogProps) {
       <DialogTrigger asChild>
         <Button type="button" size="lg">
           <UserPlus className="size-4" />
-          Thêm nhân sự
+          Thêm khách hàng
         </Button>
       </DialogTrigger>
       <DialogContent className="max-h-[90svh] overflow-y-auto sm:max-w-149">
         <DialogHeader>
-          <DialogTitle>Thêm nhân sự mới</DialogTitle>
+          <DialogTitle>Thêm khách hàng mới</DialogTitle>
           <DialogDescription>
-            Nhập đầy đủ thông tin bên dưới để đăng ký nhân viên mới vào hệ
-            thống.
+            Nhập thông tin khách hàng để thêm vào danh sách quản lý.
           </DialogDescription>
         </DialogHeader>
-        <CreateUserForm
-          initialRoles={initialRoles}
+        <ClientForm
+          submitLabel="Lưu khách hàng"
+          submittingLabel="Đang lưu..."
+          submitErrorMessage="Không thể tạo khách hàng. Vui lòng thử lại."
           onCancel={() => setOpen(false)}
           onSuccess={() => {
             setOpen(false)
             router.refresh()
           }}
+          onSubmit={createClient}
         />
       </DialogContent>
     </Dialog>

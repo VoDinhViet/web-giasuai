@@ -1,14 +1,20 @@
 "use client"
 
-import * as React from "react"
 import {
   type ColumnDef,
   flexRender,
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table"
-import { Search } from "lucide-react"
+import { SearchX } from "lucide-react"
 
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty"
 import {
   Table,
   TableBody,
@@ -30,8 +36,8 @@ type DataTableProps<TData, TValue> = {
   emptyDescription: string
   onPageChange: (page: number) => void
   onPageSizeChange?: (pageSize: number) => void
-  toolbar?: React.ReactNode
   tableClassName?: string
+  isLoading?: boolean
 }
 
 export function DataTable<TData, TValue>({
@@ -43,8 +49,8 @@ export function DataTable<TData, TValue>({
   emptyDescription,
   onPageChange,
   onPageSizeChange,
-  toolbar,
   tableClassName,
+  isLoading = false,
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data: rows,
@@ -53,82 +59,88 @@ export function DataTable<TData, TValue>({
   })
 
   return (
-    <div className="min-w-0 overflow-hidden rounded-(--radius) border border-border/80 bg-card shadow-xs">
-      {toolbar}
-      <Table className={cn("min-w-205", tableClassName)}>
-        <TableHeader className="bg-muted/30">
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow
-              key={headerGroup.id}
-              className="border-border/60 hover:bg-transparent"
-            >
-              {headerGroup.headers.map((header) => (
-                <TableHead
-                  key={header.id}
-                  className={cn(
-                    "h-11 px-5 text-[10px] font-semibold uppercase leading-4 tracking-[0.08em] text-muted-foreground",
-                    getColumnClassName(header.column.id),
-                    header.column.id === "actions" && "text-right"
-                  )}
-                >
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
-                </TableHead>
-              ))}
-            </TableRow>
-          ))}
-        </TableHeader>
-        <TableBody>
-          {table.getRowModel().rows.length ? (
-            table.getRowModel().rows.map((tableRow) => (
+    <>
+      <div className="relative">
+        <Table className={cn("min-w-205", tableClassName)}>
+          <TableHeader className="bg-muted/30">
+            {table.getHeaderGroups().map((headerGroup) => (
               <TableRow
-                key={tableRow.id}
-                className="h-16 border-border/35 hover:bg-muted/25"
+                key={headerGroup.id}
+                className="border-border/60 hover:bg-transparent"
               >
-                {tableRow.getVisibleCells().map((cell) => (
-                  <TableCell
-                    key={cell.id}
+                {headerGroup.headers.map((header) => (
+                  <TableHead
+                    key={header.id}
                     className={cn(
-                      "px-5 py-3",
-                      getColumnClassName(cell.column.id),
-                      cell.column.id === "actions" && "text-right"
+                      "h-11 px-5 text-[10px] leading-4 font-semibold tracking-[0.08em] text-muted-foreground uppercase",
+                      getColumnClassName(header.column.id),
+                      header.column.id === "actions" && "text-right"
                     )}
                   >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </TableHead>
                 ))}
               </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell
-                colSpan={columns.length}
-                className="h-36 whitespace-normal text-center"
-              >
-                <div className="flex flex-col items-center justify-center gap-2.5">
-                  <Search className="size-9 text-muted-foreground" />
-                  <p className="text-base font-semibold">{emptyTitle}</p>
-                  <p className="text-sm text-muted-foreground">
-                    {emptyDescription}
-                  </p>
-                </div>
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-
+            ))}
+          </TableHeader>
+          <TableBody className={cn(isLoading && "opacity-50")}>
+            {table.getRowModel().rows.length ? (
+              table.getRowModel().rows.map((tableRow) => (
+                <TableRow
+                  key={tableRow.id}
+                  className="h-16 border-border/35 hover:bg-muted/25"
+                >
+                  {tableRow.getVisibleCells().map((cell) => (
+                    <TableCell
+                      key={cell.id}
+                      className={cn(
+                        "px-5 py-3",
+                        getColumnClassName(cell.column.id),
+                        cell.column.id === "actions" && "text-right"
+                      )}
+                    >
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-72 text-center whitespace-normal"
+                >
+                  <Empty>
+                    <EmptyHeader>
+                      <EmptyMedia>
+                        <SearchX className="size-6" />
+                      </EmptyMedia>
+                      <EmptyTitle>{emptyTitle}</EmptyTitle>
+                      <EmptyDescription>{emptyDescription}</EmptyDescription>
+                    </EmptyHeader>
+                  </Empty>
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
       <DataTablePagination
         pagination={pagination}
         rowLabel={rowLabel}
         onPageChange={onPageChange}
         onPageSizeChange={onPageSizeChange}
+        isDisabled={isLoading}
       />
-    </div>
+    </>
   )
 }
 
@@ -138,6 +150,14 @@ function getColumnClassName(columnId: string) {
       return "w-48"
     case "contact":
       return "w-52"
+    case "clientType":
+      return "w-36"
+    case "taxCode":
+      return "w-40"
+    case "companyName":
+      return "w-56"
+    case "address":
+      return "w-72"
     case "birthDateAndGender":
       return "w-32"
     case "position":

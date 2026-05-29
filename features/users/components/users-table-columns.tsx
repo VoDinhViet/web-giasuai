@@ -1,5 +1,5 @@
 import type { ColumnDef } from "@tanstack/react-table"
-import { Lock, MoreVertical, Pencil, Unlock } from "lucide-react"
+import { Lock, MoreVertical, Unlock } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -8,15 +8,20 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
-import { genderLabel, statusLabel } from "../lib/user-table-constants"
-import { formatBirthDate } from "../lib/user-utils"
-import type { User, UserGender, UserStatus } from "../types"
+import type { Role } from "@/types/user"
+import { statusLabel } from "../lib/user-table-constants"
+import { formatBirthDate } from "../lib/user-date.util"
+import { getGenderLabel, normalizeUserStatus } from "../lib/user-input.util"
+import { UserStatus, type User } from "../types"
+import { EditUserDialog } from "./edit-user-dialog"
 
 type CreateUsersTableColumnsProps = {
-  onToggleUserStatus: (userId: string, currentStatus?: string) => void
+  roles: Role[]
+  onToggleUserStatus: (userId: string, currentStatus?: UserStatus) => void
 }
 
 export function createUsersTableColumns({
+  roles,
   onToggleUserStatus,
 }: CreateUsersTableColumnsProps): ColumnDef<User>[] {
   return [
@@ -32,7 +37,7 @@ export function createUsersTableColumns({
               {getUserInitials(user.fullName)}
             </span>
             <div className="min-w-0">
-              <p className="max-w-40 truncate text-sm font-semibold leading-5 text-foreground">
+              <p className="max-w-40 truncate text-sm leading-5 font-semibold text-foreground">
                 {user.fullName}
               </p>
               <p className="text-[10px] leading-4 text-muted-foreground">
@@ -48,7 +53,7 @@ export function createUsersTableColumns({
       header: "Thông tin liên lạc",
       cell: ({ row }) => (
         <div className="min-w-0 text-sm">
-          <p className="max-w-44 truncate font-medium leading-5 text-foreground">
+          <p className="max-w-44 truncate leading-5 font-medium text-foreground">
             {row.original.email}
           </p>
           <p className="text-[10px] leading-4 text-muted-foreground">
@@ -62,11 +67,11 @@ export function createUsersTableColumns({
       header: "Ngày sinh / GT",
       cell: ({ row }) => (
         <div className="text-sm">
-          <p className="font-medium leading-5 text-foreground">
+          <p className="leading-5 font-medium text-foreground">
             {formatBirthDate(row.original.birthDate || "")}
           </p>
-          <p className="text-[10px] font-semibold uppercase leading-4 text-muted-foreground">
-            {genderLabel[row.original.gender as UserGender] || "Khác"}
+          <p className="text-[10px] leading-4 font-semibold text-muted-foreground uppercase">
+            {getGenderLabel(row.original.gender)}
           </p>
         </div>
       ),
@@ -77,7 +82,7 @@ export function createUsersTableColumns({
       cell: ({ row }) => (
         <span
           className={cn(
-            "inline-flex max-w-36 items-center justify-center rounded-(--radius) px-2.5 py-1 text-center text-[10px] font-semibold uppercase leading-4",
+            "inline-flex max-w-36 items-center justify-center rounded-(--radius) px-2.5 py-1 text-center text-[10px] leading-4 font-semibold uppercase",
             getPositionBadgeClassName(row.original.role?.name || "Nhân viên")
           )}
         >
@@ -88,41 +93,33 @@ export function createUsersTableColumns({
     {
       accessorKey: "status",
       header: "Trạng thái",
-      cell: ({ row }) => (
-        <span
-          className={cn(
-            "inline-flex max-w-32 items-center justify-center rounded-(--radius) px-3 py-1 text-center text-[10px] font-semibold uppercase leading-4",
-            row.original.status === "active"
-              ? "bg-success-container/80 text-success ring-1 ring-success/15"
-              : "bg-error-container/50 text-destructive ring-1 ring-destructive/10"
-          )}
-        >
-          {statusLabel[row.original.status as UserStatus] || "Hoạt động"}
-        </span>
-      ),
+      cell: ({ row }) => {
+        const status = normalizeUserStatus(row.original.status)
+
+        return (
+          <span
+            className={cn(
+              "inline-flex max-w-32 items-center justify-center rounded-(--radius) px-3 py-1 text-center text-[10px] leading-4 font-semibold uppercase",
+              status === UserStatus.ACTIVE
+                ? "bg-success-container/80 text-success ring-1 ring-success/15"
+                : "bg-error-container/50 text-destructive ring-1 ring-destructive/10"
+            )}
+          >
+            {statusLabel[status]}
+          </span>
+        )
+      },
     },
     {
       id: "actions",
       header: () => <span className="block text-right">Thao tác</span>,
       cell: ({ row }) => {
         const user = row.original
+        const status = normalizeUserStatus(user.status)
 
         return (
           <div className="flex justify-end gap-1 text-muted-foreground">
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon-xs"
-                  aria-label={`Ch\u1ec9nh s\u1eeda ${user.fullName}`}
-                  className="text-muted-foreground hover:text-foreground"
-                >
-                  <Pencil />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>{"Ch\u1ec9nh s\u1eeda"}</TooltipContent>
-            </Tooltip>
+            <EditUserDialog user={user} initialRoles={roles} />
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
@@ -130,16 +127,20 @@ export function createUsersTableColumns({
                   variant="ghost"
                   size="icon-xs"
                   aria-label={
-                    user.status === "active" ? "Khóa nhân sự" : "Mở khóa"
+                    status === UserStatus.ACTIVE
+                      ? "Ngừng hoạt động"
+                      : "Kích hoạt nhân sự"
                   }
                   className="text-muted-foreground hover:text-foreground"
-                  onClick={() => onToggleUserStatus(user.id, user.status)}
+                  onClick={() => onToggleUserStatus(user.id, status)}
                 >
-                  {user.status === "active" ? <Lock /> : <Unlock />}
+                  {status === UserStatus.ACTIVE ? <Lock /> : <Unlock />}
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
-                {user.status === "active" ? "Khóa nhân sự" : "Mở khóa"}
+                {status === UserStatus.ACTIVE
+                  ? "Ngừng hoạt động"
+                  : "Kích hoạt nhân sự"}
               </TooltipContent>
             </Tooltip>
             <Tooltip>

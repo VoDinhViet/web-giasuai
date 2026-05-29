@@ -11,8 +11,6 @@ import {
   FieldLabel,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
-import type { Role } from "@/types/user"
-import { useRoles } from "../hooks/use-roles"
 import {
   Select,
   SelectContent,
@@ -20,57 +18,55 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { createUser } from "../actions/create-user"
-import { getGenderLabel } from "../lib/user-input.util"
-import { createUserSchema, type CreateUserInput } from "../schemas/user.schema"
-import { UserGender, UserStatus } from "../types"
-import { DateOfBirthPicker } from "./date-of-birth-picker"
-import { RoleSelectField } from "./role-select-field"
+import { clientTypeLabel } from "../lib/client-table-constants"
+import {
+  clientFormSchema,
+  type ClientFormInput,
+} from "../schemas/client.schema"
+import { ClientType, type Client } from "../types"
 
-type CreateUserFormProps = {
-  initialRoles: Role[]
+type ClientFormProps = {
+  client?: Client
+  submitLabel: string
+  submittingLabel: string
+  submitErrorMessage: string
   onCancel: () => void
   onSuccess: () => void
+  onSubmit: (value: ClientFormInput) => Promise<unknown>
 }
 
-const createUserDefaultValues: CreateUserInput = {
-  fullName: "",
-  email: "",
-  password: "",
-  phoneNumber: "",
-  dateOfBirth: "",
-  gender: "",
-  roleId: "",
-  status: UserStatus.ACTIVE,
-}
-
-const userGenderOptions = [
-  UserGender.MALE,
-  UserGender.FEMALE,
-  UserGender.OTHER,
-] as const
-
-export function CreateUserForm({
-  initialRoles,
+export function ClientForm({
+  client,
+  submitLabel,
+  submittingLabel,
+  submitErrorMessage,
   onCancel,
   onSuccess,
-}: CreateUserFormProps) {
+  onSubmit,
+}: ClientFormProps) {
   const [submitError, setSubmitError] = useState<string | null>(null)
-  const { data: roles = [], isLoading: isLoadingRoles } = useRoles(initialRoles)
 
   const form = useForm({
-    defaultValues: createUserDefaultValues,
+    defaultValues: {
+      fullName: client?.fullName ?? "",
+      email: client?.email ?? "",
+      phoneNumber: client?.phoneNumber ?? "",
+      clientType: normalizeClientType(client?.clientType),
+      taxCode: client?.taxCode ?? "",
+      companyName: client?.companyName ?? "",
+      address: client?.address ?? "",
+    } satisfies ClientFormInput,
     validators: {
-      onSubmit: createUserSchema,
+      onSubmit: clientFormSchema,
     },
     onSubmit: async ({ value }) => {
       setSubmitError(null)
 
       try {
-        await createUser(value)
+        await onSubmit(value)
         onSuccess()
       } catch {
-        setSubmitError("Không thể tạo nhân sự. Vui lòng thử lại.")
+        setSubmitError(submitErrorMessage)
       }
     },
   })
@@ -94,7 +90,7 @@ export function CreateUserForm({
             return (
               <Field data-invalid={isInvalid} className="sm:col-span-2">
                 <RequiredFieldLabel htmlFor={field.name}>
-                  Họ và tên
+                  Họ tên khách hàng
                 </RequiredFieldLabel>
                 <Input
                   id={field.name}
@@ -102,7 +98,64 @@ export function CreateUserForm({
                   value={field.state.value}
                   onBlur={field.handleBlur}
                   onChange={(event) => field.handleChange(event.target.value)}
-                  placeholder="Nhập đầy đủ họ tên"
+                  placeholder="Nhập họ tên khách hàng"
+                  aria-invalid={isInvalid}
+                />
+                {isInvalid && <FieldError errors={field.state.meta.errors} />}
+              </Field>
+            )
+          }}
+        </form.Field>
+
+        <form.Field name="clientType">
+          {(field) => {
+            const isInvalid =
+              field.state.meta.isTouched && field.state.meta.errors.length > 0
+
+            return (
+              <Field data-invalid={isInvalid}>
+                <RequiredFieldLabel>Loại khách hàng</RequiredFieldLabel>
+                <Select
+                  value={field.state.value}
+                  onValueChange={(value) =>
+                    field.handleChange(value as ClientFormInput["clientType"])
+                  }
+                >
+                  <SelectTrigger className="w-full" aria-invalid={isInvalid}>
+                    <SelectValue placeholder="Chọn loại khách hàng" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Object.entries(clientTypeLabel).map(([type, label]) => (
+                      <SelectItem key={type} value={type}>
+                        {label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {isInvalid && <FieldError errors={field.state.meta.errors} />}
+              </Field>
+            )
+          }}
+        </form.Field>
+
+        <form.Field name="email">
+          {(field) => {
+            const isInvalid =
+              field.state.meta.isTouched && field.state.meta.errors.length > 0
+
+            return (
+              <Field data-invalid={isInvalid}>
+                <RequiredFieldLabel htmlFor={field.name}>
+                  Email
+                </RequiredFieldLabel>
+                <Input
+                  id={field.name}
+                  name={field.name}
+                  type="email"
+                  value={field.state.value}
+                  onBlur={field.handleBlur}
+                  onChange={(event) => field.handleChange(event.target.value)}
+                  placeholder="client@example.com"
                   aria-invalid={isInvalid}
                 />
                 {isInvalid && <FieldError errors={field.state.meta.errors} />}
@@ -136,24 +189,21 @@ export function CreateUserForm({
           }}
         </form.Field>
 
-        <form.Field name="email">
+        <form.Field name="taxCode">
           {(field) => {
             const isInvalid =
               field.state.meta.isTouched && field.state.meta.errors.length > 0
 
             return (
               <Field data-invalid={isInvalid}>
-                <RequiredFieldLabel htmlFor={field.name}>
-                  Email
-                </RequiredFieldLabel>
+                <FieldLabel htmlFor={field.name}>Mã số thuế</FieldLabel>
                 <Input
                   id={field.name}
                   name={field.name}
-                  type="email"
-                  value={field.state.value}
+                  value={field.state.value ?? ""}
                   onBlur={field.handleBlur}
                   onChange={(event) => field.handleChange(event.target.value)}
-                  placeholder="example@tienhuy.com"
+                  placeholder="Nhập mã số thuế"
                   aria-invalid={isInvalid}
                 />
                 {isInvalid && <FieldError errors={field.state.meta.errors} />}
@@ -162,121 +212,59 @@ export function CreateUserForm({
           }}
         </form.Field>
 
-        <form.Field name="password">
+        <form.Subscribe selector={(state) => state.values.clientType}>
+          {(clientType) =>
+            clientType === ClientType.COMPANY ? (
+              <form.Field name="companyName">
+                {(field) => {
+                  const isInvalid =
+                    field.state.meta.isTouched &&
+                    field.state.meta.errors.length > 0
+
+                  return (
+                    <Field data-invalid={isInvalid}>
+                      <RequiredFieldLabel htmlFor={field.name}>
+                        Tên công ty
+                      </RequiredFieldLabel>
+                      <Input
+                        id={field.name}
+                        name={field.name}
+                        value={field.state.value ?? ""}
+                        onBlur={field.handleBlur}
+                        onChange={(event) =>
+                          field.handleChange(event.target.value)
+                        }
+                        placeholder="Nhập tên công ty"
+                        aria-invalid={isInvalid}
+                      />
+                      {isInvalid && (
+                        <FieldError errors={field.state.meta.errors} />
+                      )}
+                    </Field>
+                  )
+                }}
+              </form.Field>
+            ) : null
+          }
+        </form.Subscribe>
+
+        <form.Field name="address">
           {(field) => {
             const isInvalid =
               field.state.meta.isTouched && field.state.meta.errors.length > 0
 
             return (
-              <Field data-invalid={isInvalid}>
-                <RequiredFieldLabel htmlFor={field.name}>
-                  Mật khẩu
-                </RequiredFieldLabel>
+              <Field data-invalid={isInvalid} className="sm:col-span-2">
+                <FieldLabel htmlFor={field.name}>Địa chỉ</FieldLabel>
                 <Input
                   id={field.name}
                   name={field.name}
-                  type="password"
-                  value={field.state.value}
+                  value={field.state.value ?? ""}
                   onBlur={field.handleBlur}
                   onChange={(event) => field.handleChange(event.target.value)}
-                  placeholder="Tối thiểu 8 ký tự"
-                  autoComplete="new-password"
+                  placeholder="Nhập địa chỉ"
                   aria-invalid={isInvalid}
                 />
-                {isInvalid && <FieldError errors={field.state.meta.errors} />}
-              </Field>
-            )
-          }}
-        </form.Field>
-
-        <form.Field name="roleId">
-          {(field) => (
-            <RoleSelectField
-              field={field}
-              roles={roles}
-              disabled={isLoadingRoles}
-              required
-            />
-          )}
-        </form.Field>
-
-        <form.Field name="dateOfBirth">
-          {(field) => {
-            const isInvalid =
-              field.state.meta.isTouched && field.state.meta.errors.length > 0
-
-            return (
-              <Field data-invalid={isInvalid}>
-                <FieldLabel htmlFor={field.name}>Ngày sinh</FieldLabel>
-                <DateOfBirthPicker
-                  id={field.name}
-                  name={field.name}
-                  value={field.state.value ?? ""}
-                  onBlur={field.handleBlur}
-                  onChange={field.handleChange}
-                  isInvalid={isInvalid}
-                />
-                {isInvalid && <FieldError errors={field.state.meta.errors} />}
-              </Field>
-            )
-          }}
-        </form.Field>
-
-        <form.Field name="gender">
-          {(field) => {
-            const isInvalid =
-              field.state.meta.isTouched && field.state.meta.errors.length > 0
-
-            return (
-              <Field data-invalid={isInvalid}>
-                <FieldLabel>Giới tính</FieldLabel>
-                <Select
-                  value={field.state.value ?? ""}
-                  onValueChange={(value) =>
-                    field.handleChange(value as CreateUserInput["gender"])
-                  }
-                >
-                  <SelectTrigger className="w-full" aria-invalid={isInvalid}>
-                    <SelectValue placeholder="Chọn giới tính" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {userGenderOptions.map((gender) => (
-                      <SelectItem key={gender} value={gender}>
-                        {getGenderLabel(gender)}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                {isInvalid && <FieldError errors={field.state.meta.errors} />}
-              </Field>
-            )
-          }}
-        </form.Field>
-
-        <form.Field name="status">
-          {(field) => {
-            const isInvalid =
-              field.state.meta.isTouched && field.state.meta.errors.length > 0
-
-            return (
-              <Field data-invalid={isInvalid}>
-                <RequiredFieldLabel>Trạng thái</RequiredFieldLabel>
-                <Select
-                  value={field.state.value}
-                  onValueChange={(value) =>
-                    field.handleChange(value as CreateUserInput["status"])
-                  }
-                >
-                  <SelectTrigger className="w-full" aria-invalid={isInvalid}>
-                    <SelectValue placeholder="Chọn trạng thái" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value={UserStatus.ACTIVE}>Hoạt động</SelectItem>
-                    <SelectItem value={UserStatus.INACTIVE}>
-                      Ngừng hoạt động
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
                 {isInvalid && <FieldError errors={field.state.meta.errors} />}
               </Field>
             )
@@ -300,13 +288,21 @@ export function CreateUserForm({
               Hủy bỏ
             </Button>
             <Button type="submit" disabled={!canSubmit || isSubmitting}>
-              {isSubmitting ? "Đang lưu..." : "Lưu nhân sự"}
+              {isSubmitting ? submittingLabel : submitLabel}
             </Button>
           </div>
         )}
       </form.Subscribe>
     </form>
   )
+}
+
+function normalizeClientType(value?: string): ClientType {
+  if (value?.toUpperCase() === ClientType.COMPANY) {
+    return ClientType.COMPANY
+  }
+
+  return ClientType.INDIVIDUAL
 }
 
 type RequiredFieldLabelProps = {

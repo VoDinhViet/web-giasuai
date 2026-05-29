@@ -3,8 +3,8 @@ import { createLoader, parseAsInteger, parseAsString } from "nuqs/server"
 export const usersServerSearchParams = {
   limit: parseAsInteger.withDefault(10),
   page: parseAsInteger.withDefault(1),
-  search: parseAsString.withDefault(""),
-  position: parseAsString.withDefault("all"),
+  q: parseAsString.withDefault(""),
+  roleId: parseAsString.withDefault("all"),
   status: parseAsString.withDefault("all"),
 }
 

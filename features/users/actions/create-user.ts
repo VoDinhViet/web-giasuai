@@ -13,8 +13,9 @@ export async function createUser(input: CreateUserInput): Promise<User> {
       email: reqDto.email,
       password: reqDto.password,
       fullName: reqDto.fullName,
-      phoneNumber: reqDto.phoneNumber,
-      position: reqDto.position,
+      dateOfBirth: reqDto.dateOfBirth || undefined,
+      gender: reqDto.gender || undefined,
+      roleId: reqDto.roleId,
       status: reqDto.status,
     },
   })

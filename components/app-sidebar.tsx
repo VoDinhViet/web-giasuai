@@ -50,7 +50,7 @@ type MenuGroup = {
   items: MenuItem[]
 }
 
-const clientRoute = "/client" as Route
+const clientsRoute = "/manage/clients" as Route
 const usersRoute = "/manage/users" as Route
 
 const menuGroups: MenuGroup[] = [
@@ -82,7 +82,7 @@ const menuGroups: MenuGroup[] = [
     label: "Hệ thống",
     items: [
       { label: "Sản phẩm", icon: PackageSearch },
-      { label: "Khách hàng", icon: UserRound, href: clientRoute },
+      { label: "Khách hàng", icon: UserRound, href: clientsRoute },
       { label: "Nhân sự", icon: Users, href: usersRoute },
       { label: "Cài đặt", icon: Settings },
     ],
@@ -106,7 +106,7 @@ export function AppSidebar() {
               tooltip="Cơ khí Tiến Huy"
               className="h-auto justify-center p-0 hover:bg-transparent data-[active=true]:bg-transparent"
             >
-              <Link href={clientRoute} className="flex justify-center">
+              <Link href={clientsRoute} className="flex justify-center">
                 <SidebarBrand />
                 <span className="hidden size-10 items-center justify-center rounded bg-sidebar-accent text-sm font-bold text-sidebar-accent-foreground group-data-[collapsible=icon]:flex">
                   TH
