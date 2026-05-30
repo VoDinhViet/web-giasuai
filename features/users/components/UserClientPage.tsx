@@ -56,7 +56,7 @@ export function UserClientPage({ users, pagination }: UserClientPageProps) {
 
       <UserStatsGrid users={users} totalUsers={pagination.totalRecords} />
 
-      <Card variant="flat" size="none" className="rounded-xl">
+      <Card size="none" className="rounded-xl">
         <CardContent className="p-0">
           <div className="border-b border-border/70 bg-muted/20 p-6">
             <UserFilters

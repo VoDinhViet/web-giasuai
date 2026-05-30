@@ -16,7 +16,7 @@ export interface Course {
   tags: string[];
   learningOutcomes: string[];
   isPublished: boolean;
-  schoolLevelId: Nullable<string>;
+  levelId: Nullable<string>;
   gradeId: Nullable<string>;
   majorId: Nullable<string>;
   subjectId: Nullable<string>;

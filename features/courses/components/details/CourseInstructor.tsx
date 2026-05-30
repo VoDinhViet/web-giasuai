@@ -6,56 +6,54 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export function CourseInstructor() {
   return (
-    <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-      <div className="flex items-center gap-3 mb-8">
-        <div className="h-5 w-1 bg-primary rounded-full" />
-        <h3 className="text-sm font-black capitalize tracking-[0.15em]">
-          Giảng viên hướng dẫn
+    <div className="animate-in fade-in duration-300">
+      <div className="flex items-center gap-2 mb-6">
+        <h3 className="text-xs font-bold uppercase tracking-wider text-foreground">
+          Người biên soạn học liệu
         </h3>
       </div>
-      <div className="flex flex-col md:flex-row gap-12 items-start px-2">
-        <div className="flex flex-col items-center md:items-start text-center md:text-left gap-6 shrink-0">
+      <div className="flex flex-col md:flex-row gap-8 items-center md:items-start px-1">
+        <div className="flex flex-col items-center text-center md:text-left gap-4 shrink-0">
           <div className="relative">
-            <Avatar className="size-36 border-4 border-background shadow-xl ring-1 ring-border">
+            <Avatar className="size-28 border border-border shadow-xs">
               <AvatarImage src="https://github.com/shadcn.png" />
-              <AvatarFallback>GV</AvatarFallback>
+              <AvatarFallback className="font-semibold text-foreground">GV</AvatarFallback>
             </Avatar>
-            <div className="absolute -bottom-1 -right-1 size-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-lg ring-4 ring-background">
-              <IconCheck size={18} stroke={3} />
+            <div className="absolute -bottom-1 -right-1 size-7 rounded-full bg-emerald-500 text-white flex items-center justify-center shadow-xs ring-2 ring-background z-10">
+              <IconCheck size={12} stroke={3} />
             </div>
           </div>
-          <div className="space-y-1.5">
-            <h4 className="text-xl font-bold text-foreground">Nguyễn Văn A</h4>
-            <p className="text-xs font-bold text-primary uppercase tracking-[0.15em]">
+          <div className="space-y-1">
+            <h4 className="text-base font-bold text-foreground tracking-tight">Nguyễn Văn A</h4>
+            <p className="text-[10px] font-bold text-primary uppercase tracking-wider">
               Chuyên gia hệ thống
             </p>
           </div>
         </div>
 
-        <div className="flex-1 space-y-10">
-          <div className="relative">
-            <div className="absolute left-0 top-0 bottom-0 w-1 bg-primary/20 rounded-full" />
-            <p className="text-[17px] text-muted-foreground leading-relaxed pl-8 italic font-medium">
+        <div className="flex-1 space-y-6 w-full">
+          <div className="relative pl-6 py-1 border-l-2 border-primary/40">
+            <p className="text-sm text-muted-foreground/90 leading-relaxed italic font-medium">
               "Sứ mệnh của tôi là giúp mọi người tiếp cận với kiến thức công nghệ một cách đơn giản nhất. Với hơn 15 năm làm việc tại các tập đoàn lớn, tôi tin rằng những kinh nghiệm thực chiến sẽ giúp ích cho lộ trình phát triển của bạn."
             </p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-y-8 gap-x-12">
-            <div>
-              <p className="text-2xl font-black text-foreground tracking-tight">15+</p>
-              <p className="text-[11px] text-muted-foreground uppercase tracking-widest font-black mt-1">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            <div className="border border-border/60 rounded-lg bg-muted/20 px-4 py-3">
+              <p className="text-xl font-bold text-foreground tracking-tight">15+</p>
+              <p className="text-[10px] text-muted-foreground/80 uppercase tracking-wider font-semibold mt-1">
                 Năm kinh nghiệm
               </p>
             </div>
-            <div>
-              <p className="text-2xl font-black text-foreground tracking-tight">5,000+</p>
-              <p className="text-[11px] text-muted-foreground uppercase tracking-widest font-black mt-1">
+            <div className="border border-border/60 rounded-lg bg-muted/20 px-4 py-3">
+              <p className="text-xl font-bold text-foreground tracking-tight">5,000+</p>
+              <p className="text-[10px] text-muted-foreground/80 uppercase tracking-wider font-semibold mt-1">
                 Học viên
               </p>
             </div>
-            <div>
-              <p className="text-2xl font-black text-foreground tracking-tight">12</p>
-              <p className="text-[11px] text-muted-foreground uppercase tracking-widest font-black mt-1">
+            <div className="border border-border/60 rounded-lg bg-muted/20 px-4 py-3">
+              <p className="text-xl font-bold text-foreground tracking-tight">12</p>
+              <p className="text-[10px] text-muted-foreground/80 uppercase tracking-wider font-semibold mt-1">
                 Khóa học
               </p>
             </div>

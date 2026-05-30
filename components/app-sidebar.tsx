@@ -80,7 +80,6 @@ const NAV_GROUPS: Array<{
         title: "Quản lý khóa học",
         url: "/manage/courses",
         icon: IconFileText,
-        permissions: ["courses.delete"],
       },
       {
         title: "Quản lý người dùng",

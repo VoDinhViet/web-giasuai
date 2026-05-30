@@ -7,6 +7,8 @@ import { User } from "@/types/user";
 interface GetClassStudentsParams {
   page?: number;
   limit?: number;
+  q?: string;
+  status?: string;
 }
 
 export async function getClassStudents(
@@ -21,8 +23,11 @@ export async function getClassStudents(
       )
     : {};
 
-  return api<PaginatedResponse<User>>(`/api/v1/classes/${classId}/students`, {
+  return api<PaginatedResponse<User>>("/api/v1/users", {
     method: "GET",
-    query: cleanParams,
+    query: {
+      ...cleanParams,
+      classId,
+    },
   });
 }

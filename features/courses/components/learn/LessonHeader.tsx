@@ -1,19 +1,17 @@
-'use client'
+"use client";
 
-import type { Route } from 'next'
-import Link, { type LinkProps } from 'next/link'
-import {
-  IconChevronLeft,
-  IconCertificate,
-  IconSettings,
-} from '@tabler/icons-react'
-import { Button } from '@/components/ui/button'
-import { Progress } from '@/components/ui/progress'
+import type { Route } from "next";
+import Link, { type LinkProps } from "next/link";
+import { IconCertificate, IconChevronLeft, IconSettings } from "@tabler/icons-react";
+
+import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 
 interface LessonHeaderProps {
-  courseTitle: string
-  progress: number
-  backUrl: LinkProps<Route>['href']
+  courseTitle: string;
+  progress: number;
+  backUrl: LinkProps<Route>["href"];
 }
 
 export function LessonHeader({
@@ -22,29 +20,25 @@ export function LessonHeader({
   backUrl,
 }: LessonHeaderProps) {
   return (
-    <header className="h-16 border-b border-border bg-background/80 backdrop-blur-md sticky top-0 z-50 px-4 flex items-center justify-between gap-4">
-      <div className="flex items-center gap-4 min-w-0">
-        <Button
-          variant="ghost"
-          size="icon"
-          asChild
-          className="rounded-xl shrink-0"
-        >
+    <header className="sticky top-0 z-50 flex h-16 items-center justify-between gap-4 border-b border-border bg-background/90 px-4 backdrop-blur-md">
+      <div className="flex min-w-0 items-center gap-3">
+        <SidebarTrigger className="md:hidden" />
+        <Button variant="ghost" size="icon" asChild className="shrink-0 rounded-xl">
           <Link href={backUrl}>
             <IconChevronLeft size={20} />
           </Link>
         </Button>
-        <div className="h-8 w-px bg-border shrink-0 hidden sm:block" />
+        <div className="hidden h-8 w-px shrink-0 bg-border sm:block" />
         <div className="min-w-0">
-          <h1 className="text-sm font-bold truncate text-foreground">
+          <h1 className="truncate text-sm font-bold text-foreground">
             {courseTitle}
           </h1>
-          <div className="flex items-center gap-3 mt-0.5">
-            <div className="w-32 hidden xs:block">
+          <div className="mt-0.5 flex items-center gap-3">
+            <div className="hidden w-32 xs:block">
               <Progress value={progress} className="h-1" />
             </div>
-            <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest whitespace-nowrap">
-              {progress}% HOÀN THÀNH
+            <span className="whitespace-nowrap text-[10px] font-black uppercase tracking-widest text-muted-foreground">
+              {progress}% hoàn thành
             </span>
           </div>
         </div>
@@ -54,7 +48,7 @@ export function LessonHeader({
         <Button
           variant="outline"
           size="sm"
-          className="rounded-xl hidden md:flex font-bold gap-2"
+          className="hidden rounded-xl font-bold md:flex"
         >
           <IconCertificate size={16} />
           <span>Chứng chỉ</span>
@@ -64,5 +58,5 @@ export function LessonHeader({
         </Button>
       </div>
     </header>
-  )
+  );
 }

@@ -16,7 +16,6 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { UserRole } from "@/types/user";
 import { createClass } from "../actions/create-class";
 import {
   createClassSchema,
@@ -31,7 +30,6 @@ export function CreateClassForm({ onSuccess }: CreateClassFormProps) {
   const router = useRouter();
   const { myUser } = useAuth();
   const [isPending, startTransition] = React.useTransition();
-  const isTeacher = myUser?.role === UserRole.TEACHER;
 
   const defaultValues: CreateClassInput = {
     name: "",
@@ -45,11 +43,6 @@ export function CreateClassForm({ onSuccess }: CreateClassFormProps) {
       onSubmit: createClassSchema,
     },
     onSubmit: async ({ value }) => {
-      if (!isTeacher) {
-        toast.error("Ch\u1EC9 gi\u00E1o vi\u00EAn m\u1EDBi c\u00F3 th\u1EC3 t\u1EA1o l\u1EDBp h\u1ECDc.");
-        return;
-      }
-
       startTransition(async () => {
         const result = await createClass(value);
 
@@ -65,14 +58,6 @@ export function CreateClassForm({ onSuccess }: CreateClassFormProps) {
     },
   });
 
-  if (!isTeacher) {
-    return (
-      <div className="rounded-xl border border-dashed border-zinc-200 bg-zinc-50 px-4 py-4 text-sm font-medium text-zinc-500 dark:border-zinc-800 dark:bg-zinc-900/60 dark:text-zinc-400">
-        {"Ch\u1EC9 t\u00E0i kho\u1EA3n gi\u00E1o vi\u00EAn m\u1EDBi c\u00F3 th\u1EC3 t\u1EA1o l\u1EDBp h\u1ECDc."}
-      </div>
-    );
-  }
-
   return (
     <form
       onSubmit={(e) => {
@@ -87,10 +72,10 @@ export function CreateClassForm({ onSuccess }: CreateClassFormProps) {
           {(field) => (
             <Field data-invalid={field.state.meta.errors.length > 0}>
               <FieldLabel>
-                {"T\u00EAn l\u1EDBp"} <span className="text-rose-500">*</span>
+                Tên lớp <span className="text-rose-500">*</span>
               </FieldLabel>
               <Input
-                placeholder={"L\u1EDBp To\u00E1n t\u01B0 duy 8A"}
+                placeholder="Lớp Toán tư duy 8A"
                 value={field.state.value}
                 onBlur={field.handleBlur}
                 onChange={(e) => field.handleChange(e.target.value)}
@@ -104,11 +89,9 @@ export function CreateClassForm({ onSuccess }: CreateClassFormProps) {
         <form.Field name="description">
           {(field) => (
             <Field data-invalid={field.state.meta.errors.length > 0}>
-              <FieldLabel>{"M\u00F4 t\u1EA3 l\u1EDBp h\u1ECDc"}</FieldLabel>
+              <FieldLabel>Mô tả lớp học</FieldLabel>
               <Textarea
-                placeholder={
-                  "M\u00F4 t\u1EA3 ng\u1EAFn v\u1EC1 n\u1ED9i dung, l\u1ECBch h\u1ECDc ho\u1EB7c m\u1EE5c ti\u00EAu c\u1EE7a l\u1EDBp."
-                }
+                placeholder="Mô tả ngắn về nội dung, lịch học hoặc mục tiêu của lớp."
                 rows={5}
                 value={field.state.value}
                 onBlur={field.handleBlur}
@@ -128,7 +111,7 @@ export function CreateClassForm({ onSuccess }: CreateClassFormProps) {
           onClick={() => onSuccess?.()}
           disabled={isPending}
         >
-          {"H\u1EE7y"}
+          Hủy
         </Button>
 
         <form.Subscribe
@@ -143,12 +126,12 @@ export function CreateClassForm({ onSuccess }: CreateClassFormProps) {
               {isSubmitting || isPending ? (
                 <>
                   <IconLoader2 className="mr-2 h-4 w-4 animate-spin" />
-                  {"\u0110ang t\u1EA1o..."}
+                  Đang tạo...
                 </>
               ) : (
                 <>
                   <IconPlus className="mr-2 h-4 w-4" />
-                  {"T\u1EA1o l\u1EDBp h\u1ECDc"}
+                  Tạo lớp học
                 </>
               )}
             </Button>

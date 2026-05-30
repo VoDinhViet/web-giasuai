@@ -1,51 +1,59 @@
-"use client";
+'use client'
 
-import React from "react";
-import {
-  IconFilter,
-  IconSearch,
-  IconSortDescending,
-} from "@tabler/icons-react";
-import { Input } from "@/components/ui/input";
+import React from 'react'
+import { IconFilter, IconSearch, IconSortDescending } from '@tabler/icons-react'
+import { Input } from '@/components/ui/input'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from '@/components/ui/select'
 
-import { CreateClassDialog } from "./CreateClassDialog";
+import { CreateClassDialog } from './CreateClassDialog'
 
 interface ClassFiltersProps {
   filters: {
-    q: string;
-    isActive: string;
-    order: string;
-  };
-  onFiltersChange: (value: Record<string, string | number>) => void;
+    q: string
+    isActive: string
+    order: string
+  }
+  onFiltersChange: (value: Record<string, string | number>) => void
 }
 
-export function ClassFilters({
-  filters,
-  onFiltersChange,
-}: ClassFiltersProps) {
-  const { q = "", isActive = "all", order = "DESC" } = filters;
-  const [localSearch, setLocalSearch] = React.useState(q);
+type SelectOption<TValue extends string> = {
+  value: TValue
+  label: string
+}
 
-  React.useEffect(() => {
-    setLocalSearch(q);
-  }, [q]);
+type StatusFilter = 'all' | 'true' | 'false'
+type SortOrder = 'DESC' | 'ASC'
+
+const statusOptions: SelectOption<StatusFilter>[] = [
+  { value: 'all', label: 'Tất cả trạng thái' },
+  { value: 'true', label: 'Đang hoạt động' },
+  { value: 'false', label: 'Tạm dừng' },
+]
+
+const sortOptions: SelectOption<SortOrder>[] = [
+  { value: 'DESC', label: 'Mới nhất' },
+  { value: 'ASC', label: 'Cũ nhất' },
+]
+
+export function ClassFilters({ filters, onFiltersChange }: ClassFiltersProps) {
+  const { q = '', isActive = 'all', order = 'DESC' } = filters
+  const [localSearch, setLocalSearch] = React.useState(q)
 
   React.useEffect(() => {
     const timer = window.setTimeout(() => {
       if (localSearch !== q) {
-        onFiltersChange({ q: localSearch });
+        onFiltersChange({ q: localSearch })
       }
-    }, 500);
+    }, 500)
 
-    return () => window.clearTimeout(timer);
-  }, [localSearch, onFiltersChange, q]);
+    return () => window.clearTimeout(timer)
+  }, [localSearch, onFiltersChange, q])
 
   return (
     <div className="flex flex-col gap-4">
@@ -55,7 +63,6 @@ export function ClassFilters({
             <IconSearch className="absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-zinc-400" />
             <Input
               placeholder="Tìm kiếm lớp học..."
-              className="h-10 pl-9 text-xs"
               value={localSearch}
               onChange={(e) => setLocalSearch(e.target.value)}
             />
@@ -66,20 +73,18 @@ export function ClassFilters({
               value={isActive}
               onValueChange={(value) => onFiltersChange({ isActive: value })}
             >
-              <SelectTrigger className="h-10 w-fit min-w-[160px] gap-2 whitespace-nowrap px-3 text-xs">
-                <IconFilter size={14} className="shrink-0 text-zinc-400" />
-                <SelectValue placeholder="Trạng thái" />
+              <SelectTrigger>
+                <span className="flex items-center gap-2">
+                  <IconFilter size={14} className="shrink-0 text-zinc-400" />
+                  <SelectValue placeholder="Trạng thái" />
+                </span>
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all" className="text-xs">
-                  Tất cả trạng thái
-                </SelectItem>
-                <SelectItem value="true" className="text-xs">
-                  Đang hoạt động
-                </SelectItem>
-                <SelectItem value="false" className="text-xs">
-                  Tạm dừng
-                </SelectItem>
+                {statusOptions.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
 
@@ -87,17 +92,21 @@ export function ClassFilters({
               value={order}
               onValueChange={(value) => onFiltersChange({ order: value })}
             >
-              <SelectTrigger className="h-10 w-fit min-w-[140px] gap-2 whitespace-nowrap px-3 text-xs">
-                <IconSortDescending size={14} className="shrink-0 text-zinc-400" />
-                <SelectValue placeholder="Sắp xếp" />
+              <SelectTrigger>
+                <span className="flex items-center gap-2">
+                  <IconSortDescending
+                    size={14}
+                    className="shrink-0 text-zinc-400"
+                  />
+                  <SelectValue placeholder="Sắp xếp" />
+                </span>
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="DESC" className="text-xs">
-                  Mới nhất
-                </SelectItem>
-                <SelectItem value="ASC" className="text-xs">
-                  Cũ nhất
-                </SelectItem>
+                {sortOptions.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
@@ -106,5 +115,5 @@ export function ClassFilters({
         <CreateClassDialog />
       </div>
     </div>
-  );
+  )
 }

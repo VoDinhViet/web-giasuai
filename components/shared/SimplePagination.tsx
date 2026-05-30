@@ -10,6 +10,7 @@ import {
 import { useQueryStates } from "nuqs";
 
 import { Button } from "@/components/ui/button";
+import { PaginationContent, PaginationItem } from "@/components/ui/pagination";
 import {
   Select,
   SelectContent,
@@ -52,40 +53,31 @@ export function SimplePagination({
   if (totalPages <= 1 && totalRecords <= limit) return null;
 
   return (
-    <div className="flex flex-col md:flex-row items-center justify-between py-6 gap-4 w-full border-t border-zinc-100 dark:border-zinc-800/50 mt-10 animate-in fade-in slide-in-from-bottom-2 duration-500">
+    <div className="mt-10 flex w-full flex-col items-center justify-between gap-4 border-t border-border/70 py-6 animate-in fade-in slide-in-from-bottom-2 duration-500 md:flex-row">
       {/* Range Info Section */}
-      <div className="flex-1 text-[11px] font-semibold text-zinc-400 uppercase tracking-tight flex items-center gap-1">
+      <div className="flex flex-1 items-center gap-1 text-[11px] font-semibold uppercase tracking-tight text-muted-foreground">
         <span>Hiển thị</span>
-        <span className="text-zinc-900 dark:text-zinc-100 font-bold">
+        <span className="font-bold text-foreground">
           {startRange}-{endRange}
         </span>
         <span>trong tổng số</span>
-        <span className="text-zinc-900 dark:text-zinc-100 font-bold">
-          {totalRecords}
-        </span>
+        <span className="font-bold text-foreground">{totalRecords}</span>
         <span>lớp học</span>
       </div>
 
       <div className="flex flex-wrap items-center justify-center gap-6 lg:gap-8">
         {/* Page Size Selector */}
         <div className="flex items-center gap-2.5">
-          <p className="text-[11px] font-black text-zinc-500 uppercase tracking-widest">
+          <p className="text-[11px] font-black uppercase tracking-widest text-muted-foreground">
             Hiển thị
           </p>
           <Select value={`${limit}`} onValueChange={handleLimitChange}>
-            <SelectTrigger className="h-8 min-w-[70px] border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 hover:bg-zinc-50 transition-colors rounded-md text-xs font-semibold text-zinc-700 shadow-none">
+            <SelectTrigger>
               <SelectValue placeholder={limit} />
             </SelectTrigger>
-            <SelectContent
-              side="top"
-              className="rounded-lg border-zinc-200 shadow-xl"
-            >
+            <SelectContent side="top">
               {pageSizeOptions.map((size) => (
-                <SelectItem
-                  key={size}
-                  value={`${size}`}
-                  className="text-xs font-semibold text-zinc-600 focus:bg-primary/5 focus:text-primary"
-                >
+                <SelectItem key={size} value={`${size}`}>
                   {size}
                 </SelectItem>
               ))}
@@ -94,39 +86,47 @@ export function SimplePagination({
         </div>
 
         {/* Current Page Indicator */}
-        <div className="flex items-center justify-center text-[11px] font-black text-zinc-500 uppercase tracking-widest min-w-[100px]">
+        <div className="flex min-w-[100px] items-center justify-center text-[11px] font-black uppercase tracking-widest text-muted-foreground">
           Trang{" "}
-          <span className="text-zinc-950 dark:text-zinc-100 mx-1.5 font-bold underline underline-offset-4 decoration-primary/30">
+          <span className="mx-1.5 font-bold text-foreground underline decoration-primary/30 underline-offset-4">
             {currentPage}
           </span>{" "}
-          / <span className="ml-1.5 text-zinc-400">{totalPages}</span>
+          / <span className="ml-1.5 text-muted-foreground">{totalPages}</span>
         </div>
 
         {/* Navigation Buttons */}
-        <div className="flex items-center gap-1.5">
-          <NavButton
-            onClick={() => handlePageChange(1)}
-            disabled={currentPage <= 1}
-            icon={<IconChevronsLeft size={14} stroke={2.5} />}
-            className="hidden lg:flex"
-          />
-          <NavButton
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage <= 1}
-            icon={<IconChevronLeft size={14} stroke={2.5} />}
-          />
-          <NavButton
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={currentPage >= totalPages}
-            icon={<IconChevronRight size={14} stroke={2.5} />}
-          />
-          <NavButton
-            onClick={() => handlePageChange(totalPages)}
-            disabled={currentPage >= totalPages}
-            icon={<IconChevronsRight size={14} stroke={2.5} />}
-            className="hidden lg:flex"
-          />
-        </div>
+        <nav aria-label="pagination">
+          <PaginationContent>
+            <li className="hidden lg:block">
+              <NavButton
+                onClick={() => handlePageChange(1)}
+                disabled={currentPage <= 1}
+                icon={<IconChevronsLeft size={14} stroke={2.5} />}
+              />
+            </li>
+            <PaginationItem>
+              <NavButton
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage <= 1}
+                icon={<IconChevronLeft size={14} stroke={2.5} />}
+              />
+            </PaginationItem>
+            <PaginationItem>
+              <NavButton
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage >= totalPages}
+                icon={<IconChevronRight size={14} stroke={2.5} />}
+              />
+            </PaginationItem>
+            <li className="hidden lg:block">
+              <NavButton
+                onClick={() => handlePageChange(totalPages)}
+                disabled={currentPage >= totalPages}
+                icon={<IconChevronsRight size={14} stroke={2.5} />}
+              />
+            </li>
+          </PaginationContent>
+        </nav>
       </div>
     </div>
   );
@@ -136,15 +136,13 @@ interface NavButtonProps {
   onClick: () => void;
   disabled: boolean;
   icon: React.ReactNode;
-  className?: string;
 }
 
-function NavButton({ onClick, disabled, icon, className }: NavButtonProps) {
+function NavButton({ onClick, disabled, icon }: NavButtonProps) {
   return (
     <Button
       variant="outline"
       size="icon-sm"
-      className={`border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 hover:bg-primary/5 hover:text-primary transition-all rounded-md shadow-none disabled:opacity-30 ${className}`}
       onClick={onClick}
       disabled={disabled}
     >

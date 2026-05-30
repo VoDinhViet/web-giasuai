@@ -1,6 +1,6 @@
 import { getClasses } from "@/features/classes/actions/get-classes";
 import { getCourseDetail } from "@/features/courses/actions/get-course-detail";
-import { CourseAssignToClassPage } from "@/features/courses/components/CourseAssignToClassPage";
+import { CourseAssignToClassPage } from "@/features/courses/components/assign/CourseAssignToClassPage";
 
 interface CourseAssignPageProps {
   params: Promise<{ courseId: string }>;

@@ -7,6 +7,7 @@ import {
   IconBook2,
   IconBuildingCommunity,
   IconCheck,
+  IconEye,
   IconSearch,
   IconSparkles,
 } from "@tabler/icons-react";
@@ -77,7 +78,7 @@ export function CourseAssignToClassPage({
           variant="outline"
           className="h-10 rounded-xl border-zinc-200 bg-white shadow-none dark:border-zinc-800 dark:bg-zinc-950"
         >
-          <Link href={`/courses/${course.id}`}>
+          <Link href={`/manage/courses/${course.id}`}>
             <IconArrowLeft size={16} className="mr-2" />
             {"Quay l\u1EA1i chi ti\u1EBFt kh\u00F3a h\u1ECDc"}
           </Link>
@@ -107,13 +108,13 @@ export function CourseAssignToClassPage({
           variant="outline"
           className="h-10 flex-1 justify-start rounded-xl border-zinc-200 bg-white shadow-none dark:border-zinc-800 dark:bg-zinc-950"
         >
-          <Link href={`/courses/${course.id}`}>
+          <Link href={`/manage/courses/${course.id}`}>
             <IconArrowLeft size={16} className="mr-2" />
             {"Quay l\u1EA1i chi ti\u1EBFt kh\u00F3a h\u1ECDc"}
           </Link>
         </Button>
         <Button asChild variant="secondary" size="icon" className="rounded-xl">
-          <Link href={`/courses/${course.id}`} target="_blank">
+          <Link href={`/manage/courses/${course.id}`} target="_blank">
             <IconEye size={18} stroke={2} />
           </Link>
         </Button>

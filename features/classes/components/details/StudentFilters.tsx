@@ -15,12 +15,14 @@ interface StudentFiltersProps {
   q: string;
   status: string;
   onFiltersChange: (filters: { q?: string; status?: string }) => void;
+  children?: React.ReactNode;
 }
 
 export function StudentFilters({
   q,
   status,
   onFiltersChange,
+  children,
 }: StudentFiltersProps) {
   const [localSearch, setLocalSearch] = React.useState(q);
 
@@ -67,6 +69,7 @@ export function StudentFilters({
             </SelectContent>
           </Select>
         </div>
+        {children}
       </div>
     </div>
   );

@@ -8,40 +8,46 @@ interface LessonStepIndicatorProps {
   onStepClick: (index: number) => void;
 }
 
-export function LessonStepIndicator({ steps, currentStep, onStepClick }: LessonStepIndicatorProps) {
+export function LessonStepIndicator({
+  steps,
+  currentStep,
+  onStepClick,
+}: LessonStepIndicatorProps) {
   return (
-    <div className="flex items-center gap-12 mb-20 border-b border-zinc-100 pb-6 overflow-x-auto no-scrollbar">
+    <div className="no-scrollbar flex items-center gap-8 overflow-x-auto border-b border-zinc-100 pb-6 dark:border-zinc-800">
       {steps.map((step, idx) => {
         const isActive = currentStep === idx;
+
         return (
           <button
-            key={idx}
+            key={step}
+            type="button"
             onClick={() => onStepClick(idx)}
-            className="group relative flex items-center gap-4 transition-all duration-500 outline-none whitespace-nowrap"
+            className="group relative flex items-center gap-3 whitespace-nowrap outline-none"
           >
-            {/* Index Glow Circle */}
-            <div className={cn(
-              "size-8 rounded-full flex items-center justify-center text-[10px] font-black transition-all duration-500",
-              isActive 
-                ? "bg-primary text-white shadow-xl shadow-primary/20 scale-110" 
-                : "bg-zinc-50 text-zinc-300 group-hover:bg-zinc-100 group-hover:text-zinc-500"
-            )}>
+            <div
+              className={cn(
+                "flex size-8 items-center justify-center rounded-full text-[10px] font-black transition-colors",
+                isActive
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-zinc-100 text-zinc-400 group-hover:text-zinc-600 dark:bg-zinc-900",
+              )}
+            >
               {idx + 1}
             </div>
-
-            <span className={cn(
-              "text-xs font-bold uppercase tracking-[0.15em] transition-all duration-500",
-              isActive 
-                ? "text-primary translate-x-1" 
-                : "text-zinc-400 group-hover:text-zinc-600"
-            )}>
+            <span
+              className={cn(
+                "text-xs font-bold uppercase tracking-[0.14em] transition-colors",
+                isActive
+                  ? "text-primary"
+                  : "text-zinc-400 group-hover:text-zinc-600",
+              )}
+            >
               {step}
             </span>
-
-            {/* Vibrant Primary Indicator */}
-            {isActive && (
-              <div className="absolute -bottom-[25px] left-0 right-0 h-[3px] bg-primary rounded-full shadow-[0_4px_12px_rgba(var(--primary),0.3)] animate-in fade-in zoom-in duration-700" />
-            )}
+            {isActive ? (
+              <div className="absolute -bottom-[25px] left-0 right-0 h-[3px] rounded-full bg-primary" />
+            ) : null}
           </button>
         );
       })}

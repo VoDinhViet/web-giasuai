@@ -1,7 +1,6 @@
 "use client";
 
 import { IconCheck } from "@tabler/icons-react";
-import { Item, ItemContent, ItemMedia, ItemTitle } from "./item";
 import type { Course } from "@/features/classes/types/course.type";
 
 interface CourseOverviewProps {
@@ -10,20 +9,17 @@ interface CourseOverviewProps {
 
 export function CourseOverview({ course }: CourseOverviewProps) {
   return (
-    <div className="space-y-12 animate-in fade-in duration-500">
+    <div className="space-y-8 animate-in fade-in duration-300">
       {/* Course Description Section */}
-      <div className="space-y-6">
-        <div className="flex items-center gap-3">
-          <div className="h-5 w-1 bg-primary rounded-full" />
-          <h3 className="text-sm font-black capitalize tracking-[0.15em] text-foreground">
-            Mô tả khóa học
-          </h3>
-        </div>
-        <div className="text-muted-foreground leading-relaxed text-base">
+      <div className="space-y-3">
+        <h3 className="text-xs font-bold uppercase tracking-wider text-foreground/95">
+          Mô tả khóa học
+        </h3>
+        <div className="text-muted-foreground leading-relaxed text-sm font-medium pl-0.5">
           {course.description ? (
-            <div dangerouslySetInnerHTML={{ __html: course.description }} />
+            <div dangerouslySetInnerHTML={{ __html: course.description }} className="prose prose-zinc dark:prose-invert max-w-none text-sm" />
           ) : (
-            <p className="italic text-muted-foreground">
+            <p className="italic text-muted-foreground/60">
               Chưa có mô tả chi tiết cho khóa học này.
             </p>
           )}
@@ -31,15 +27,12 @@ export function CourseOverview({ course }: CourseOverviewProps) {
       </div>
 
       {/* Learning Outcomes Section */}
-      <div className="space-y-6">
-        <div className="flex items-center gap-3">
-          <div className="h-5 w-1 bg-primary rounded-full" />
-          <h3 className="text-sm font-black capitalize tracking-[0.15em] text-foreground">
-            Giá trị nhận được
-          </h3>
-        </div>
+      <div className="space-y-4">
+        <h3 className="text-xs font-bold uppercase tracking-wider text-foreground/95">
+          Giá trị nhận được
+        </h3>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2 pl-0.5">
           {(course.learningOutcomes.length > 0
             ? course.learningOutcomes
             : [
@@ -50,19 +43,15 @@ export function CourseOverview({ course }: CourseOverviewProps) {
               "Tư duy lập trình hiện đại",
             ]
           ).map((outcome, i) => (
-            <Item
+            <div
               key={i}
-              className="border-none px-0 py-1 hover:bg-transparent"
+              className="flex items-start gap-2.5 py-1"
             >
-              <ItemMedia>
-                <IconCheck className="size-5 text-emerald-600" stroke={2.5} />
-              </ItemMedia>
-              <ItemContent>
-                <ItemTitle className="text-[15px] font-medium text-foreground">
-                  {outcome}
-                </ItemTitle>
-              </ItemContent>
-            </Item>
+              <IconCheck size={16} className="text-emerald-500 shrink-0 mt-0.5 stroke-[2.5]" />
+              <span className="text-sm font-medium text-muted-foreground leading-normal">
+                {outcome}
+              </span>
+            </div>
           ))}
         </div>
       </div>

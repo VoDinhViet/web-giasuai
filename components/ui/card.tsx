@@ -2,7 +2,7 @@ import * as React from "react"
 
 import { cn } from "@/lib/utils"
 
-type CardVariant = "default" | "flat" | "outline" | "glass"
+type CardVariant = "default" | "outline" | "glass"
 type CardSize = "default" | "sm" | "stat" | "none"
 
 type CardProps = React.ComponentProps<"div"> & {
@@ -26,7 +26,6 @@ function Card({
         "data-[size=default]:gap-4 data-[size=default]:py-4 data-[size=sm]:gap-3 data-[size=sm]:py-3 data-[size=stat]:gap-0 data-[size=stat]:py-0 data-[size=none]:gap-0 data-[size=none]:py-0",
         "has-data-[slot=card-footer]:pb-0 data-[size=sm]:has-data-[slot=card-footer]:pb-0 data-[size=stat]:has-data-[slot=card-footer]:pb-0 data-[size=none]:has-data-[slot=card-footer]:pb-0",
         "data-[variant=default]:border data-[variant=default]:border-border/70 data-[variant=default]:bg-card data-[variant=default]:shadow-xs data-[variant=default]:shadow-slate-900/5 data-[variant=default]:hover:border-primary/15 data-[variant=default]:hover:shadow-sm data-[variant=default]:hover:shadow-slate-900/6 dark:data-[variant=default]:bg-card/80 dark:data-[variant=default]:shadow-black/20",
-        "data-[variant=flat]:border data-[variant=flat]:border-border/70 data-[variant=flat]:bg-card data-[variant=flat]:shadow-none data-[variant=flat]:hover:border-primary/15 data-[variant=flat]:hover:bg-card/95 data-[variant=flat]:hover:shadow-xs data-[variant=flat]:hover:shadow-slate-900/5 dark:data-[variant=flat]:bg-card/70 dark:data-[variant=flat]:hover:shadow-black/20",
         "data-[variant=outline]:border data-[variant=outline]:border-dashed data-[variant=outline]:border-border/70 data-[variant=outline]:bg-card/70 data-[variant=outline]:shadow-none",
         "data-[variant=glass]:border data-[variant=glass]:border-white/20 data-[variant=glass]:bg-white/80 data-[variant=glass]:shadow-lg data-[variant=glass]:shadow-slate-900/8 data-[variant=glass]:backdrop-blur-xl dark:data-[variant=glass]:border-white/10 dark:data-[variant=glass]:bg-zinc-950/50",
         className

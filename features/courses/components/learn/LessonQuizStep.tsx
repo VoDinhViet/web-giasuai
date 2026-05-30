@@ -1,6 +1,8 @@
 "use client";
 
 import { IconChevronLeft } from "@tabler/icons-react";
+
+import { Button } from "@/components/ui/button";
 import { LessonQuiz } from "./LessonQuiz";
 
 interface LessonQuizStepProps {
@@ -9,19 +11,23 @@ interface LessonQuizStepProps {
 
 export function LessonQuizStep({ onBack }: LessonQuizStepProps) {
   return (
-    <div className="space-y-16 animate-in fade-in duration-700">
-      <div className="space-y-4 text-center max-w-2xl mx-auto">
-        <h2 className="text-4xl font-black tracking-tight text-zinc-900">Bài tập củng cố</h2>
-        <p className="text-zinc-500 text-lg leading-relaxed">Vượt qua bài trắc nghiệm này để hoàn thành bài học.</p>
+    <div className="animate-in fade-in space-y-12 duration-500">
+      <div className="mx-auto max-w-2xl space-y-4 text-center">
+        <h2 className="text-4xl font-black tracking-tight text-zinc-950 dark:text-zinc-50">
+          Bài tập củng cố
+        </h2>
+        <p className="text-lg leading-relaxed text-zinc-500">
+          Vượt qua bài trắc nghiệm này để hoàn thành bài học.
+        </p>
       </div>
-      <div className="max-w-3xl mx-auto">
+      <div className="mx-auto max-w-3xl">
         <LessonQuiz />
       </div>
-      <div className="flex justify-start pt-12 border-t border-zinc-100">
-        <button onClick={onBack} className="text-[10px] font-black uppercase tracking-widest text-zinc-400 hover:text-zinc-900 transition-colors flex items-center gap-2">
+      <div className="border-t border-zinc-100 pt-10 dark:border-zinc-800">
+        <Button variant="ghost" onClick={onBack}>
           <IconChevronLeft size={16} />
           Quay lại thực hành
-        </button>
+        </Button>
       </div>
     </div>
   );
