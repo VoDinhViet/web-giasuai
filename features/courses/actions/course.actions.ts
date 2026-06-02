@@ -1,7 +1,8 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
+
 import { api } from "@/lib/api";
-import { CreateCourseFormValues } from "../schemas/course-info.schema";
 import { ActionResponse } from "@/types/api";
 
 /**
@@ -65,7 +66,7 @@ export async function createCourseAction(data: FormData): Promise<
     });
 
     const courseId = result.id;
-    console.log("Course ID: ", courseId);
+    revalidatePath("/manage/courses");
 
     return {
       success: true,
@@ -93,6 +94,8 @@ export async function updateCourseAction(
       method: "PATCH",
       body: data,
     });
+    revalidatePath("/manage/courses");
+    revalidatePath(`/manage/courses/${courseId}`);
 
     return {
       success: true,
@@ -119,6 +122,7 @@ export async function updateCourseCurriculumAction(
       method: "PUT",
       body: formData,
     });
+    revalidatePath(`/manage/courses/${courseId}`);
 
     return {
       success: true,
@@ -165,6 +169,7 @@ export async function deleteCourseAction(
     await api(`/api/v1/courses/${courseId}`, {
       method: "DELETE",
     });
+    revalidatePath("/manage/courses");
 
     return {
       success: true,
@@ -186,12 +191,12 @@ export async function syncCourseCurriculumAction(
   courseId: string,
   data: FormData,
 ): Promise<ActionResponse> {
-  console.log("Data: ", data);
   try {
     await api(`/api/v1/courses/${courseId}/curriculum`, {
       method: "PUT",
       body: data,
     });
+    revalidatePath(`/manage/courses/${courseId}`);
 
     return {
       success: true,
@@ -212,6 +217,5 @@ export async function getCourseCurriculumAction(courseId: string) {
   const result = await api<any>(`/api/v1/courses/${courseId}/curriculum`, {
     method: "GET",
   });
-  console.log("Result: ", JSON.stringify(result));
   return result;
 }
