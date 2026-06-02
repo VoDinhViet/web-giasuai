@@ -9,8 +9,8 @@ import {
   IconLoader2,
   IconAlertOctagon,
   IconUserPlus,
-  IconSchool,
-  IconUsers,
+  IconCircleCheck,
+  IconMail,
 } from "@tabler/icons-react";
 
 import { Button } from "@/components/ui/button";
@@ -28,19 +28,36 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Label } from "@/components/ui/label";
-import { registerSchema, type RegisterInput } from "../schemas/register.schema";
+import { registerSchema } from "../schemas/register.schema";
 import { useTransition } from "react";
 import { Alert, AlertTitle } from "@/components/ui/alert";
-import { registerWithEmailPassword } from "../actions/register-with-email-password";
-import { cn } from "@/lib/utils";
+import {
+  registerWithEmailPassword,
+  requestRegistrationOtp,
+  verifyRegistrationOtp,
+} from "../actions/register-with-email-password";
 import { UserRole } from "@/types/user";
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+} from "@/components/ui/input-otp";
+
+type PendingRegistration = {
+  userId: string;
+  email: string;
+  role: UserRole.STUDENT | UserRole.TEACHER;
+};
 
 export function RegisterForm() {
   const [isPending, startTransition] = useTransition();
   const [showPassword, setShowPassword] = React.useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
+  const [success, setSuccess] = React.useState<string | null>(null);
+  const [pendingRegistration, setPendingRegistration] =
+    React.useState<PendingRegistration | null>(null);
+  const [otpCode, setOtpCode] = React.useState("");
 
   const form = useForm({
     defaultValues: {
@@ -62,10 +79,154 @@ export function RegisterForm() {
         });
         if (result?.success === false) {
           setError(result.message);
+          setSuccess(null);
+          return;
+        }
+
+        if (result?.data) {
+          setError(null);
+          setSuccess(result.message);
+          setPendingRegistration({
+            userId: result.data.userId,
+            email: value.email,
+            role: value.role as UserRole.TEACHER | UserRole.STUDENT,
+          });
         }
       });
     },
   });
+
+  const handleVerifyOtp = () => {
+    if (!pendingRegistration || otpCode.length !== 6) {
+      setError("Vui lòng nhập đủ 6 số OTP.");
+      return;
+    }
+
+    startTransition(async () => {
+      const result = await verifyRegistrationOtp(
+        pendingRegistration.userId,
+        otpCode,
+        pendingRegistration.role
+      );
+
+      if (result.success) {
+        setError(null);
+        setSuccess(result.message);
+        setPendingRegistration(null);
+        return;
+      }
+
+      setError(result.message);
+      setSuccess(null);
+    });
+  };
+
+  const handleResendOtp = () => {
+    if (!pendingRegistration) return;
+
+    startTransition(async () => {
+      const result = await requestRegistrationOtp(pendingRegistration.userId);
+
+      if (result.success) {
+        setError(null);
+        setSuccess(result.message);
+        return;
+      }
+
+      setError(result.message);
+      setSuccess(null);
+    });
+  };
+
+  if (pendingRegistration) {
+    return (
+      <div className="relative overflow-hidden rounded-[2.5rem] md:p-12">
+        <div className="relative z-10 space-y-8">
+          <div className="space-y-2 text-left">
+            <h2 className="text-4xl font-bold tracking-tight text-slate-900 dark:text-white">
+              Xác thực email
+            </h2>
+            <p className="text-sm leading-6 text-slate-500 dark:text-slate-400">
+              Nhập mã OTP 6 số đã gửi tới {pendingRegistration.email}.
+            </p>
+          </div>
+
+          {error && (
+            <Alert className="border-none bg-destructive/10 text-destructive dark:bg-destructive/15">
+              <IconAlertOctagon className="size-4" />
+              <AlertTitle>{error}</AlertTitle>
+            </Alert>
+          )}
+
+          {success && (
+            <Alert className="border-none bg-emerald-500/10 text-emerald-600 dark:bg-emerald-500/15">
+              <IconCircleCheck className="size-4" />
+              <AlertTitle>{success}</AlertTitle>
+            </Alert>
+          )}
+
+          <div className="space-y-3">
+            <FieldLabel className="text-sm font-bold text-slate-900 dark:text-slate-200">
+              Mã OTP <span className="text-red-500">*</span>
+            </FieldLabel>
+            <InputOTP
+              maxLength={6}
+              value={otpCode}
+              onChange={setOtpCode}
+              disabled={isPending}
+              containerClassName="justify-between"
+            >
+              <InputOTPGroup className="w-full justify-between gap-2 border-none">
+                {Array.from({ length: 6 }).map((_, index) => (
+                  <InputOTPSlot
+                    key={index}
+                    index={index}
+                    className="size-11 rounded-xl border bg-background text-base font-bold"
+                  />
+                ))}
+              </InputOTPGroup>
+            </InputOTP>
+          </div>
+
+          <div className="grid gap-3 sm:grid-cols-2">
+            <Button
+              type="button"
+              variant="outline"
+              className="h-11 font-bold"
+              disabled={isPending}
+              onClick={handleResendOtp}
+            >
+              <IconMail className="mr-2 size-5" />
+              Gửi lại OTP
+            </Button>
+            <Button
+              type="button"
+              className="h-11 font-bold"
+              disabled={isPending || otpCode.length !== 6}
+              onClick={handleVerifyOtp}
+            >
+              {isPending ? (
+                <IconLoader2 className="mr-2 size-5 animate-spin" />
+              ) : (
+                <IconCircleCheck className="mr-2 size-5" />
+              )}
+              Xác thực
+            </Button>
+          </div>
+
+          <p className="text-center text-[13px] font-medium text-slate-500 dark:text-slate-400">
+            Đã xác thực?{" "}
+            <Link
+              href="/login"
+              className="font-bold text-primary hover:underline"
+            >
+              Đăng nhập ngay
+            </Link>
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="relative overflow-hidden rounded-[2.5rem] md:p-12">
@@ -92,6 +253,13 @@ export function RegisterForm() {
             <Alert className="border-none bg-destructive/10 text-destructive dark:bg-destructive/15">
               <IconAlertOctagon className="size-4" />
               <AlertTitle>{error}</AlertTitle>
+            </Alert>
+          )}
+
+          {success && (
+            <Alert className="border-none bg-emerald-500/10 text-emerald-600 dark:bg-emerald-500/15">
+              <IconCircleCheck className="size-4" />
+              <AlertTitle>{success}</AlertTitle>
             </Alert>
           )}
 
@@ -288,7 +456,11 @@ export function RegisterForm() {
                   </FieldLabel>
                   <Select
                     value={field.state.value}
-                    onValueChange={(val) => field.handleChange(val as any)}
+                    onValueChange={(val) =>
+                      field.handleChange(
+                        val as UserRole.STUDENT | UserRole.TEACHER
+                      )
+                    }
                     disabled={isPending}
                   >
                     <SelectTrigger className="h-11">

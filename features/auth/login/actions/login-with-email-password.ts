@@ -4,7 +4,9 @@ import { redirect } from "next/navigation";
 
 import { api } from "@/lib/api";
 import { getSession } from "@/lib/session";
+import { getPermissionsForRole } from "@/lib/rbac";
 import type { ActionResponse } from "@/types/api";
+import type { User } from "@/types/user";
 import type { LoginInput } from "../schemas/login.schema";
 import { Route } from "next";
 
@@ -13,6 +15,22 @@ interface LoginResponse {
   accessToken: string;
   refreshToken: string;
   tokenExpires: number;
+}
+
+function getLoginErrorMessage(error: unknown): string {
+  const apiError = error as {
+    response?: {
+      _data?: {
+        errorCode?: string;
+      };
+    };
+  };
+
+  if (apiError.response?._data?.errorCode === "auth.error.account_locked") {
+    return "Tài khoản chưa xác thực, đang chờ duyệt hoặc đã bị khóa.";
+  }
+
+  return "Email hoặc mật khẩu không chính xác.";
 }
 
 export async function loginWithEmailPassword(
@@ -35,13 +53,22 @@ export async function loginWithEmailPassword(
     session.refreshToken = result.refreshToken;
     session.isLoggedIn = true;
 
+    const user = await api<User>("/api/v1/users/me", {
+      headers: {
+        Authorization: `Bearer ${result.accessToken}`,
+      },
+    });
+
+    session.role = user.role;
+    session.permissions = user.permissions ?? getPermissionsForRole(user.role);
+
     await session.save();
   } catch (error: unknown) {
     console.error("Login error:", error);
 
     return {
       success: false,
-      message: "Email hoặc mật khẩu không chính xác.",
+      message: getLoginErrorMessage(error),
     };
   }
 

@@ -9,6 +9,7 @@ import {
   IconLockOpen,
   IconTrash,
   IconLoader2,
+  IconUserCheck,
 } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,9 +19,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { User } from "@/types/user";
+import { User, UserRole } from "@/types/user";
 import { toggleLock } from "../actions/toggle-lock";
 import { deleteUser } from "../actions/delete-user";
+import { verifyTeacher } from "../actions/verify-teacher";
 
 interface UserTableActionsProps {
   myUser: User;
@@ -54,6 +56,16 @@ export function UserTableActions({ myUser }: UserTableActionsProps) {
     });
   };
 
+  const handleVerifyTeacher = () =>
+    startTransition(async () => {
+      const { success, message } = await verifyTeacher(myUser.id);
+      if (success) toast.success(message);
+      else toast.error(message);
+    });
+
+  const canVerifyTeacher =
+    myUser.role === UserRole.TEACHER && myUser.isLocked;
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -75,6 +87,15 @@ export function UserTableActions({ myUser }: UserTableActionsProps) {
           <IconEdit size={16} />
           <span>Sửa thông tin</span>
         </DropdownMenuItem>
+        {canVerifyTeacher && (
+          <DropdownMenuItem
+            onClick={handleVerifyTeacher}
+            disabled={isPending}
+          >
+            <IconUserCheck size={16} />
+            <span>Xác thực giáo viên</span>
+          </DropdownMenuItem>
+        )}
         <DropdownMenuItem onClick={handleToggle} disabled={isPending}>
           {myUser.isLocked ? (
             <>

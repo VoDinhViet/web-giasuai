@@ -9,6 +9,7 @@ import {
   IconEyeOff,
   IconLoader2,
   IconAlertOctagon,
+  IconCircleCheck,
 } from "@tabler/icons-react";
 
 import { Button } from "@/components/ui/button";
@@ -34,6 +35,10 @@ export function LoginForm({}: LoginFormProps) {
   const [error, setError] = React.useState<string | null>(null);
   const [isRegistered] = useQueryState(
     "registered",
+    parseAsBoolean.withDefault(false),
+  );
+  const [isVerified] = useQueryState(
+    "verified",
     parseAsBoolean.withDefault(false),
   );
   const [redirectTo] = useQueryState("redirectTo");
@@ -83,8 +88,15 @@ export function LoginForm({}: LoginFormProps) {
 
           {isRegistered && (
             <Alert className="border-none bg-emerald-500/10 text-emerald-600 dark:bg-emerald-500/15">
-              <IconAlertOctagon className="size-4" />
-              <AlertTitle>Đăng ký thành công! Vui lòng đăng nhập.</AlertTitle>
+              <IconCircleCheck className="size-4" />
+              <AlertTitle>Đăng ký thành công. Vui lòng xác thực OTP.</AlertTitle>
+            </Alert>
+          )}
+
+          {isVerified && (
+            <Alert className="border-none bg-emerald-500/10 text-emerald-600 dark:bg-emerald-500/15">
+              <IconCircleCheck className="size-4" />
+              <AlertTitle>Email đã xác thực. Vui lòng đăng nhập.</AlertTitle>
             </Alert>
           )}
           <FieldGroup className="gap-6">

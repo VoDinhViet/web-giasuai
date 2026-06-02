@@ -94,6 +94,9 @@ export const userTableColumns = [
     header: "Trạng thái",
     cell: (info) => {
       const isLocked = info.getValue();
+      const user = info.row.original;
+      const isPendingTeacher =
+        user.role === UserRole.TEACHER && user.isLocked;
 
       return (
         <Badge
@@ -101,11 +104,17 @@ export const userTableColumns = [
           className={cn(
             "h-auto rounded-full px-4 py-1.5 text-[11px] font-bold uppercase tracking-wide ring-1",
             isLocked
-              ? "bg-rose-50 text-rose-700 ring-rose-100"
+              ? isPendingTeacher
+                ? "bg-sky-50 text-sky-700 ring-sky-100"
+                : "bg-rose-50 text-rose-700 ring-rose-100"
               : "bg-emerald-50 text-emerald-700 ring-emerald-100",
           )}
         >
-          {isLocked ? "Đã khóa" : "Đang hoạt động"}
+          {isLocked
+            ? isPendingTeacher
+              ? "Chờ xác thực"
+              : "Đã khóa"
+            : "Đang hoạt động"}
         </Badge>
       );
     },
