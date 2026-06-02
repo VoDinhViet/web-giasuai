@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { CourseCreateForm } from "@/features/courses/components/create/CourseCreateForm";
 import { requirePermission } from "@/lib/guards";
 
-export default async function CreateCourseManagePage() {
+export default async function CreateCoursePage() {
   await requirePermission("courses.create");
 
   return (
