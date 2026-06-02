@@ -3,8 +3,8 @@
 import { api } from "@/lib/api"
 import type { PaginatedResponse } from "@/types/api"
 import type { User } from "../types"
-import { usersCacheTag } from "../lib/user-cache.util"
 import type { UsersSearchParams } from "../lib/load-users-search-params"
+import { usersCacheTag } from "../utils/user-cache.util"
 
 export async function getUsers(
   params: UsersSearchParams

@@ -10,4 +10,6 @@ export const usersServerSearchParams = {
 
 export const loadUsersSearchParams = createLoader(usersServerSearchParams)
 
-export type UsersSearchParams = Awaited<ReturnType<typeof loadUsersSearchParams>>
+export type UsersSearchParams = Awaited<
+  ReturnType<typeof loadUsersSearchParams>
+>

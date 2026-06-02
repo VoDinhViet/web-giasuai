@@ -1,7 +1,7 @@
 import type { ColumnDef } from "@tanstack/react-table"
 
 import { cn } from "@/lib/utils"
-import { clientTypeLabel } from "../lib/client-table-constants"
+import { clientTypeLabel } from "../constants/client-table-constants"
 import { ClientType, type Client } from "../types"
 import { DeleteClientPopover } from "./delete-client-popover"
 import { EditClientDialog } from "./edit-client-dialog"

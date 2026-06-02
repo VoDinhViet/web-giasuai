@@ -2,7 +2,7 @@
 
 import { api } from "@/lib/api"
 import { UserStatus, type User } from "../types"
-import { revalidateUsersCache } from "../lib/user-cache.util"
+import { revalidateUsersCache } from "../utils/user-cache.util"
 
 export async function toggleUserStatus(
   userId: string,

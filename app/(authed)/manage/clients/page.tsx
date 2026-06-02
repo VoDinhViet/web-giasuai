@@ -4,13 +4,9 @@ import { loadClientsSearchParams } from "@/features/clients/lib/load-clients-sea
 
 export const dynamic = "force-dynamic"
 
-type ClientsRouteProps = {
-  searchParams: Promise<Record<string, string | string[] | undefined>>
-}
-
 export default async function ClientsRoute({
   searchParams,
-}: ClientsRouteProps) {
+}: PageProps<"/manage/clients">) {
   const clientsSearchParams = await loadClientsSearchParams(searchParams)
   const { data: clients, pagination } = await getClients(clientsSearchParams)
 

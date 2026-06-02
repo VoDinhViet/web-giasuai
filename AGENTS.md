@@ -29,18 +29,23 @@
 
 - Use Server Components by default.
 - Add `"use client"` only when hooks, browser APIs, event handlers, or client-side state are needed.
+- For App Router `page.tsx` props, use generated `PageProps<"/route">` with the exact URL path and omit route groups such as `(authed)`. Do not hand-write `params` or `searchParams` prop types.
 - Put route files under `app`.
 - Put reusable UI primitives under `components/ui`.
 - Put shared components under `components`.
 - Put feature-specific code under `features/<feature-name>`.
-- Put shared utilities under `lib`.
+- Put feature constants under `features/<feature-name>/constants`.
+- Use existing global utilities from `lib` first.
+- Put feature-only utilities under `features/<feature-name>/utils` only when global utilities in `lib` cannot represent the feature-specific behavior.
+- Do not create feature wrappers around global utilities.
+- Put reusable pure utilities, framework helpers, API, auth, session, and integration helpers under `lib`.
 - Put shared types under `types`.
 
 ## shadcn/ui Rules
 
 - Use shadcn/ui components from `@/components/ui`.
 - Prefer existing shadcn/ui components before creating custom UI.
-- Use `cn` from `@/lib/utils` for conditional class names.
+- Use `cn` from `@/lib/utils` for conditional class names. Keep `cn` implemented directly in `lib/utils.ts` as the shadcn/ui compatibility entrypoint.
 - Use Tailwind semantic tokens such as `bg-background`, `text-foreground`, `border-border`, `bg-primary`, `text-muted-foreground`, and `bg-card`.
 - When using shadcn/ui components, do not override built-in `bg-*` or `rounded-*` classes unless a clear product requirement needs it.
 - Prefer `rounded` or existing component radius defaults instead of large radius utilities such as `rounded-2xl`, unless a clear product requirement needs it.

@@ -2,16 +2,14 @@
 
 import { api } from "@/lib/api"
 import type { PaginatedResponse } from "@/types/api"
+import { isEnumValue } from "@/lib/enum.util"
 import type { ClientsSearchParams } from "../lib/load-clients-search-params"
 import { ClientType, type Client } from "../types"
 
 function normalizeClientTypeFilter(value: string) {
   const normalizedClientType = value.toUpperCase()
 
-  if (
-    normalizedClientType === ClientType.INDIVIDUAL ||
-    normalizedClientType === ClientType.COMPANY
-  ) {
+  if (isEnumValue(ClientType, normalizedClientType)) {
     return normalizedClientType
   }
 

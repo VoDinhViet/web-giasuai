@@ -5,7 +5,7 @@ import { UserGender, UserStatus } from "../types"
 export const userGenderSchema = z.enum(
   [UserGender.MALE, UserGender.FEMALE, UserGender.OTHER],
   {
-  message: "Vui lòng chọn giới tính",
+    message: "Vui lòng chọn giới tính",
   }
 )
 

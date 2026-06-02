@@ -1,9 +1,9 @@
 "use server"
 
 import { api } from "@/lib/api"
-import { revalidateUsersCache } from "../lib/user-cache.util"
 import { updateUserSchema, type UpdateUserInput } from "../schemas/user.schema"
 import type { User } from "../types"
+import { revalidateUsersCache } from "../utils/user-cache.util"
 
 export async function updateUser(
   userId: string,

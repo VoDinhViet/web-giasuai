@@ -10,8 +10,6 @@ import {
   FieldGroup,
   FieldLabel,
 } from "@/components/ui/field"
-import { Input } from "@/components/ui/input"
-import type { Role } from "@/types/user"
 import {
   Select,
   SelectContent,
@@ -19,12 +17,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { Input } from "@/components/ui/input"
+import type { Role } from "@/types/user"
+import { formatDateInputValue } from "@/lib/date.util"
 import { updateUser } from "../actions/update-user"
+import { userStatusOptions } from "../constants/user-table-constants"
 import { useRoles } from "../hooks/use-roles"
-import { getGenderLabel } from "../lib/user-input.util"
-import { formatDateInputValue } from "../lib/user-date.util"
 import { updateUserSchema, type UpdateUserInput } from "../schemas/user.schema"
 import { UserGender, UserStatus, type User } from "../types"
+import { getGenderLabel } from "../utils/user-gender.util"
 import { DateOfBirthPicker } from "./date-of-birth-picker"
 import { RoleSelectField } from "./role-select-field"
 
@@ -241,10 +242,14 @@ export function EditUserForm({
                     <SelectValue placeholder="Chọn trạng thái" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value={UserStatus.ACTIVE}>Hoạt động</SelectItem>
-                    <SelectItem value={UserStatus.INACTIVE}>
-                      Ngừng hoạt động
-                    </SelectItem>
+                    {userStatusOptions.map((statusOption) => (
+                      <SelectItem
+                        key={statusOption.value}
+                        value={statusOption.value}
+                      >
+                        {statusOption.label}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
                 {isInvalid && <FieldError errors={field.state.meta.errors} />}

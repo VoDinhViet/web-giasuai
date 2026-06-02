@@ -1,40 +1,40 @@
-// Proxy is temporarily disabled while UI screens are being designed.
-// Restore the guarded implementation below when authentication flow is needed.
+import { getIronSession } from "iron-session"
+import { NextResponse, type NextRequest } from "next/server"
 
-// import { getIronSession } from "iron-session"
-// import { NextResponse, type NextRequest } from "next/server"
+import { refreshSessionAccessToken } from "@/lib/auth-token"
+import { SESSION_COOKIE, sessionOptions, type SessionData } from "@/lib/session"
 
-// import { sessionOptions, type SessionData } from "@/lib/session"
+export async function proxy(request: NextRequest) {
+  const response = NextResponse.next()
+  const session = await getIronSession<SessionData>(
+    request,
+    response,
+    sessionOptions
+  )
 
-// const loginPath = "/login"
-// const usersPath = "/users"
+  try {
+    const isSessionValid = await refreshSessionAccessToken(session)
 
-// export async function proxy(request: NextRequest) {
-//   const response = NextResponse.next()
-//   const session = await getIronSession<SessionData>(
-//     request,
-//     response,
-//     sessionOptions
-//   )
-//   const isLoggedIn = session.isLoggedIn === true
-//   const { pathname, search } = request.nextUrl
+    if (!isSessionValid) {
+      request.cookies.delete(SESSION_COOKIE)
+      return response
+    }
 
-//   if (pathname === loginPath && isLoggedIn) {
-//     return NextResponse.redirect(new URL(usersPath, request.url))
-//   }
+    // Keep this request in sync with the renewed session cookie.
+    const sessionCookie = response.cookies.get(SESSION_COOKIE)
 
-//   if (pathname !== loginPath && !isLoggedIn) {
-//     const loginUrl = new URL(loginPath, request.url)
-//     loginUrl.searchParams.set("redirectTo", `${pathname}${search}`)
+    if (sessionCookie) {
+      request.cookies.set(SESSION_COOKIE, sessionCookie.value)
+    }
+  } catch (error) {
+    console.error("Refresh token error:", error)
+    session.destroy()
+    request.cookies.delete(SESSION_COOKIE)
+  }
 
-//     return NextResponse.redirect(loginUrl)
-//   }
-
-//   return response
-// }
-
-export function proxy() {}
+  return response
+}
 
 export const config = {
-  matcher: [],
+  matcher: ["/manage/:path*"],
 }

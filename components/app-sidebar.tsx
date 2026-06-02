@@ -49,7 +49,7 @@ const menuGroups: MenuGroup[] = [
   {
     label: "Quản lý bán hàng",
     items: [
-      { label: "Đơn hàng", icon: ShoppingCart },
+      { label: "Đơn hàng", icon: ShoppingCart, href: "/manage/orders" },
       { label: "Giao hàng", icon: Truck },
     ],
   },
@@ -73,7 +73,7 @@ const menuGroups: MenuGroup[] = [
   {
     label: "Hệ thống",
     items: [
-      { label: "Sản phẩm", icon: PackageSearch },
+      { label: "Sản phẩm", icon: PackageSearch, href: "/manage/products" },
       { label: "Khách hàng", icon: UserRound, href: "/manage/clients" },
       { label: "Nhà cung cấp", icon: Truck, href: "/manage/suppliers" },
       { label: "Nhân sự", icon: Users, href: "/manage/users" },

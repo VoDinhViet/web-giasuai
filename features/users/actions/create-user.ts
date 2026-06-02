@@ -1,9 +1,9 @@
 "use server"
 
 import { api } from "@/lib/api"
-import { revalidateUsersCache } from "../lib/user-cache.util"
 import { createUserSchema, type CreateUserInput } from "../schemas/user.schema"
 import type { User } from "../types"
+import { revalidateUsersCache } from "../utils/user-cache.util"
 
 export async function createUser(input: CreateUserInput): Promise<User> {
   const reqDto = createUserSchema.parse(input)

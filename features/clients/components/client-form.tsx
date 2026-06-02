@@ -18,7 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { clientTypeLabel } from "../lib/client-table-constants"
+import { clientTypeOptions } from "../constants/client-table-constants"
 import {
   clientFormSchema,
   type ClientFormInput,
@@ -125,9 +125,12 @@ export function ClientForm({
                     <SelectValue placeholder="Chọn loại khách hàng" />
                   </SelectTrigger>
                   <SelectContent>
-                    {Object.entries(clientTypeLabel).map(([type, label]) => (
-                      <SelectItem key={type} value={type}>
-                        {label}
+                    {clientTypeOptions.map((clientTypeOption) => (
+                      <SelectItem
+                        key={clientTypeOption.value}
+                        value={clientTypeOption.value}
+                      >
+                        {clientTypeOption.label}
                       </SelectItem>
                     ))}
                   </SelectContent>

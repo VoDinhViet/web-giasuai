@@ -7,12 +7,13 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { formatDate } from "@/lib/date.util"
+import { getNameInitials } from "@/lib/string.util"
 import { cn } from "@/lib/utils"
 import type { Role } from "@/types/user"
-import { statusLabel } from "../lib/user-table-constants"
-import { formatBirthDate } from "../lib/user-date.util"
-import { getGenderLabel } from "../lib/user-input.util"
+import { statusLabel } from "../constants/user-table-constants"
 import { UserStatus, type User } from "../types"
+import { getGenderLabel } from "../utils/user-gender.util"
 import { EditUserDialog } from "./edit-user-dialog"
 
 type CreateUsersTableColumnsProps = {
@@ -34,7 +35,7 @@ export function createUsersTableColumns({
         return (
           <div className="flex items-center gap-3">
             <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary-fixed text-[11px] font-semibold text-primary">
-              {getUserInitials(user.fullName)}
+              {getNameInitials(user.fullName)}
             </span>
             <div className="min-w-0">
               <p className="max-w-40 truncate text-sm leading-5 font-semibold text-foreground">
@@ -91,7 +92,7 @@ export function createUsersTableColumns({
       cell: ({ row }) => (
         <div className="text-sm">
           <p className="leading-5 font-medium text-foreground">
-            {formatBirthDate(row.original.birthDate || "")}
+            {formatDate(row.original.birthDate)}
           </p>
           <p className="text-[10px] leading-4 font-semibold text-muted-foreground uppercase">
             {getGenderLabel(row.original.gender)}
@@ -192,17 +193,6 @@ export function createUsersTableColumns({
     },
   ]
 }
-
-function getUserInitials(fullName: string) {
-  return fullName
-    .split(" ")
-    .filter(Boolean)
-    .slice(-2)
-    .map((namePart) => namePart[0])
-    .join("")
-    .toUpperCase()
-}
-
 
 function getPositionBadgeClassName(position: string) {
   const normalizedPosition = position.toLowerCase()

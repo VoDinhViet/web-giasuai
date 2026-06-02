@@ -4,13 +4,9 @@ import { loadSuppliersSearchParams } from "@/features/suppliers/lib/load-supplie
 
 export const dynamic = "force-dynamic"
 
-type SuppliersRouteProps = {
-  searchParams: Promise<Record<string, string | string[] | undefined>>
-}
-
 export default async function SuppliersRoute({
   searchParams,
-}: SuppliersRouteProps) {
+}: PageProps<"/manage/suppliers">) {
   const suppliersSearchParams = await loadSuppliersSearchParams(searchParams)
   const { data: suppliers, pagination } = await getSuppliers(
     suppliersSearchParams

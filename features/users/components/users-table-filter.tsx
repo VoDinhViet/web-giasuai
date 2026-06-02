@@ -12,8 +12,8 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import type { Role } from "@/types/user"
+import { userStatusOptions } from "../constants/user-table-constants"
 import type { UsersSearchParams } from "../lib/load-users-search-params"
-import { UserStatus } from "../types"
 
 type UsersTableFilterProps = {
   roles: Role[]
@@ -67,12 +67,14 @@ export function UsersTableFilter({
             <SelectValue placeholder="Trạng thái" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">Trạng thái</SelectItem>
-            <SelectItem value={UserStatus.ACTIVE}>Đang hoạt động</SelectItem>
-            <SelectItem value={UserStatus.INACTIVE}>Ngừng hoạt động</SelectItem>
+            <SelectItem value="all">Tất cả trạng thái</SelectItem>
+            {userStatusOptions.map((statusOption) => (
+              <SelectItem key={statusOption.value} value={statusOption.value}>
+                {statusOption.label}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
-
       </div>
     </div>
   )

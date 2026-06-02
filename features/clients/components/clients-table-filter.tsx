@@ -11,9 +11,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { clientTypeLabel } from "../lib/client-table-constants"
+import { clientTypeOptions } from "../constants/client-table-constants"
 import type { ClientsSearchParams } from "../lib/load-clients-search-params"
-import { ClientType } from "../types"
 
 type ClientsTableFilterProps = {
   filters: Pick<ClientsSearchParams, "q" | "clientType">
@@ -47,12 +46,14 @@ export function ClientsTableFilter({
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="all">Tất cả loại</SelectItem>
-          <SelectItem value={ClientType.INDIVIDUAL}>
-            {clientTypeLabel[ClientType.INDIVIDUAL]}
-          </SelectItem>
-          <SelectItem value={ClientType.COMPANY}>
-            {clientTypeLabel[ClientType.COMPANY]}
-          </SelectItem>
+          {clientTypeOptions.map((clientTypeOption) => (
+            <SelectItem
+              key={clientTypeOption.value}
+              value={clientTypeOption.value}
+            >
+              {clientTypeOption.label}
+            </SelectItem>
+          ))}
         </SelectContent>
       </Select>
     </div>
