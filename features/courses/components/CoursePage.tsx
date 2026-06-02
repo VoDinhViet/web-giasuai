@@ -3,7 +3,6 @@
 import type { PaginationInfo } from "@/types/api";
 import type { Course } from "@/features/classes/types/course.type";
 import { CourseGrid } from "./CourseGrid";
-import { CourseHero } from "./CourseHero";
 import { CoursesStatsGrid } from "./CoursesStatsGrid";
 
 interface CoursePageProps {
@@ -17,13 +16,7 @@ export function CoursePage({
   pagination,
 }: CoursePageProps) {
   return (
-    <div className="space-y-10 pb-20">
-      <CourseHero
-        totalRecords={pagination.totalRecords}
-        currentPage={pagination.currentPage}
-        totalPages={pagination.totalPages}
-      />
-
+    <div className="space-y-8 pb-20">
       <CoursesStatsGrid
         courses={courses}
         totalRecords={pagination.totalRecords}

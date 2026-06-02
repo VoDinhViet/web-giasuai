@@ -17,10 +17,11 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
-import type { SectionOutline } from "@/features/courses/actions/get-course-outline";
+import type { CourseLesson } from "@/features/courses/types/course-lesson.type";
+import type { CourseSectionWithLessons } from "@/features/courses/types/course-section.type";
 
 interface CourseCurriculumProps {
-  sections: SectionOutline[];
+  sections: CourseSectionWithLessons[];
 }
 
 export function CourseCurriculum({ sections }: CourseCurriculumProps) {
@@ -66,7 +67,7 @@ export function CourseCurriculum({ sections }: CourseCurriculumProps) {
             </AccordionTrigger>
             <AccordionContent className="pb-4 px-1">
               <div className="space-y-1 pt-1">
-                {section.lessons.map((lesson, j) => {
+                {section.lessons.map((lesson: CourseLesson, j: number) => {
                   const isQuiz = lesson.title.toLowerCase().includes("thực hành") || lesson.title.toLowerCase().includes("bài tập");
                   const isVideo = !isQuiz;
 
@@ -101,7 +102,7 @@ export function CourseCurriculum({ sections }: CourseCurriculumProps) {
                       </div>
                       <div className="flex items-center gap-4">
                         <span className="text-xs text-muted-foreground font-medium">
-                          {lesson.durationText}
+                          {lesson.durationMinutes ? `${lesson.durationMinutes} phút` : "--"}
                         </span>
                         {!lesson.isPreview && (
                           <div className="text-muted-foreground/40">

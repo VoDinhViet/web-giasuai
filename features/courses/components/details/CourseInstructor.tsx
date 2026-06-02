@@ -34,7 +34,7 @@ export function CourseInstructor() {
         <div className="flex-1 space-y-6 w-full">
           <div className="relative pl-6 py-1 border-l-2 border-primary/40">
             <p className="text-sm text-muted-foreground/90 leading-relaxed italic font-medium">
-              "Sứ mệnh của tôi là giúp mọi người tiếp cận với kiến thức công nghệ một cách đơn giản nhất. Với hơn 15 năm làm việc tại các tập đoàn lớn, tôi tin rằng những kinh nghiệm thực chiến sẽ giúp ích cho lộ trình phát triển của bạn."
+              &quot;Sứ mệnh của tôi là giúp mọi người tiếp cận với kiến thức công nghệ một cách đơn giản nhất. Với hơn 15 năm làm việc tại các tập đoàn lớn, tôi tin rằng những kinh nghiệm thực chiến sẽ giúp ích cho lộ trình phát triển của bạn.&quot;
             </p>
           </div>
 

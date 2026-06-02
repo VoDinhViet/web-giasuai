@@ -3,46 +3,48 @@
 import * as React from "react";
 import type { Route } from "next";
 
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import type { CourseOutline } from "@/features/courses/actions/get-course-outline";
-import { MOCK_CURRICULUM } from "@/features/courses/constants/learn-mock";
+import { SidebarInset } from "@/components/ui/sidebar";
+import type { CourseSectionWithLessons } from "@/features/courses/types/course-section.type";
+import type { LessonPart } from "@/features/courses/types/lesson-part.type";
 import {
   LessonStep,
   LESSON_STEP_LABELS,
   LESSON_STEP_ORDER,
 } from "@/features/courses/types/learn";
+import type { PaginatedResponse } from "@/types/api";
 
-import {
-  LessonLearnSidebar,
-  type LessonLearnSidebarChapter,
-} from "./LessonLearnSidebar";
+import { CourseSectionsSidebar } from "./CourseSectionsSidebar";
 import { LessonHeader } from "./LessonHeader";
 import { LessonPracticeStep } from "./LessonPracticeStep";
 import { LessonQuizStep } from "./LessonQuizStep";
 import { LessonStepIndicator } from "./LessonStepIndicator";
 import { LessonTheoryStep } from "./LessonTheoryStep";
 
-interface LessonLearnClientProps {
+interface LearnPageProps {
   courseId: string;
   lessonId: string;
-  outline: CourseOutline | null;
+  courseSections: CourseSectionWithLessons[] | null;
+  lessonParts: PaginatedResponse<LessonPart>;
 }
 
-export function LessonLearnClient({
+export function LearnPage({
   courseId,
   lessonId,
-  outline,
-}: LessonLearnClientProps) {
+  courseSections,
+  lessonParts,
+}: LearnPageProps) {
   const [currentStep, setCurrentStep] = React.useState<LessonStep>(
     LessonStep.THEORY,
   );
   const currentIndex = LESSON_STEP_ORDER.indexOf(currentStep);
   const totalSteps = LESSON_STEP_ORDER.length;
 
-  const curriculum = React.useMemo(
-    () => toNavigationCurriculum(outline),
-    [outline],
-  );
+  const sections = React.useMemo(() => courseSections ?? [], [courseSections]);
+
+  const totalLessons = React.useMemo(() => {
+    return sections.reduce((acc, sec) => acc + sec.lessons.length, 0);
+  }, [sections]);
+
 
   const nextStep = () => {
     if (currentIndex < totalSteps - 1) {
@@ -59,20 +61,16 @@ export function LessonLearnClient({
   const steps = LESSON_STEP_ORDER.map((step) => LESSON_STEP_LABELS[step]);
 
   return (
-    <SidebarProvider
-      style={{ "--sidebar-width": "21rem" } as React.CSSProperties}
-    >
-      <LessonLearnSidebar
+    <>
+      <CourseSectionsSidebar
         courseId={courseId}
-        curriculum={curriculum}
-        activeLessonId={lessonId}
-        totalLessons={outline?.totalLessons ?? curriculum.reduce((acc, chapter) => acc + chapter.lessons.length, 0)}
-        totalDurationText={outline?.totalDurationText}
+        courseSections={sections}
+        totalLessons={totalLessons}
       />
 
       <SidebarInset className="h-svh overflow-hidden bg-white text-zinc-900 dark:bg-zinc-950 dark:text-zinc-50">
         <LessonHeader
-          courseTitle={outline?.title ?? "Khóa học"}
+          courseTitle="Khóa học"
           progress={Math.round(((currentIndex + 1) / totalSteps) * 100)}
           backUrl={`/courses/${courseId}` as Route}
         />
@@ -89,7 +87,13 @@ export function LessonLearnClient({
 
             <div className="relative min-h-[600px]">
               {currentStep === LessonStep.THEORY ? (
-                <LessonTheoryStep onNext={nextStep} />
+                <LessonTheoryStep
+                  key={`${lessonId}-${lessonParts.pagination.currentPage}`}
+                  courseId={courseId}
+                  lessonId={lessonId}
+                  lessonParts={lessonParts}
+                  onNext={nextStep}
+                />
               ) : null}
               {currentStep === LessonStep.PRACTICE ? (
                 <LessonPracticeStep onNext={nextStep} onBack={prevStep} />
@@ -101,42 +105,6 @@ export function LessonLearnClient({
           </div>
         </main>
       </SidebarInset>
-    </SidebarProvider>
+    </>
   );
-}
-
-function toNavigationCurriculum(
-  outline: CourseOutline | null,
-): LessonLearnSidebarChapter[] {
-  if (!outline?.sections?.length) {
-    return MOCK_CURRICULUM.map((chapter, index) => ({
-      id: `mock-section-${index + 1}`,
-      title: chapter.title,
-      totalLessons: chapter.lessons.length,
-      totalDurationText: "",
-      lessons: chapter.lessons.map((lesson, lessonIndex) => ({
-        id: lesson.id,
-        title: lesson.title,
-        durationText: lesson.duration,
-        position: lessonIndex + 1,
-        isCompleted: lesson.isCompleted,
-        isLocked: lesson.isLocked,
-      })),
-    }));
-  }
-
-  return outline.sections.map((section) => ({
-    id: section.id,
-    title: section.title,
-    totalLessons: section.totalLessons,
-    totalDurationText: section.totalDurationText,
-    lessons: section.lessons.map((lesson) => ({
-      id: lesson.id,
-      title: lesson.title,
-      durationText: lesson.durationText,
-      position: lesson.position,
-      isCompleted: lesson.isCompleted,
-      isLocked: lesson.isLocked,
-    })),
-  }));
 }

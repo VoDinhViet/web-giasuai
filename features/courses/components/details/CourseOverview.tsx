@@ -9,15 +9,17 @@ interface CourseOverviewProps {
 
 export function CourseOverview({ course }: CourseOverviewProps) {
   return (
-    <div className="space-y-8 animate-in fade-in duration-300">
-      {/* Course Description Section */}
+    <div className="animate-in space-y-8 fade-in duration-300">
       <div className="space-y-3">
-        <h3 className="text-xs font-bold uppercase tracking-wider text-foreground/95">
+        <h3 className="text-xs font-bold uppercase tracking-wider text-foreground">
           Mô tả khóa học
         </h3>
-        <div className="text-muted-foreground leading-relaxed text-sm font-medium pl-0.5">
+        <div className="max-w-3xl text-sm font-medium leading-7 text-muted-foreground">
           {course.description ? (
-            <div dangerouslySetInnerHTML={{ __html: course.description }} className="prose prose-zinc dark:prose-invert max-w-none text-sm" />
+            <div
+              dangerouslySetInnerHTML={{ __html: course.description }}
+              className="prose prose-zinc max-w-none text-sm leading-7 dark:prose-invert"
+            />
           ) : (
             <p className="italic text-muted-foreground/60">
               Chưa có mô tả chi tiết cho khóa học này.
@@ -26,13 +28,12 @@ export function CourseOverview({ course }: CourseOverviewProps) {
         </div>
       </div>
 
-      {/* Learning Outcomes Section */}
       <div className="space-y-4">
-        <h3 className="text-xs font-bold uppercase tracking-wider text-foreground/95">
+        <h3 className="text-xs font-bold uppercase tracking-wider text-foreground">
           Giá trị nhận được
         </h3>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2 pl-0.5">
+        <div className="grid grid-cols-1 gap-x-8 gap-y-3 md:grid-cols-2">
           {(course.learningOutcomes.length > 0
             ? course.learningOutcomes
             : [
@@ -45,10 +46,12 @@ export function CourseOverview({ course }: CourseOverviewProps) {
           ).map((outcome, i) => (
             <div
               key={i}
-              className="flex items-start gap-2.5 py-1"
+              className="flex items-start gap-3"
             >
-              <IconCheck size={16} className="text-emerald-500 shrink-0 mt-0.5 stroke-[2.5]" />
-              <span className="text-sm font-medium text-muted-foreground leading-normal">
+              <div className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+                <IconCheck size={13} className="stroke-[3]" />
+              </div>
+              <span className="text-sm font-medium leading-6 text-muted-foreground">
                 {outcome}
               </span>
             </div>

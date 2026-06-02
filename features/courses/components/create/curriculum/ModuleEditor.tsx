@@ -48,15 +48,14 @@ export const ModuleEditor = withForm({
           </div>
 
           <div className="space-y-4">
-            <form.AppField
-              name={`${lessonName}.title` as any}
-              children={(field: any) => (
+            <form.AppField name={`${lessonName}.title` as any}>
+              {(field: any) => (
                 <field.TextField
                   label="Tiêu đề bài học (Module)"
                   placeholder="Nhập tên bài học..."
                 />
               )}
-            />
+            </form.AppField>
           </div>
         </div>
 
@@ -96,15 +95,14 @@ export const ModuleEditor = withForm({
 
           <TabsContent value="quiz" className="space-y-8 animate-in fade-in duration-300">
             <div className="space-y-4">
-              <form.AppField
-                name={`${lessonName}.quizCode` as any}
-                children={(field: any) => (
+              <form.AppField name={`${lessonName}.quizCode` as any}>
+                {(field: any) => (
                   <field.TextField
                     label="Mã kỳ thi liên kết (Quiz ID)"
                     placeholder="Nhập mã kỳ thi..."
                   />
                 )}
-              />
+              </form.AppField>
             </div>
           </TabsContent>
         </Tabs>
@@ -139,15 +137,14 @@ function SessionItem({ sIdx, mIdx, ssIdx, form }: { sIdx: number; mIdx: number; 
             {ssIdx + 1}
           </div>
           <div className="flex-1">
-            <form.AppField
-              name={`${sessionName}.title` as any}
-              children={(field: any) => (
+            <form.AppField name={`${sessionName}.title` as any}>
+              {(field: any) => (
                 <field.TextField
                   placeholder="Tiêu đề tài liệu..."
                   className="font-semibold text-zinc-900 p-0 h-auto border-none focus-visible:ring-0 shadow-none bg-transparent placeholder:text-zinc-300"
                 />
               )}
-            />
+            </form.AppField>
           </div>
         </div>
         <button

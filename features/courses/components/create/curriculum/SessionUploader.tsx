@@ -27,26 +27,27 @@ interface SessionUploaderProps {
 
 export function SessionUploader({ file: contentFile, onContentChange }: SessionUploaderProps) {
   const [showPreview, setShowPreview] = React.useState(false);
-  const [objectUrl, setObjectUrl] = React.useState<string | null>(null);
   const docxRef = React.useRef<HTMLDivElement>(null);
 
   const hasFile = !!contentFile;
   const file = contentFile;
-  
-  const ext = file?.name?.split(".").pop()?.toLowerCase();
+  const fileName = file instanceof File ? file.name : file || "";
+  const fileSize = file instanceof File ? file.size : 0;
+  const objectUrl = React.useMemo(() => {
+    if (!(file instanceof File)) return null;
+
+    return URL.createObjectURL(file);
+  }, [file]);
+
+  const ext = fileName.split(".").pop()?.toLowerCase();
   const isPdf = ext === "pdf";
   const isDocx = ext === "docx" || ext === "doc";
 
-  // Tạo Preview URL khi file thay đổi
   React.useEffect(() => {
-    if (file instanceof File) {
-      const url = URL.createObjectURL(file);
-      setObjectUrl(url);
-      return () => URL.revokeObjectURL(url);
-    } else {
-      setObjectUrl(null);
-    }
-  }, [file]);
+    if (!objectUrl) return;
+
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [objectUrl]);
 
   // Render Preview cho DOCX
   React.useEffect(() => {
@@ -96,10 +97,10 @@ export function SessionUploader({ file: contentFile, onContentChange }: SessionU
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-sm font-semibold text-zinc-900 truncate">
-              {file.name}
+              {fileName}
             </p>
             <p className="text-[11px] font-medium text-zinc-400 mt-0.5">
-              {(file.size / 1024 / 1024).toFixed(2)} MB
+              {fileSize ? `${(fileSize / 1024 / 1024).toFixed(2)} MB` : "Đã tải lên"}
             </p>
           </div>
           <div className="flex items-center gap-2">

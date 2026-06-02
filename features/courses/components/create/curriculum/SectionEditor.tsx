@@ -9,33 +9,32 @@ export const SectionEditor = withForm({
   },
   render: function Render({ form, sIdx }) {
     return (
-    <div className="space-y-10 animate-in fade-in slide-in-from-bottom-2 duration-500">
-      <div className="flex items-center gap-4">
-        <div className="size-12 rounded-xl bg-primary/5 border border-primary/10 flex items-center justify-center text-primary shadow-sm">
-          <IconFolders size={24} stroke={2.5} />
+      <div className="space-y-10 animate-in fade-in slide-in-from-bottom-2 duration-500">
+        <div className="flex items-center gap-4">
+          <div className="size-12 rounded-xl bg-primary/5 border border-primary/10 flex items-center justify-center text-primary shadow-sm">
+            <IconFolders size={24} stroke={2.5} />
+          </div>
+          <div>
+            <h2 className="text-xl font-bold text-zinc-900 tracking-tight">
+              Cấu trúc chương
+            </h2>
+            <p className="text-xs text-zinc-500 font-medium">
+              Chương {sIdx + 1} • Quản lý thông tin chung
+            </p>
+          </div>
         </div>
-        <div>
-          <h2 className="text-xl font-bold text-zinc-900 tracking-tight">
-            Cấu trúc chương
-          </h2>
-          <p className="text-xs text-zinc-500 font-medium">
-            Chương {sIdx + 1} • Quản lý thông tin chung
-          </p>
-        </div>
-      </div>
 
-      <div className="space-y-4">
-        <form.AppField
-          name={`courseSections[${sIdx}].title`}
-          children={(field) => (
+        <div className="space-y-4">
+          <form.AppField name={`courseSections[${sIdx}].title`}>
+            {(field) => (
             <field.TextField
               label="Tiêu đề chương học"
               placeholder="Ví dụ: Chương 1: Giới thiệu tổng quan..."
             />
-          )}
-        />
+            )}
+          </form.AppField>
+        </div>
       </div>
-    </div>
     );
   },
 });

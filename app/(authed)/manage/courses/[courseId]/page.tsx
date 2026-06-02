@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 
 import { getCourseDetail } from "@/features/courses/actions/get-course-detail";
-import { getCourseOutline } from "@/features/courses/actions/get-course-outline";
+import { getCourseSections } from "@/features/courses/actions/get-course-sections";
 import { CourseDetail } from "@/features/courses/components/details/CourseDetail";
 
 interface CourseDetailPageProps {
@@ -13,14 +13,14 @@ export default async function CourseDetailPage({
 }: CourseDetailPageProps) {
   const { courseId } = await params;
   
-  const [course, courseOutline] = await Promise.all([
+  const [course, courseSections] = await Promise.all([
     getCourse(courseId),
-    getCourseOutline(courseId).catch(() => null),
+    getCourseSections(courseId).catch(() => null),
   ]);
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-      <CourseDetail course={course} courseOutline={courseOutline} />
+      <CourseDetail course={course} courseSections={courseSections} />
     </div>
   );
 }

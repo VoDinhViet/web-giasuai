@@ -307,23 +307,18 @@ function ThumbnailUpload({
   value: File | string | null;
   onChange: (file: File | null) => void;
 }) {
-  const [previewUrl, setPreviewUrl] = React.useState<string | null>(null);
+  const previewUrl = React.useMemo(() => {
+    if (!value) return null;
+    if (typeof value === "string") return value;
+
+    return URL.createObjectURL(value);
+  }, [value]);
 
   React.useEffect(() => {
-    if (!value) {
-      setPreviewUrl(null);
-      return;
-    }
+    if (!(value instanceof File) || !previewUrl) return;
 
-    if (typeof value === "string") {
-      setPreviewUrl(value);
-      return;
-    }
-
-    const url = URL.createObjectURL(value);
-    setPreviewUrl(url);
-    return () => URL.revokeObjectURL(url);
-  }, [value]);
+    return () => URL.revokeObjectURL(previewUrl);
+  }, [previewUrl, value]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: { "image/*": [] },
@@ -340,6 +335,7 @@ function ThumbnailUpload({
     >
       {previewUrl ? (
         <>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={previewUrl}
             alt="Thumbnail preview"
