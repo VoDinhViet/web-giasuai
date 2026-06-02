@@ -28,5 +28,6 @@ export interface User {
   fullName: string;
   role: UserRole;
   isLocked: boolean;
+  createdAt?: string;
   permissions?: AppPermission[];
 }

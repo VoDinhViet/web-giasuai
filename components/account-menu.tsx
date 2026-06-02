@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import {
   IconBell,
   IconHelp,
@@ -73,9 +74,11 @@ export function AccountMenu() {
 
         <DropdownMenuSeparator />
 
-        <DropdownMenuItem>
-          <IconUser size={16} />
-          <span>Hồ sơ cá nhân</span>
+        <DropdownMenuItem asChild>
+          <Link href="/manage/profile">
+            <IconUser size={16} />
+            <span>Hồ sơ cá nhân</span>
+          </Link>
         </DropdownMenuItem>
         <DropdownMenuItem>
           <IconSettings size={16} />

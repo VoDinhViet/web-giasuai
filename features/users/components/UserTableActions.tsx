@@ -1,10 +1,12 @@
 "use client";
 
+import Link from "next/link";
+import type { Route } from "next";
 import { useTransition } from "react";
 import { toast } from "sonner";
 import {
   IconDotsVertical,
-  IconEdit,
+  IconEye,
   IconLock,
   IconLockOpen,
   IconTrash,
@@ -83,9 +85,11 @@ export function UserTableActions({ myUser }: UserTableActionsProps) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem disabled={isPending}>
-          <IconEdit size={16} />
-          <span>Sửa thông tin</span>
+        <DropdownMenuItem asChild>
+          <Link href={`/manage/users/${myUser.id}` as Route}>
+            <IconEye size={16} />
+            <span>Xem hồ sơ</span>
+          </Link>
         </DropdownMenuItem>
         {canVerifyTeacher && (
           <DropdownMenuItem
