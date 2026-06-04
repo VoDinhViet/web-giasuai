@@ -1,24 +1,35 @@
 "use server"
 
+import { revalidatePath } from "next/cache"
+
 import { api } from "@/lib/api"
-import { UserStatus, type User } from "../types"
+import type { ActionResponse } from "@/types/api"
+import type { User } from "../types"
 import { revalidateUsersCache } from "../utils/user-cache.util"
 
 export async function toggleUserStatus(
-  userId: string,
-  currentStatus?: UserStatus
-): Promise<User> {
-  const user = await api<User>(`/api/users/${userId}`, {
-    method: "PATCH",
-    body: {
-      status:
-        currentStatus === UserStatus.ACTIVE
-          ? UserStatus.INACTIVE
-          : UserStatus.ACTIVE,
-    },
-  })
+  userId: string
+): Promise<ActionResponse<User>> {
+  try {
+    const user = await api<User>(`/api/v1/users/${userId}/toggle-lock`, {
+      method: "PATCH",
+    })
 
-  revalidateUsersCache()
+    revalidateUsersCache()
+    revalidatePath("/manage/users")
+    revalidatePath(`/manage/users/${userId}`)
 
-  return user
+    return {
+      success: true,
+      data: user,
+      message: user.isLocked ? "Đã khóa tài khoản." : "Đã mở khóa tài khoản.",
+    }
+  } catch (toggleUserStatusError) {
+    console.error("Toggle user status error:", toggleUserStatusError)
+
+    return {
+      success: false,
+      message: "Không thể cập nhật trạng thái tài khoản.",
+    }
+  }
 }

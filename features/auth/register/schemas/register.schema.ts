@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { UserRole } from "@/types/user";
+import { UserRole } from "@/features/users/types";
 
 export const registerSchema = z
   .object({

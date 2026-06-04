@@ -10,8 +10,6 @@ import type { LoginInput } from "../schemas/login.schema";
 
 interface LoginResponse {
   userId: string;
-  roleCode: string;
-  permissions: string[];
   accessToken: string;
   refreshToken: string;
   tokenExpires: number;
@@ -22,10 +20,10 @@ export async function loginWithEmailPassword(
   redirectTo?: string
 ): Promise<ActionResponse<LoginResponse>> {
   try {
-    const loginResponse = await api<LoginResponse>("/api/auth/login", {
+    const loginResponse = await api<LoginResponse>("/api/v1/auth/login", {
       method: "POST",
       body: {
-        email: reqDto.email,
+        emailOrUsername: reqDto.emailOrUsername,
         password: reqDto.password,
       },
     });
@@ -33,8 +31,6 @@ export async function loginWithEmailPassword(
     const session = await getSession();
 
     session.userId = loginResponse.userId;
-    session.roleCode = loginResponse.roleCode;
-    session.permissions = loginResponse.permissions;
     session.accessToken = loginResponse.accessToken;
     session.refreshToken = loginResponse.refreshToken;
     session.tokenExpires = loginResponse.tokenExpires;

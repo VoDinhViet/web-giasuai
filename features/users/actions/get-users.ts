@@ -9,9 +9,10 @@ import { usersCacheTag } from "../utils/user-cache.util"
 export async function getUsers(
   params: UsersSearchParams
 ): Promise<PaginatedResponse<User>> {
-  const status = params.status === "all" ? undefined : params.status
+  const isLocked =
+    params.isLocked === "all" ? undefined : params.isLocked === "true"
 
-  return api<PaginatedResponse<User>>("/api/users", {
+  return api<PaginatedResponse<User>>("/api/v1/users", {
     next: {
       tags: [usersCacheTag],
     },
@@ -19,8 +20,8 @@ export async function getUsers(
       page: params.page,
       limit: params.limit,
       q: params.q || undefined,
-      roleId: params.roleId === "all" ? undefined : params.roleId,
-      status,
+      role: params.role === "all" ? undefined : params.role,
+      isLocked,
     },
   })
 }

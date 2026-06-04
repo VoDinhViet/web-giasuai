@@ -1,16 +1,26 @@
 "use client"
 
+import type { ReactNode } from "react"
+import Link from "next/link"
 import * as React from "react"
 import {
   Bell,
   ChevronDown,
   CircleHelp,
   LogOut,
-  Search,
+  Menu,
   User,
 } from "lucide-react"
 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -20,42 +30,123 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
-import { Separator } from "@/components/ui/separator"
-import { SidebarTrigger } from "@/components/ui/sidebar"
+import { useSidebar } from "@/components/ui/sidebar"
 import { logout } from "@/features/auth/actions/logout"
 import { useAuth } from "@/features/auth/components/auth-provider"
 import { getNameInitials } from "@/lib/string.util"
+import { cn } from "@/lib/utils"
 
-export function AppTopbar() {
+export type AppTopbarBreadcrumbItem = {
+  label: string
+  href?: string
+}
+
+type AppTopbarProps = {
+  title?: string
+  breadcrumbItems?: AppTopbarBreadcrumbItem[]
+  breadcrumbs?: ReactNode
+  actions?: ReactNode
+  className?: string
+}
+
+export function AppTopbar({
+  title,
+  breadcrumbItems,
+  breadcrumbs,
+  actions,
+  className,
+}: AppTopbarProps) {
+  const resolvedBreadcrumbs =
+    breadcrumbs ||
+    (breadcrumbItems?.length ? (
+      <AppTopbarBreadcrumb items={breadcrumbItems} />
+    ) : null)
+
   return (
-    <div className="sticky top-0 z-20 flex h-16 items-center gap-3 border-b bg-card/95 px-4 backdrop-blur sm:px-6 lg:px-8">
-      <SidebarTrigger className="md:hidden" />
-      <TopbarSearch />
-      <TopbarActions />
-    </div>
+    <header
+      className={cn(
+        "-mx-4 -mt-6 flex min-h-20 items-center justify-between gap-4 border-b border-border/70 bg-card px-4 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8",
+        className
+      )}
+    >
+      <div className="flex min-w-0 items-center gap-4">
+        <TopbarSidebarTrigger />
+        <div className="min-w-0">
+          {title ? (
+            <h1 className="truncate text-lg leading-6 font-bold text-foreground">
+              {title}
+            </h1>
+          ) : null}
+          {resolvedBreadcrumbs ? (
+            <div className="mt-1.5 [&_[data-slot=breadcrumb-list]]:gap-2 [&_[data-slot=breadcrumb-list]]:text-xs">
+              {resolvedBreadcrumbs}
+            </div>
+          ) : null}
+        </div>
+      </div>
+      <div className="flex shrink-0 items-center gap-3">
+        {actions ? (
+          <div className="flex flex-wrap items-center gap-3">{actions}</div>
+        ) : null}
+        <TopbarActions />
+      </div>
+    </header>
   )
 }
 
-function TopbarSearch() {
+function AppTopbarBreadcrumb({
+  items,
+}: {
+  items: AppTopbarBreadcrumbItem[]
+}) {
   return (
-    <div className="relative hidden w-full max-w-md sm:block">
-      <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
-      <Input
-        aria-label="Tìm kiếm toàn hệ thống"
-        placeholder="Tìm kiếm nhân viên, mã ID..."
-        className="pl-9"
-      />
-    </div>
+    <Breadcrumb>
+      <BreadcrumbList className="font-medium">
+        {items.map((breadcrumbItem, index) => {
+          const isLastItem = index === items.length - 1
+
+          return (
+            <React.Fragment key={`${breadcrumbItem.label}-${index}`}>
+              <BreadcrumbItem>
+                {breadcrumbItem.href && !isLastItem ? (
+                  <BreadcrumbLink href={breadcrumbItem.href}>
+                    {breadcrumbItem.label}
+                  </BreadcrumbLink>
+                ) : (
+                  <BreadcrumbPage>{breadcrumbItem.label}</BreadcrumbPage>
+                )}
+              </BreadcrumbItem>
+              {!isLastItem ? <BreadcrumbSeparator /> : null}
+            </React.Fragment>
+          )
+        })}
+      </BreadcrumbList>
+    </Breadcrumb>
   )
 }
 
-function TopbarActions() {
+function TopbarSidebarTrigger() {
+  const { toggleSidebar } = useSidebar()
+
   return (
-    <div className="ml-auto flex items-center gap-2">
+    <Button
+      type="button"
+      variant="ghost"
+      size="icon-sm"
+      aria-label="Mở hoặc thu gọn menu"
+      className="size-8 shrink-0 text-primary hover:bg-primary/5 hover:text-primary"
+      onClick={toggleSidebar}
+    >
+      <Menu className="size-5" />
+    </Button>
+  )
+}
+
+export function TopbarActions() {
+  return (
+    <div className="flex items-center gap-3">
       <NotificationButton />
       <HelpButton />
-      <Separator orientation="vertical" className="mx-2 hidden h-8 sm:block" />
       <TopbarMenu />
     </div>
   )
@@ -66,20 +157,28 @@ function NotificationButton() {
     <Button
       type="button"
       variant="ghost"
-      size="icon"
+      size="icon-sm"
       aria-label="Thông báo"
-      className="relative"
+      className="relative text-primary hover:bg-primary/5 hover:text-primary"
     >
-      <Bell />
-      <span className="absolute top-2.5 right-2.5 size-1.5 rounded-full bg-destructive" />
+      <Bell className="size-5" />
+      <span className="absolute top-0 right-0 flex size-4 items-center justify-center rounded-full bg-destructive text-[9px] leading-none font-bold text-primary-foreground">
+        5
+      </span>
     </Button>
   )
 }
 
 function HelpButton() {
   return (
-    <Button type="button" variant="ghost" size="icon" aria-label="Trợ giúp">
-      <CircleHelp />
+    <Button
+      type="button"
+      variant="ghost"
+      size="icon-sm"
+      aria-label="Trợ giúp"
+      className="text-primary hover:bg-primary/5 hover:text-primary"
+    >
+      <CircleHelp className="size-5" />
     </Button>
   )
 }
@@ -107,21 +206,21 @@ function TopbarMenu() {
         <Button
           type="button"
           variant="ghost"
-          className="h-11 gap-3 px-2.5 sm:min-w-44 sm:justify-between sm:px-3"
+          className="h-11 gap-3 px-1.5 hover:bg-primary/5 sm:min-w-40 sm:justify-start sm:px-2"
           aria-label="Mở menu tài khoản"
         >
-          <div className="hidden min-w-0 text-right sm:block sm:flex-1">
-            <p className="max-w-40 truncate text-sm leading-none font-medium">
-              {displayName}
-            </p>
-            <p className="mt-1 text-xs text-muted-foreground">
-              {user.role.name}
-            </p>
-          </div>
           <Avatar>
             <AvatarFallback>{avatarFallback}</AvatarFallback>
           </Avatar>
-          <ChevronDown className="hidden size-4 text-muted-foreground sm:block" />
+          <div className="hidden min-w-0 text-left sm:block sm:flex-1">
+            <p className="max-w-28 truncate text-xs leading-4 font-bold text-foreground">
+              {displayName}
+            </p>
+            <p className="max-w-28 truncate text-[10px] leading-3 text-muted-foreground">
+              {user.role}
+            </p>
+          </div>
+          <ChevronDown className="hidden size-4 text-primary sm:block" />
         </Button>
       </DropdownMenuTrigger>
 
@@ -138,9 +237,15 @@ function TopbarMenu() {
           </span>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
+        <DropdownMenuItem asChild>
+          <Link href="/manage/profile">
+            <User />
+            <span>Hồ sơ cá nhân</span>
+          </Link>
+        </DropdownMenuItem>
         <DropdownMenuItem disabled>
           <User />
-          <span>{user.role.name}</span>
+          <span>{user.role}</span>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem

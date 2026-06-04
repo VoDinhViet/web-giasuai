@@ -2,14 +2,11 @@ import { cookies } from "next/headers";
 import { getIronSession, type IronSession, type SessionOptions } from "iron-session";
 
 import { env } from "@/env";
-import type { Permission } from "@/types/user";
 
 export const SESSION_COOKIE = "app_session";
 
 export interface SessionData {
   userId?: string;
-  roleCode?: string;
-  permissions?: Permission[];
   accessToken?: string;
   refreshToken?: string;
   tokenExpires?: number;

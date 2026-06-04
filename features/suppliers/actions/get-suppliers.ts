@@ -13,6 +13,8 @@ export async function getSuppliers(
       page: params.page,
       limit: params.limit,
       q: params.q || undefined,
+      supplierGroupId:
+        params.supplierGroupId === "all" ? undefined : params.supplierGroupId,
     },
   })
 }

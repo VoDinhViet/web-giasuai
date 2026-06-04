@@ -1,4 +1,42 @@
-import type { User as CoreUser } from "@/types/user"
+export enum UserRole {
+  ADMIN = "ADMIN",
+  TEACHER = "TEACHER",
+  STUDENT = "STUDENT",
+}
+
+export type Permission = string
+
+export type Role = {
+  id: string
+  code: string
+  name: string
+  description?: string
+  isSystem?: boolean
+  status?: string
+  createdAt?: string
+  updatedAt?: string
+}
+
+export interface User {
+  id: string
+  email: string
+  username: string
+  fullName: string
+  role: UserRole
+  isLocked: boolean
+  createdAt: string
+  profile: UserProfile | null
+}
+
+export interface UserProfile {
+  userId: string
+  phone: string | null
+  location: string | null
+  bio: string | null
+  avatarUrl: string | null
+  createdAt: string | null
+  updatedAt: string | null
+}
 
 export enum UserStatus {
   ACTIVE = "ACTIVE",
@@ -6,23 +44,14 @@ export enum UserStatus {
 }
 
 export type StatusFilter = "all" | UserStatus
-export enum UserGender {
-  MALE = "MALE",
-  FEMALE = "FEMALE",
-  OTHER = "OTHER",
-}
-
-export type User = CoreUser
 
 export type UserFormMode = "create" | "edit"
 
 export type UserFormState = {
   fullName: string
   email: string
+  username: string
   password?: string
-  phoneNumber?: string
-  birthDate?: string
-  gender?: UserGender
-  roleId?: string
-  address?: string
+  role: UserRole
+  isLocked: boolean
 }

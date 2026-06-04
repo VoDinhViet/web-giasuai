@@ -9,7 +9,7 @@ Mọi thành viên phát triển bắt buộc phải tuân thủ nghiêm ngặt 
 ### 🗺️ [1. Kiến trúc dự án và Công cụ AI](file:///home/workspace/2605-quanlysanxuat/web-quanlysanxuat/docs/coding-rules/01-architecture-and-structure.md)
 
 - Kiến trúc thư mục: `app/`, `features/<feature>/`, `components/shared/`, `components/ui/`, `lib/`, `types/`.
-- Feature code tách theo `actions/`, `components/`, `constants/`, `hooks/`, `lib/`, `schemas/`, `utils/`.
+- Feature code tách theo `actions/`, `components/<group>/`, `constants/`, `hooks/`, `lib/`, `schemas/`, `utils/`.
 - Quy định sử dụng công cụ hỗ trợ AI **CodeGraph** và cấu hình Git.
 
 ### 🏷️ [2. Quy ước Đặt tên (Naming Conventions)](file:///home/workspace/2605-quanlysanxuat/web-quanlysanxuat/docs/coding-rules/02-naming-conventions.md)
@@ -22,6 +22,7 @@ Mọi thành viên phát triển bắt buộc phải tuân thủ nghiêm ngặt 
 
 - Nguyên tắc viết inline helpers mặc định (Keep Helpers Inline).
 - Quy tắc tùy biến an toàn thư viện shadcn/ui primitives.
+- Không thêm helper nghiệp vụ hoặc wrapper một màn hình vào `components/ui`.
 - Sử dụng màu sắc Semantic Tokens (`bg-background`, `border-border`).
 
 ### 📋 [4. Biểu mẫu, Bảng dữ liệu và Component dùng chung](file:///home/workspace/2605-quanlysanxuat/web-quanlysanxuat/docs/coding-rules/04-forms-and-tables.md)
@@ -29,12 +30,15 @@ Mọi thành viên phát triển bắt buộc phải tuân thủ nghiêm ngặt 
 - Thiết kế DataTable tối giản, dùng chung `<EmptyTable />` toàn cục.
 - Xây dựng `<DatePicker />` toàn cục kế thừa props HTML button.
 - Cấu trúc form tương tác với Zod và xử lý pending state.
+- Upload file theo từng feature/page, tích hợp trực tiếp với TanStack Form khi là field của form.
+- Draft form đặt trong hook feature-level và validate bằng schema riêng.
 
 ### ⚡ [5. Caching & Revalidation](file:///home/workspace/2605-quanlysanxuat/web-quanlysanxuat/docs/coding-rules/05-data-and-caching.md)
 
 - Lưu cache Server Actions bằng chỉ thị `"use cache";` của Next.js 16.
 - Bảo mật: Cô lập cache bằng tham số `userId` (Session Isolation).
 - Làm tươi cache bằng `revalidateTag` và `updateTag`.
+- Mutation Server Actions validate input, tự `try/catch`, trả `ActionResponse<T>`, và bắt buộc bọc API `body` bằng `omitEmptyFields`.
 
 ### 🔒 [6. Bảo mật, Tiêu chuẩn Ngôn ngữ và Xác minh](file:///home/workspace/2605-quanlysanxuat/web-quanlysanxuat/docs/coding-rules/06-security-and-standards.md)
 

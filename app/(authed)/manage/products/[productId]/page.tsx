@@ -2,7 +2,7 @@ import { getBomTree } from "@/features/products/actions/get-bom-tree"
 import { getProduct } from "@/features/products/actions/get-product"
 import { getProductFormOptions } from "@/features/products/actions/get-product-form-options"
 import { getProductRevisions } from "@/features/products/actions/get-product-revisions"
-import { ProductDetailPage } from "@/features/products/components/product-detail-page"
+import { ProductDetailPage } from "@/features/products/components/pages/product-detail-page"
 
 export const dynamic = "force-dynamic"
 

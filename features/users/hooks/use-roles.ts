@@ -3,7 +3,7 @@
 import useSWR from "swr"
 
 import { getRoles } from "../actions/get-roles"
-import type { Role } from "@/types/user"
+import type { Role } from "@/features/users/types"
 
 const ROLES_SWR_KEY = "roles"
 

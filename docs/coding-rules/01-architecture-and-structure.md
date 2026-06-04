@@ -22,7 +22,14 @@
 │       ├── actions/
 │       │   └── get-users.ts
 │       ├── components/
-│       │   └── users-table.tsx
+│       │   ├── dialogs/
+│       │   │   └── create-user-dialog.tsx
+│       │   ├── forms/
+│       │   │   └── create-user-form.tsx
+│       │   ├── pages/
+│       │   │   └── users-page.tsx
+│       │   └── tables/
+│       │       └── users-table.tsx
 │       ├── constants/
 │       │   └── user-table-constants.ts
 │       ├── hooks/
@@ -38,6 +45,7 @@
 │   ├── date.util.ts
 │   ├── enum.util.ts
 │   ├── number.util.ts
+│   ├── object.util.ts
 │   ├── select-option.util.ts
 │   ├── string.util.ts
 │   ├── api.ts
@@ -50,7 +58,13 @@
 ## 1.2 Folder Responsibility
 
 - `features/<feature>/actions`: Server Actions and feature data mutations/queries.
-- `features/<feature>/components`: Feature-specific React components.
+- `features/<feature>/components`: Feature-specific React components grouped by role when a feature has multiple components.
+- `features/<feature>/components/pages`: Route-level composed page components such as `users-page.tsx`.
+- `features/<feature>/components/forms`: Form components and form-only fields.
+- `features/<feature>/components/tables`: Table components, table columns, and table filters.
+- `features/<feature>/components/dialogs`: Dialog, modal, alert, and confirmation components.
+- `features/<feature>/components/actions`: Small action controls such as row action popovers or approval buttons.
+- `features/<feature>/components/<domain-group>`: Domain-specific component groups for large workflows, such as `bom`, `revisions`, `media`, `routing`, or `files`.
 - `features/<feature>/constants`: Feature-specific labels, options, table constants, and static configuration.
 - `features/<feature>/hooks`: Feature-specific React hooks.
 - `features/<feature>/lib`: Feature-specific loaders, parsers, adapters, and integration code.

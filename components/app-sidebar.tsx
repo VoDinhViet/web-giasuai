@@ -1,29 +1,33 @@
 "use client"
 
-import Image from "next/image"
 import Link from "next/link"
 import type { Route } from "next"
 import { usePathname } from "next/navigation"
 import {
-  Blocks,
-  ClipboardList,
-  Factory,
+  AlertTriangle,
+  Bot,
+  CalendarDays,
+  ChartColumn,
+  CircleDollarSign,
+  DoorOpen,
+  FileStack,
   FileText,
-  ListChecks,
-  PackageSearch,
-  ReceiptText,
+  FileQuestion,
+  GraduationCap,
+  LayoutDashboard,
+  LifeBuoy,
+  Route as RouteIcon,
   Settings,
-  ShoppingCart,
-  Truck,
-  UserRound,
+  Sparkles,
   Users,
-  Warehouse,
+  Wifi,
   type LucideIcon,
 } from "lucide-react"
 
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -38,6 +42,8 @@ type MenuItem = {
   label: string
   icon: LucideIcon
   href?: string
+  activePaths?: string[]
+  exact?: boolean
 }
 
 type MenuGroup = {
@@ -47,62 +53,78 @@ type MenuGroup = {
 
 const menuGroups: MenuGroup[] = [
   {
-    label: "Quản lý bán hàng",
+    label: "HOME",
     items: [
-      { label: "Đơn hàng", icon: ShoppingCart, href: "/manage/orders" },
-      { label: "Giao hàng", icon: Truck },
+      { label: "Bảng điều khiển", icon: LayoutDashboard, href: "/manage", exact: true },
+      { label: "Dashboard học viên", icon: Sparkles, href: "/manage/student-dashboard" },
+      { label: "Tham gia lớp", icon: DoorOpen, href: "/manage/join-class" },
     ],
   },
   {
-    label: "Quản lý sản xuất",
+    label: "PAGES",
     items: [
-      { label: "Lệnh sản xuất", icon: Factory },
-      { label: "Công đoạn sản xuất", icon: Blocks },
-      { label: "BOM & Kiểm tồn", icon: ListChecks },
-      { label: "Gia công ngoài", icon: Warehouse },
-      { label: "Lệnh vật tư", icon: ClipboardList },
+      { label: "Quản lý lớp học", icon: GraduationCap, href: "/manage/classes" },
+      {
+        label: "Quản lý người dùng",
+        icon: Users,
+        href: "/manage/users",
+        activePaths: ["/manage/users", "/manage/students", "/manage/profile"],
+      },
+      { label: "Quản lý khóa học", icon: FileText, href: "/manage/courses" },
+      { label: "Thư viện học liệu", icon: FileStack, href: "/manage/library" },
     ],
   },
   {
-    label: "Quản lý mua hàng",
+    label: "ACADEMIC",
     items: [
-      { label: "Đề xuất mua hàng", icon: FileText },
-      { label: "Danh mục mua hàng", icon: ReceiptText },
+      { label: "Lịch giảng dạy", icon: CalendarDays, href: "/manage/schedule" },
+      { label: "Tracking điểm yếu", icon: AlertTriangle, href: "/manage/weaknesses" },
+      { label: "Test đầu vào", icon: FileQuestion, href: "/manage/placement-tests" },
+      { label: "Báo cáo tiến độ", icon: ChartColumn, href: "/manage/reports" },
     ],
   },
   {
-    label: "Hệ thống",
+    label: "AI TOOLS",
     items: [
-      { label: "Sản phẩm", icon: PackageSearch, href: "/manage/products" },
-      { label: "Khách hàng", icon: UserRound, href: "/manage/clients" },
-      { label: "Nhà cung cấp", icon: Truck, href: "/manage/suppliers" },
-      { label: "Nhân sự", icon: Users, href: "/manage/users" },
-      { label: "Cài đặt", icon: Settings },
+      { label: "AI Assistant", icon: Bot, href: "/manage/ai-assistant" },
+      { label: "Lộ trình AI", icon: RouteIcon, href: "/manage/learning-paths" },
+    ],
+  },
+  {
+    label: "OPERATIONS",
+    items: [
+      { label: "Hỗ trợ", icon: LifeBuoy, href: "/manage/tickets" },
+      { label: "AI quota", icon: CircleDollarSign, href: "/manage/ai-usage" },
+      { label: "Tin tức & Blogs", icon: Wifi, href: "/manage/blogs" },
+      { label: "Cài đặt", icon: Settings, href: "/manage/settings" },
     ],
   },
 ]
 
 const menuButtonClass =
-  "h-9 px-3 text-sm font-medium text-sidebar-foreground/70 hover:bg-white/8 hover:text-sidebar-foreground data-[active=true]:bg-sidebar-primary data-[active=true]:text-sidebar-primary-foreground [&_svg]:size-[18px]"
+  "h-10 rounded-lg px-3 text-[13px] font-semibold text-sidebar-foreground/86 hover:bg-sidebar-accent hover:text-sidebar-foreground data-[active=true]:bg-sidebar-primary data-[active=true]:text-sidebar-primary-foreground data-[active=true]:shadow-[0_12px_24px_rgba(109,56,245,0.34)] [&_svg]:size-[17px]"
 
 export function AppSidebar() {
   const pathname = usePathname()
 
   return (
-    <Sidebar variant="sidebar" collapsible="icon">
-      <SidebarHeader className="border-b border-sidebar-border px-0 py-5 group-data-[collapsible=icon]:px-2 group-data-[collapsible=icon]:py-3">
+    <Sidebar variant="sidebar" collapsible="icon" className="border-r-0">
+      <SidebarHeader className="px-5 pt-7 pb-8 group-data-[collapsible=icon]:px-2 group-data-[collapsible=icon]:py-3">
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton
               size="lg"
               asChild
-              tooltip="Cơ khí Tiến Huy"
-              className="h-auto justify-center p-0 hover:bg-transparent data-[active=true]:bg-transparent"
+              tooltip="Gia Sư AI"
+              className="h-auto justify-start p-0 hover:bg-transparent data-[active=true]:bg-transparent"
             >
-              <Link href="/manage/clients" className="flex justify-center">
+              <Link
+                href={"/manage/users" as Route}
+                className="flex min-w-0 items-center"
+              >
                 <SidebarBrand />
-                <span className="hidden size-10 items-center justify-center rounded bg-sidebar-accent text-sm font-bold text-sidebar-accent-foreground group-data-[collapsible=icon]:flex">
-                  TH
+                <span className="hidden size-9 items-center justify-center rounded bg-sidebar-primary text-sm font-bold text-sidebar-primary-foreground group-data-[collapsible=icon]:flex">
+                  AI
                 </span>
               </Link>
             </SidebarMenuButton>
@@ -110,11 +132,13 @@ export function AppSidebar() {
         </SidebarMenu>
       </SidebarHeader>
 
-      <SidebarContent className="gap-4 px-3 py-4">
+      <SidebarContent className="gap-5 px-4 pb-5">
         {menuGroups.map((group) => (
           <MenuGroup key={group.label} group={group} pathname={pathname} />
         ))}
       </SidebarContent>
+
+      <SidebarFooter className="px-4 py-4 group-data-[collapsible=icon]:hidden" />
 
       <SidebarRail />
     </Sidebar>
@@ -123,22 +147,18 @@ export function AppSidebar() {
 
 function SidebarBrand() {
   return (
-    <span className="flex flex-col items-center text-center group-data-[collapsible=icon]:hidden">
-      <Image
-        src="/tien-huy-logo-mark.png"
-        alt="Cơ khí Tiến Huy"
-        width={80}
-        height={60}
-        className="mb-2 block h-14 w-20 object-contain"
-        priority
-      />
-
-      <span className="text-lg leading-6 font-bold tracking-tight text-sidebar-foreground">
-        CƠ KHÍ TIẾN HUY
+    <span className="flex min-w-0 items-center gap-3 group-data-[collapsible=icon]:hidden">
+      <span className="flex size-10 shrink-0 items-center justify-center rounded bg-sidebar-primary text-sidebar-primary-foreground shadow-[0_10px_22px_rgba(124,58,237,0.35)]">
+        <Sparkles className="size-5" />
       </span>
 
-      <span className="mt-1 max-w-44 text-[9.5px] leading-4 font-semibold tracking-widest text-sidebar-foreground/40 uppercase">
-        Hệ thống quản trị doanh nghiệp
+      <span className="min-w-0">
+        <span className="block truncate text-sm leading-5 font-extrabold text-sidebar-foreground">
+          Gia Sư AI
+        </span>
+        <span className="block truncate text-[8px] leading-3 font-bold tracking-[0.22em] text-sidebar-foreground/55 uppercase">
+          Quản trị đào tạo
+        </span>
       </span>
     </span>
   )
@@ -153,12 +173,12 @@ function MenuGroup({
 }) {
   return (
     <SidebarGroup className="gap-1.5 p-0">
-      <SidebarGroupLabel className="px-3 text-[10.5px] font-bold tracking-[0.12em] text-sidebar-foreground/40 uppercase">
+      <SidebarGroupLabel className="h-5 px-3 text-[9px] font-extrabold tracking-[0.14em] text-sidebar-foreground/34 uppercase">
         {group.label}
       </SidebarGroupLabel>
 
       <SidebarGroupContent>
-        <SidebarMenu className="gap-0.5">
+        <SidebarMenu className="gap-1">
           {group.items.map((item) => (
             <MenuButton key={item.label} item={item} pathname={pathname} />
           ))}
@@ -170,7 +190,10 @@ function MenuGroup({
 
 function MenuButton({ item, pathname }: { item: MenuItem; pathname: string }) {
   const Icon = item.icon
-  const isActive = item.href === pathname
+  const activePaths = item.activePaths ?? (item.href ? [item.href] : [])
+  const isActive = item.exact
+    ? activePaths.includes(pathname)
+    : activePaths.some((activePath) => pathname === activePath || pathname.startsWith(`${activePath}/`))
 
   return (
     <SidebarMenuItem>

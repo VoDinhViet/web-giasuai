@@ -30,7 +30,7 @@ import { registerSchema } from "../schemas/register.schema";
 import { useTransition } from "react";
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import { registerWithEmailPassword } from "../actions/register-with-email-password";
-import { UserRole } from "@/types/user";
+import { UserRole } from "@/features/users/types";
 
 export function RegisterForm() {
   const [isPending, startTransition] = useTransition();

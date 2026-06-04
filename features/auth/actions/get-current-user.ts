@@ -3,7 +3,7 @@
 import { api } from "@/lib/api"
 import { getSession } from "@/lib/session"
 import type { ActionResponse } from "@/types/api"
-import type { User } from "@/types/user"
+import type { User } from "@/features/users/types"
 
 export async function getCurrentUser(): Promise<ActionResponse<User>> {
   const session = await getSession()
@@ -16,7 +16,7 @@ export async function getCurrentUser(): Promise<ActionResponse<User>> {
   }
 
   try {
-    const currentUser = await api<User>("/api/auth/me")
+    const currentUser = await api<User>("/api/v1/users/me")
 
     return {
       success: true,

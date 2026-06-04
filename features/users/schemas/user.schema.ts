@@ -1,46 +1,42 @@
 import { z } from "zod"
 
-import { UserGender, UserStatus } from "../types"
+import { UserRole } from "@/features/users/types"
 
-export const userGenderSchema = z.enum(
-  [UserGender.MALE, UserGender.FEMALE, UserGender.OTHER],
+export const userRoleSchema = z.enum(
+  [UserRole.ADMIN, UserRole.STUDENT, UserRole.TEACHER],
   {
-    message: "Vui lòng chọn giới tính",
-  }
-)
-
-export const userStatusSchema = z.enum(
-  [UserStatus.ACTIVE, UserStatus.INACTIVE],
-  {
-    message: "Vui lòng chọn trạng thái",
+    message: "Vui lòng chọn vai trò",
   }
 )
 
 export const createUserSchema = z.object({
   fullName: z.string().trim().min(1, { message: "Vui lòng nhập họ tên" }),
   email: z.string().trim().email({ message: "Email không hợp lệ" }),
-  password: z.string().min(8, { message: "Mật khẩu phải có ít nhất 8 ký tự" }),
-  phoneNumber: z
+  username: z
     .string()
     .trim()
-    .min(1, { message: "Vui lòng nhập số điện thoại" }),
-  dateOfBirth: z.string().trim().optional(),
-  gender: z.union([userGenderSchema, z.literal("")]).optional(),
-  roleId: z.string().trim().uuid({ message: "Vui lòng chọn vai trò" }),
-  status: userStatusSchema,
+    .min(1, { message: "Vui lòng nhập tên đăng nhập" }),
+  password: z.string().min(8, { message: "Mật khẩu phải có ít nhất 8 ký tự" }),
+  role: userRoleSchema,
 })
 
 export const updateUserSchema = z.object({
   email: z.string().trim().email({ message: "Email không hợp lệ" }),
-  fullName: z.string().trim().min(1, { message: "Vui lòng nhập họ tên" }),
-  phoneNumber: z
+  username: z
     .string()
     .trim()
-    .min(1, { message: "Vui lòng nhập số điện thoại" }),
-  dateOfBirth: z.string().trim(),
-  gender: z.union([userGenderSchema, z.literal("")]),
-  roleId: z.string().trim().uuid({ message: "Role ID không hợp lệ" }),
-  status: userStatusSchema,
+    .min(1, { message: "Vui lòng nhập tên đăng nhập" }),
+  fullName: z.string().trim().min(1, { message: "Vui lòng nhập họ tên" }),
+  password: z
+    .string()
+    .min(8, { message: "Mật khẩu phải có ít nhất 8 ký tự" })
+    .or(z.literal("")),
+  role: userRoleSchema,
+  isLocked: z.boolean(),
+  phone: z.string().trim().max(32).optional(),
+  location: z.string().trim().max(160).optional(),
+  bio: z.string().trim().max(1000).optional(),
+  avatarUrl: z.string().trim().max(1000).optional(),
 })
 
 export type CreateUserInput = z.infer<typeof createUserSchema>

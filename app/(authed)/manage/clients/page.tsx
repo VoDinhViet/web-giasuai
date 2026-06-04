@@ -1,5 +1,5 @@
 import { getClients } from "@/features/clients/actions/get-clients"
-import { ClientsPage } from "@/features/clients/components/clients-page"
+import { ClientsPage } from "@/features/clients/components/pages/clients-page"
 import { loadClientsSearchParams } from "@/features/clients/lib/load-clients-search-params"
 
 export const dynamic = "force-dynamic"

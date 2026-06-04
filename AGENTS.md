@@ -34,6 +34,7 @@
 - Put reusable UI primitives under `components/ui`.
 - Put shared components under `components`.
 - Put feature-specific code under `features/<feature-name>`.
+- Group feature components by role under `features/<feature-name>/components/<group>` when a feature has multiple components. Use groups such as `pages`, `forms`, `tables`, `dialogs`, `actions`, or clear domain groups such as `bom`, `revisions`, `media`, and `routing`.
 - Put feature constants under `features/<feature-name>/constants`.
 - Use existing global utilities from `lib` first.
 - Put feature-only utilities under `features/<feature-name>/utils` only when global utilities in `lib` cannot represent the feature-specific behavior.
@@ -53,7 +54,7 @@
 - Add missing shadcn/ui components with:
 
 ```bash
-pnpm.cmd dlx shadcn@latest add <component-name>
+pnpm dlx shadcn@latest add <component-name>
 ```
 
 ## Forms
@@ -87,21 +88,21 @@ pnpm.cmd dlx shadcn@latest add <component-name>
 - For UI component or page changes, run:
 
 ```bash
-pnpm.cmd lint
+pnpm lint
 ```
 
 - For shared types, routing, module wiring, server actions, schemas, auth, or configuration changes, also run:
 
 ```bash
-pnpm.cmd typecheck
+pnpm typecheck
 ```
 
-- Do not run `pnpm.cmd build` by default after every change. Run build only when explicitly requested, before release/deploy, or when a change touches build configuration, Next.js configuration, package dependencies, runtime environment, or another area where lint/typecheck cannot give enough confidence.
+- Do not run `pnpm build` by default after every change. Run build only when explicitly requested, before release/deploy, or when a change touches build configuration, Next.js configuration, package dependencies, runtime environment, or another area where lint/typecheck cannot give enough confidence.
 
 - Report exact commands run and whether they passed.
 
 ## Windows
 
-- Prefer `pnpm.cmd` for pnpm scripts on Windows.
+- Prefer `pnpm` for pnpm scripts.
 - Prefer PowerShell-native commands.
 - Use `-LiteralPath` for file operations when paths may contain special characters.

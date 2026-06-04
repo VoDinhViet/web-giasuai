@@ -2,7 +2,6 @@ import type { CSSProperties } from "react"
 import { redirect } from "next/navigation"
 
 import { AppSidebar } from "@/components/app-sidebar"
-import { AppTopbar } from "@/components/app-topbar"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 import { getCurrentUser } from "@/features/auth/actions/get-current-user"
 import { AuthProvider } from "@/features/auth/components/auth-provider"
@@ -23,14 +22,13 @@ export default async function AuthedLayout({
       <SidebarProvider
         style={
           {
-            "--sidebar-width": "20rem",
+            "--sidebar-width": "17rem",
           } as CSSProperties
         }
       >
         <AppSidebar />
         <SidebarInset className="bg-background">
-          <div className="flex min-h-svh flex-col text-foreground">
-            <AppTopbar />
+          <div className="flex min-h-svh min-w-0 flex-col text-foreground">
             {children}
           </div>
         </SidebarInset>

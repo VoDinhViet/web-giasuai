@@ -26,7 +26,7 @@ export function LoginForm() {
 
   const form = useForm({
     defaultValues: {
-      email: "",
+      emailOrUsername: "",
       password: "",
     },
     validators: {
@@ -79,7 +79,7 @@ export function LoginForm() {
         ) : null}
 
         <FieldGroup className="gap-5">
-          <form.Field name="email">
+          <form.Field name="emailOrUsername">
             {(field) => {
               const isInvalid =
                 field.state.meta.isTouched &&
@@ -91,14 +91,14 @@ export function LoginForm() {
                     htmlFor={field.name}
                     className="text-xs font-semibold uppercase tracking-widest text-muted-foreground"
                   >
-                    Email
+                    Email hoặc tên đăng nhập
                   </FieldLabel>
                   <Input
                     id={field.name}
                     name={field.name}
-                    type="email"
-                    placeholder="Nhập email"
-                    autoComplete="email"
+                    type="text"
+                    placeholder="Nhập email hoặc tên đăng nhập"
+                    autoComplete="username"
                     className="h-12 border-2 bg-muted/30 px-4 font-medium"
                     value={field.state.value}
                     onBlur={field.handleBlur}

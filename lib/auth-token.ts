@@ -1,7 +1,7 @@
 import { env } from "@/env"
 import type { AppSession } from "@/lib/session"
 
-export const REFRESH_TOKEN_PATH = "/api/auth/refresh-token"
+export const REFRESH_TOKEN_PATH = "/api/v1/auth/refresh-token"
 
 const TOKEN_EXPIRY_SKEW_MS = 30_000
 

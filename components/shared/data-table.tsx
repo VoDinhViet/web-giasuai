@@ -29,7 +29,9 @@ type DataTableProps<TData, TValue> = {
   onPageChange: (page: number) => void
   onPageSizeChange?: (pageSize: number) => void
   tableClassName?: string
+  onRowClick?: (row: TData) => void
   isLoading?: boolean
+  rowLabel?: string
   actionLabel?: string
   onAction?: () => void
 }
@@ -41,7 +43,9 @@ export function DataTable<TData, TValue>({
   onPageChange,
   onPageSizeChange,
   tableClassName,
+  onRowClick,
   isLoading = false,
+  rowLabel,
   actionLabel,
   onAction,
 }: DataTableProps<TData, TValue>) {
@@ -55,7 +59,7 @@ export function DataTable<TData, TValue>({
     <>
       <div className="relative">
         <Table className={cn("min-w-205", tableClassName)}>
-          <TableHeader className="bg-muted/30">
+          <TableHeader className="bg-muted/20">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow
                 key={headerGroup.id}
@@ -65,9 +69,9 @@ export function DataTable<TData, TValue>({
                   <TableHead
                     key={header.id}
                     className={cn(
-                      "h-11 px-5 text-[10px] leading-4 font-semibold tracking-[0.08em] text-muted-foreground uppercase",
+                      "h-11 border-r border-border/60 px-3 text-xs leading-4 font-bold text-foreground last:border-r-0",
                       getColumnClassName(header.column.id),
-                      header.column.id === "actions" && "text-right"
+                      isActionColumn(header.column.id) && "text-right"
                     )}
                   >
                     {header.isPlaceholder
@@ -86,15 +90,32 @@ export function DataTable<TData, TValue>({
               table.getRowModel().rows.map((tableRow) => (
                 <TableRow
                   key={tableRow.id}
-                  className="h-16 border-border/35 hover:bg-muted/25"
+                  className={cn(
+                    "h-14 border-border/45 hover:bg-primary/5",
+                    onRowClick && "cursor-pointer"
+                  )}
+                  onClick={(event) => {
+                    if (!onRowClick) {
+                      return
+                    }
+
+                    if (
+                      event.target instanceof Element &&
+                      event.target.closest('button,a,[role="button"]')
+                    ) {
+                      return
+                    }
+
+                    onRowClick(tableRow.original)
+                  }}
                 >
                   {tableRow.getVisibleCells().map((cell) => (
                     <TableCell
                       key={cell.id}
                       className={cn(
-                        "px-5 py-3",
+                        "border-r border-border/50 px-3 py-2 last:border-r-0",
                         getColumnClassName(cell.column.id),
-                        cell.column.id === "actions" && "text-right"
+                        isActionColumn(cell.column.id) && "text-right"
                       )}
                     >
                       {flexRender(
@@ -109,7 +130,7 @@ export function DataTable<TData, TValue>({
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="whitespace-normal p-0"
+                  className="p-0 whitespace-normal"
                 >
                   <EmptyTable
                     actionLabel={actionLabel}
@@ -124,6 +145,7 @@ export function DataTable<TData, TValue>({
       </div>
       <DataTablePagination
         pagination={pagination}
+        rowLabel={rowLabel}
         onPageChange={onPageChange}
         onPageSizeChange={onPageSizeChange}
         isDisabled={isLoading}
@@ -132,10 +154,36 @@ export function DataTable<TData, TValue>({
   )
 }
 
+function isActionColumn(columnId: string) {
+  return columnId === "actions" || columnId === "courseActions"
+}
+
 function getColumnClassName(columnId: string) {
   switch (columnId) {
+    case "rowNumber":
+      return "w-14"
+    case "employeeCode":
+      return "w-32"
+    case "supplierCode":
+      return "w-32"
+    case "supplierName":
+      return "w-72"
+    case "supplierPhone":
+      return "w-40"
+    case "supplierStatus":
+      return "w-40"
     case "fullName":
-      return "w-48"
+      return "w-56"
+    case "username":
+      return "w-44"
+    case "role":
+      return "w-40"
+    case "isLocked":
+      return "w-36"
+    case "department":
+      return "w-40"
+    case "email":
+      return "w-64"
     case "contact":
       return "w-52"
     case "clientType":
@@ -149,11 +197,27 @@ function getColumnClassName(columnId: string) {
     case "birthDateAndGender":
       return "w-32"
     case "position":
-      return "w-40"
+      return "w-44"
     case "status":
-      return "w-40"
-    case "actions":
+      return "w-32"
+    case "code":
+      return "w-32"
+    case "name":
+      return "w-72"
+    case "courseName":
+      return "w-64"
+    case "teacherName":
+      return "w-48"
+    case "studentCount":
       return "w-28"
+    case "schedule":
+      return "w-44"
+    case "startDate":
+      return "w-44"
+    case "actions":
+      return "w-30"
+    case "courseActions":
+      return "w-44"
     default:
       return undefined
   }

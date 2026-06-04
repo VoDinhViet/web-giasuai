@@ -4,6 +4,6 @@ export const usersSearchParams = {
   limit: parseAsInteger.withDefault(10),
   page: parseAsInteger.withDefault(1),
   q: parseAsString.withDefault(""),
-  roleId: parseAsString.withDefault("all"),
-  status: parseAsString.withDefault("all"),
+  role: parseAsString.withDefault("all"),
+  isLocked: parseAsString.withDefault("all"),
 }

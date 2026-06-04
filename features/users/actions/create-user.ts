@@ -8,16 +8,14 @@ import { revalidateUsersCache } from "../utils/user-cache.util"
 export async function createUser(input: CreateUserInput): Promise<User> {
   const reqDto = createUserSchema.parse(input)
 
-  const user = await api<User>("/api/users", {
+  const user = await api<User>("/api/v1/users", {
     method: "POST",
     body: {
       email: reqDto.email,
+      username: reqDto.username,
       password: reqDto.password,
       fullName: reqDto.fullName,
-      dateOfBirth: reqDto.dateOfBirth || undefined,
-      gender: reqDto.gender || undefined,
-      roleId: reqDto.roleId,
-      status: reqDto.status,
+      role: reqDto.role,
     },
   })
 

@@ -1,5 +1,7 @@
 "use server"
 
+import { revalidatePath } from "next/cache"
+
 import { api } from "@/lib/api"
 import { updateUserSchema, type UpdateUserInput } from "../schemas/user.schema"
 import type { User } from "../types"
@@ -11,20 +13,25 @@ export async function updateUser(
 ): Promise<User> {
   const reqDto = updateUserSchema.parse(input)
 
-  const user = await api<User>(`/api/users/${userId}`, {
+  const user = await api<User>(`/api/v1/users/${userId}`, {
     method: "PATCH",
     body: {
       email: reqDto.email,
+      username: reqDto.username,
       fullName: reqDto.fullName,
-      phoneNumber: reqDto.phoneNumber,
-      dateOfBirth: reqDto.dateOfBirth || undefined,
-      gender: reqDto.gender || undefined,
-      roleId: reqDto.roleId,
-      status: reqDto.status,
+      password: reqDto.password || undefined,
+      role: reqDto.role,
+      isLocked: reqDto.isLocked,
+      phone: reqDto.phone,
+      location: reqDto.location,
+      bio: reqDto.bio,
+      avatarUrl: reqDto.avatarUrl,
     },
   })
 
   revalidateUsersCache()
+  revalidatePath("/manage/users")
+  revalidatePath(`/manage/users/${userId}`)
 
   return user
 }

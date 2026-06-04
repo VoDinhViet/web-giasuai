@@ -1,6 +1,7 @@
 "use server"
 
 import { api } from "@/lib/api"
+import { omitEmptyFields } from "@/lib/object.util"
 import {
   clientFormSchema,
   type ClientFormInput,
@@ -15,17 +16,17 @@ export async function updateClient(
 
   return api<Client>(`/api/clients/${clientId}`, {
     method: "PATCH",
-    body: {
+    body: omitEmptyFields({
       fullName: reqDto.fullName,
       email: reqDto.email,
       phoneNumber: reqDto.phoneNumber,
       clientType: reqDto.clientType,
-      taxCode: reqDto.taxCode || undefined,
+      taxCode: reqDto.taxCode,
       companyName:
         reqDto.clientType === ClientType.COMPANY
-          ? reqDto.companyName || undefined
+          ? reqDto.companyName
           : undefined,
-      address: reqDto.address || undefined,
-    },
+      address: reqDto.address,
+    }),
   })
 }

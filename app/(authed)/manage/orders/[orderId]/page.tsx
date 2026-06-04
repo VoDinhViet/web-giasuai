@@ -1,6 +1,6 @@
 import { getOrderFormOptions } from "@/features/orders/actions/get-order-form-options"
 import { getOrder } from "@/features/orders/actions/get-order"
-import { OrderDetailPage } from "@/features/orders/components/order-detail-page"
+import { OrderDetailPage } from "@/features/orders/components/pages/order-detail-page"
 
 export const dynamic = "force-dynamic"
 
