@@ -10,6 +10,7 @@ import {
   ChartColumn,
   CircleDollarSign,
   DoorOpen,
+  MonitorPlay,
   FileStack,
   FileText,
   FileQuestion,
@@ -37,6 +38,8 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar"
+import { useAuth } from "@/features/auth/components/auth-provider"
+import { UserRole } from "@/features/users/types"
 
 type MenuItem = {
   label: string
@@ -44,6 +47,7 @@ type MenuItem = {
   href?: string
   activePaths?: string[]
   exact?: boolean
+  hiddenForRoles?: UserRole[]
 }
 
 type MenuGroup = {
@@ -57,6 +61,7 @@ const menuGroups: MenuGroup[] = [
     items: [
       { label: "Bảng điều khiển", icon: LayoutDashboard, href: "/manage", exact: true },
       { label: "Dashboard học viên", icon: Sparkles, href: "/manage/student-dashboard" },
+      { label: "Vào học", icon: MonitorPlay, href: "/courses/CRS-001/learn", activePaths: ["/courses"] },
       { label: "Tham gia lớp", icon: DoorOpen, href: "/manage/join-class" },
     ],
   },
@@ -69,6 +74,7 @@ const menuGroups: MenuGroup[] = [
         icon: Users,
         href: "/manage/users",
         activePaths: ["/manage/users", "/manage/students", "/manage/profile"],
+        hiddenForRoles: [UserRole.LEARNER],
       },
       { label: "Quản lý khóa học", icon: FileText, href: "/manage/courses" },
       { label: "Thư viện học liệu", icon: FileStack, href: "/manage/library" },
@@ -106,6 +112,7 @@ const menuButtonClass =
 
 export function AppSidebar() {
   const pathname = usePathname()
+  const { user } = useAuth()
 
   return (
     <Sidebar variant="sidebar" collapsible="icon" className="border-r-0">
@@ -134,7 +141,12 @@ export function AppSidebar() {
 
       <SidebarContent className="gap-5 px-4 pb-5">
         {menuGroups.map((group) => (
-          <MenuGroup key={group.label} group={group} pathname={pathname} />
+          <MenuGroup
+            key={group.label}
+            group={group}
+            pathname={pathname}
+            userRole={user.role}
+          />
         ))}
       </SidebarContent>
 
@@ -167,10 +179,20 @@ function SidebarBrand() {
 function MenuGroup({
   group,
   pathname,
+  userRole,
 }: {
   group: MenuGroup
   pathname: string
+  userRole: UserRole
 }) {
+  const visibleItems = group.items.filter(
+    (item) => !item.hiddenForRoles?.includes(userRole)
+  )
+
+  if (visibleItems.length === 0) {
+    return null
+  }
+
   return (
     <SidebarGroup className="gap-1.5 p-0">
       <SidebarGroupLabel className="h-5 px-3 text-[9px] font-extrabold tracking-[0.14em] text-sidebar-foreground/34 uppercase">
@@ -179,7 +201,7 @@ function MenuGroup({
 
       <SidebarGroupContent>
         <SidebarMenu className="gap-1">
-          {group.items.map((item) => (
+          {visibleItems.map((item) => (
             <MenuButton key={item.label} item={item} pathname={pathname} />
           ))}
         </SidebarMenu>

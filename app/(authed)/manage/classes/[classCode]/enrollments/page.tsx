@@ -3,7 +3,7 @@ import { notFound } from "next/navigation"
 import { PageTitleBar } from "@/components/page-title-bar"
 import { getClass } from "@/features/classes/actions/get-class"
 import { getClassEnrollments } from "@/features/classes/actions/get-class-enrollments"
-import { ClassEnrollmentsPage } from "@/features/classes/components/pages/class-enrollments-page"
+import { ClassEnrollmentsPage } from "@/features/classes/components/enrollments/class-enrollments-page"
 
 export default async function ClassEnrollmentsRoute({
   params,

@@ -2,7 +2,6 @@
 
 import { useState, type ReactNode } from "react"
 import { useForm } from "@tanstack/react-form"
-import { useRouter } from "next/navigation"
 import { XCircle } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -42,7 +41,6 @@ export function RejectOrderDialog({
 }: RejectOrderDialogProps) {
   const [open, setOpen] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
-  const router = useRouter()
 
   const form = useForm({
     defaultValues: {
@@ -57,7 +55,6 @@ export function RejectOrderDialog({
       try {
         await rejectOrder(order.id, value)
         setOpen(false)
-        router.refresh()
       } catch {
         setSubmitError("Không thể từ chối đơn hàng. Vui lòng thử lại.")
       }

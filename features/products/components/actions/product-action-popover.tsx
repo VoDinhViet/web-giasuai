@@ -118,9 +118,6 @@ export function ProductActionPopover({
         }
 
         setOpen(false)
-        if (!redirectCopiedProduct || action !== "copy") {
-          router.refresh()
-        }
       } catch {
         setError("Không thể thực hiện thao tác. Vui lòng thử lại.")
       }

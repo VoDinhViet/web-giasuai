@@ -1,7 +1,6 @@
 "use client"
 
 import { useTransition } from "react"
-import { useRouter } from "next/navigation"
 import { CheckCircle2 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -18,12 +17,10 @@ export function ApproveOrderButton({
   order,
 }: ApproveOrderButtonProps) {
   const [isPending, startTransition] = useTransition()
-  const router = useRouter()
 
   function handleApprove() {
     startTransition(async () => {
       await approveOrder(order.id)
-      router.refresh()
     })
   }
 

@@ -1,7 +1,5 @@
 "use server"
 
-import { revalidatePath } from "next/cache"
-
 import { api } from "@/lib/api"
 import type { ActionResponse } from "@/types/api"
 import type { ClassEnrollment, ClassEnrollmentStatus } from "../types"
@@ -25,9 +23,6 @@ export async function updateClassEnrollmentStatus({
         body: { status },
       }
     )
-
-    revalidatePath(`/manage/classes/${classCode}`)
-    revalidatePath(`/manage/classes/${classCode}/enrollments`)
 
     return {
       success: true,

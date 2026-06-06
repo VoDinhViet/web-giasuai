@@ -44,8 +44,8 @@ const weeklyProgress = [
 ]
 
 const modules = [
-  { name: "Đạo hàm cơ bản", progress: 100, status: "Hoàn thành", href: "/manage/courses/MATH-12" },
-  { name: "Ứng dụng đạo hàm", progress: 72, status: "Đang học", href: "/manage/courses/MATH-12/lessons" },
+  { name: "Kỹ năng bán hàng B2B", progress: 100, status: "Hoàn thành", href: "/courses/CRS-001/learn" },
+  { name: "Quản lý sản xuất tinh gọn", progress: 72, status: "Đang học", href: "/courses/CRS-002/learn" },
   { name: "Khảo sát hàm số", progress: 48, status: "Cần luyện thêm", href: "/manage/weaknesses" },
 ]
 
@@ -85,7 +85,7 @@ const studentDashboardToneClassName =
 export function StudentDashboardPage({ user }: StudentDashboardPageProps) {
   return (
     <div className={`grid gap-5 ${studentDashboardToneClassName}`}>
-      <Card tone="primary">
+      <Card data-tone="primary">
         <CardHeader>
           <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-center">
             <div className="min-w-0">
@@ -101,7 +101,7 @@ export function StudentDashboardPage({ user }: StudentDashboardPageProps) {
                   </Link>
                 </Button>
                 <Button type="button" variant="inverse" asChild>
-                  <Link href={"/manage/courses/MATH-12/lessons" as Route}>
+                  <Link href={"/courses/CRS-001/learn" as Route}>
                     <PlayCircle />
                     Tiếp tục học
                   </Link>
@@ -129,7 +129,7 @@ export function StudentDashboardPage({ user }: StudentDashboardPageProps) {
 
       <section className="grid items-start gap-5 xl:grid-cols-[minmax(0,1fr)_25rem]">
         <div className="grid items-start gap-5">
-          <Card tone="info">
+          <Card data-tone="info">
             <CardHeader>
               <SectionHeader
                 icon={TrendingUp}
@@ -151,7 +151,7 @@ export function StudentDashboardPage({ user }: StudentDashboardPageProps) {
             </CardContent>
           </Card>
 
-          <Card tone="success">
+          <Card data-tone="success">
             <CardHeader>
               <SectionHeader
                 icon={GraduationCap}
@@ -162,7 +162,7 @@ export function StudentDashboardPage({ user }: StudentDashboardPageProps) {
             <CardContent>
               <div className="grid gap-3 lg:grid-cols-3">
                 {modules.map((module) => (
-                  <Card key={module.name} size="sm" tone="default">
+                  <Card key={module.name} size="sm" data-tone="default">
                     <CardHeader>
                       <CardTitle>{module.name}</CardTitle>
                       <CardDescription>{module.status}</CardDescription>
@@ -182,7 +182,7 @@ export function StudentDashboardPage({ user }: StudentDashboardPageProps) {
             </CardContent>
           </Card>
 
-          <Card tone="success">
+          <Card data-tone="success">
             <CardHeader>
               <SectionHeader
                 icon={CheckCircle2}
@@ -200,7 +200,7 @@ export function StudentDashboardPage({ user }: StudentDashboardPageProps) {
           </Card>
 
           <section className="grid items-start gap-5 lg:grid-cols-2">
-            <Card tone="violet">
+            <Card data-tone="violet">
               <CardHeader>
                 <SectionHeader
                   icon={MessageSquareText}
@@ -209,7 +209,7 @@ export function StudentDashboardPage({ user }: StudentDashboardPageProps) {
                 />
               </CardHeader>
               <CardContent>
-                <Card size="sm" tone="default">
+                <Card size="sm" data-tone="default">
                   <CardHeader>
                     <CardTitle>Giữ nhịp tốt ở phần đạo hàm</CardTitle>
                     <CardDescription>
@@ -225,7 +225,7 @@ export function StudentDashboardPage({ user }: StudentDashboardPageProps) {
               </CardContent>
             </Card>
 
-            <Card tone="warning">
+            <Card data-tone="warning">
               <CardHeader>
                 <SectionHeader
                   icon={Trophy}
@@ -245,7 +245,7 @@ export function StudentDashboardPage({ user }: StudentDashboardPageProps) {
         </div>
 
         <aside className="grid items-start gap-5">
-          <Card tone="warning">
+          <Card data-tone="warning">
             <CardHeader>
               <SectionHeader
                 icon={Target}
@@ -268,7 +268,7 @@ export function StudentDashboardPage({ user }: StudentDashboardPageProps) {
             </CardContent>
           </Card>
 
-          <Card tone="violet">
+          <Card data-tone="violet">
             <CardHeader>
               <SectionHeader
                 icon={Sparkles}
@@ -277,7 +277,7 @@ export function StudentDashboardPage({ user }: StudentDashboardPageProps) {
               />
             </CardHeader>
             <CardContent>
-              <Card size="sm" tone="default">
+              <Card size="sm" data-tone="default">
                 <CardContent>
                   <p className="text-sm leading-6 font-medium text-foreground">
                     Nên luyện thêm phần khảo sát hàm số và xem lại lỗi sai trong mini test gần nhất.
@@ -301,7 +301,7 @@ export function StudentDashboardPage({ user }: StudentDashboardPageProps) {
             </CardContent>
           </Card>
 
-          <Card tone="info">
+          <Card data-tone="info">
             <CardHeader>
               <SectionHeader
                 icon={CalendarDays}
@@ -341,7 +341,7 @@ function SummaryCard({
   icon: LucideIcon
 }) {
   return (
-    <Card size="sm" tone="default">
+    <Card size="sm" data-tone="default">
       <CardHeader>
         <SectionTitle icon={Icon} title={label} />
       </CardHeader>
@@ -390,7 +390,7 @@ function SectionHeader({
 
 function InfoBox({ title, value }: { title: string; value: string }) {
   return (
-    <Card size="sm" tone="default">
+    <Card size="sm" data-tone="default">
       <CardHeader>
         <CardTitle>{title}</CardTitle>
         <CardDescription>{value}</CardDescription>
@@ -411,7 +411,7 @@ function ActionBox({
   href: string
 }) {
   return (
-    <Card size="sm" tone="default">
+    <Card size="sm" data-tone="default">
       <CardHeader>
         <CardTitle>{title}</CardTitle>
         <CardDescription>{description}</CardDescription>

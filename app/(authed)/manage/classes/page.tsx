@@ -6,7 +6,7 @@ import { PageTitleBar } from "@/components/page-title-bar"
 import { Button } from "@/components/ui/button"
 import { getClassStats } from "@/features/classes/actions/get-class-stats"
 import { getClasses } from "@/features/classes/actions/get-classes"
-import { ClassesPage } from "@/features/classes/components/pages/classes-page"
+import { ClassesPage } from "@/features/classes/components/classes-page"
 import { loadClassesSearchParams } from "@/features/classes/lib/load-classes-search-params"
 
 export const dynamic = "force-dynamic"
@@ -17,7 +17,7 @@ export default async function ClassesRoute({
   const classesSearchParams = await loadClassesSearchParams(searchParams)
   const [classesResponse, stats] = await Promise.all([
     getClasses(classesSearchParams),
-    getClassStats(classesSearchParams),
+    getClassStats(),
   ])
 
   return (

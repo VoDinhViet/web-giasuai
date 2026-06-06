@@ -1,7 +1,5 @@
 "use server"
 
-import { revalidatePath } from "next/cache"
-
 import { api } from "@/lib/api"
 import { omitEmptyFields } from "@/lib/object.util"
 import type { ActionResponse } from "@/types/api"
@@ -22,11 +20,10 @@ export async function createClass(
       body: omitEmptyFields({ ...reqDto }),
     })
 
-    revalidatePath("/manage/classes")
-
     return {
       success: true,
       data: createdClass,
+      message: "Đã tạo lớp học.",
     }
   } catch (createClassError) {
     console.error("Create class error:", createClassError)

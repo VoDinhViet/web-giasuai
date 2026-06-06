@@ -285,7 +285,7 @@ export function ManageDashboardPage() {
         ))}
       </section>
 
-      <Card tone="violet">
+      <Card data-tone="violet">
         <CardHeader>
           <SectionTitle icon={Sparkles} title="Cảnh báo quan trọng" />
           <CardDescription>
@@ -302,7 +302,7 @@ export function ManageDashboardPage() {
       </Card>
 
       <section className="grid gap-5 xl:grid-cols-[1fr_1fr_1fr]">
-        <Card tone="success">
+        <Card data-tone="success">
           <CardHeader>
             <SectionTitle icon={BarChart3} title="Tiến độ học tập" />
             <CardDescription>Tổng quan toàn hệ thống.</CardDescription>
@@ -367,7 +367,7 @@ export function ManageDashboardPage() {
           ])}
         />
 
-        <Card tone="primary">
+        <Card data-tone="primary">
           <CardHeader>
             <SectionTitle icon={TrendingUp} title="Tỷ lệ đạt QC" />
             <CardDescription>
@@ -400,7 +400,7 @@ export function ManageDashboardPage() {
           </CardContent>
         </Card>
 
-        <Card tone="violet">
+        <Card data-tone="violet">
           <CardHeader>
             <SectionTitle icon={Send} title="Thao tác nhanh" />
             <CardDescription>
@@ -413,7 +413,7 @@ export function ManageDashboardPage() {
                 const Icon = action.icon
 
                 return (
-                  <Card key={action.label} size="sm" tone={action.tone}>
+                  <Card key={action.label} size="sm" data-tone={action.tone}>
                     <CardHeader>
                       <SectionTitle icon={Icon} title={action.label} />
                       <CardDescription>{action.helper}</CardDescription>
@@ -432,7 +432,7 @@ export function ManageDashboardPage() {
       </section>
 
       <section className="grid gap-5">
-        <Card tone="info">
+        <Card data-tone="info">
           <CardHeader>
             <SectionTitle icon={Users} title="Tổng quan dữ liệu" />
             <CardDescription>Quy mô hệ thống hiện tại.</CardDescription>
@@ -489,7 +489,7 @@ function KpiCard({
   tone: DashboardCardTone
 }) {
   return (
-    <Card size="sm" tone={tone}>
+    <Card size="sm" data-tone={tone}>
       <CardHeader>
         <SectionTitle icon={Icon} title={label} />
       </CardHeader>
@@ -517,7 +517,7 @@ function AlertCard({
   href: string
 }) {
   return (
-    <Card size="sm" tone={tone}>
+    <Card size="sm" data-tone={tone}>
       <CardHeader>
         <SectionTitle icon={Icon} title={`${value} ${label}`} />
         <CardDescription>{helper}</CardDescription>
@@ -547,7 +547,7 @@ function TablePanel({
   rows: string[][]
 }) {
   return (
-    <Card tone={tone}>
+    <Card data-tone={tone}>
       <CardHeader>
         <SectionTitle icon={icon} title={title} />
         <CardDescription>{description}</CardDescription>
@@ -685,7 +685,7 @@ function ProgressMetric({
   helper: string
 }) {
   return (
-    <Card size="sm" tone="default">
+    <Card size="sm" data-tone="default">
       <CardHeader>
         <CardTitle>{label}</CardTitle>
         <CardDescription>
@@ -700,7 +700,7 @@ function BarList({ rows }: { rows: [string, string, string][] }) {
   return (
     <div className="grid gap-3">
       {rows.map(([label, value, helper]) => (
-        <Card key={label} size="sm" tone="default">
+        <Card key={label} size="sm" data-tone="default">
           <CardHeader>
             <CardTitle>{label}</CardTitle>
             <CardDescription>

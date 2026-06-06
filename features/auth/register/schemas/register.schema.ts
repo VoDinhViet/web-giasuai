@@ -31,7 +31,7 @@ export const registerSchema = z
       .nativeEnum(UserRole, {
         message: "Vui lòng chọn vai trò của bạn",
       })
-      .refine((val) => val === UserRole.TEACHER || val === UserRole.STUDENT, {
+      .refine((val) => val === UserRole.INSTRUCTOR || val === UserRole.LEARNER, {
         message: "Vui lòng chọn vai trò hợp lệ",
       }),
   })

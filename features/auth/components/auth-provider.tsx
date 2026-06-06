@@ -6,8 +6,8 @@ import { UserRole, type Permission, type User } from "@/features/users/types"
 
 const permissionsByRole: Record<UserRole, Permission[]> = {
   [UserRole.ADMIN]: ["*"],
-  [UserRole.TEACHER]: ["courses:read", "courses:write"],
-  [UserRole.STUDENT]: ["courses:read"],
+  [UserRole.INSTRUCTOR]: ["courses:read", "courses:write"],
+  [UserRole.LEARNER]: ["courses:read"],
 }
 
 type AuthContextValue = {

@@ -1,37 +1,45 @@
 "use server"
 
-import { revalidatePath } from "next/cache"
-
 import { api } from "@/lib/api"
-import { updateUserSchema, type UpdateUserInput } from "../schemas/user.schema"
+import { omitEmptyFields } from "@/lib/object.util"
+import type { ActionResponse } from "@/types/api"
+import {
+  profileFormSchema,
+  type ProfileFormInput,
+} from "../schemas/profile.schema"
 import type { User } from "../types"
 import { revalidateUsersCache } from "../utils/user-cache.util"
 
 export async function updateUser(
   userId: string,
-  input: UpdateUserInput
-): Promise<User> {
-  const reqDto = updateUserSchema.parse(input)
+  input: ProfileFormInput
+): Promise<ActionResponse<User>> {
+  try {
+    const reqDto = profileFormSchema.parse(input)
 
-  const user = await api<User>(`/api/v1/users/${userId}`, {
-    method: "PATCH",
-    body: {
-      email: reqDto.email,
-      username: reqDto.username,
-      fullName: reqDto.fullName,
-      password: reqDto.password || undefined,
-      role: reqDto.role,
-      isLocked: reqDto.isLocked,
-      phone: reqDto.phone,
-      location: reqDto.location,
-      bio: reqDto.bio,
-      avatarUrl: reqDto.avatarUrl,
-    },
-  })
+    const user = await api<User>(`/api/v1/users/${userId}`, {
+      method: "PATCH",
+      body: omitEmptyFields({
+        fullName: reqDto.fullName,
+        phone: reqDto.phone,
+        location: reqDto.location,
+        bio: reqDto.bio,
+      }),
+    })
 
-  revalidateUsersCache()
-  revalidatePath("/manage/users")
-  revalidatePath(`/manage/users/${userId}`)
+    revalidateUsersCache()
 
-  return user
+    return {
+      success: true,
+      data: user,
+      message: "Đã cập nhật người dùng.",
+    }
+  } catch (updateUserError) {
+    console.error("Update user error:", updateUserError)
+
+    return {
+      success: false,
+      message: "Không thể cập nhật người dùng.",
+    }
+  }
 }

@@ -15,7 +15,7 @@ export type ClassSession = {
   time: string
   room: string
   courseName: string
-  teacherName: string
+  instructorName: string
   attendanceCount: number
   status: "scheduled" | "completed" | "cancelled"
 }
@@ -45,7 +45,7 @@ export type ClassItem = {
   classCode: string
   className: string
   courseName: string
-  teacherName: string
+  instructorName: string
   studentCount: number
   maxStudents: number
   schedule: string
@@ -98,7 +98,7 @@ export const classes: ClassItem[] = [
     classCode: "CLS-001",
     className: "B2B Sales A01",
     courseName: "Kỹ năng bán hàng B2B",
-    teacherName: "Nguyễn Minh Anh",
+    instructorName: "Nguyễn Minh Anh",
     studentCount: 32,
     maxStudents: 36,
     schedule: "Thứ 2, 4 - 19:00",
@@ -115,7 +115,7 @@ export const classes: ClassItem[] = [
         time: "19:00",
         room: "Phòng 301",
         courseName: "Kỹ năng bán hàng B2B",
-        teacherName: "Nguyễn Minh Anh",
+        instructorName: "Nguyễn Minh Anh",
         attendanceCount: 30,
         status: "scheduled",
       },
@@ -126,7 +126,7 @@ export const classes: ClassItem[] = [
         time: "19:00",
         room: "Phòng 301",
         courseName: "Kỹ năng bán hàng B2B",
-        teacherName: "Nguyễn Minh Anh",
+        instructorName: "Nguyễn Minh Anh",
         attendanceCount: 29,
         status: "scheduled",
       },
@@ -137,7 +137,7 @@ export const classes: ClassItem[] = [
         time: "19:00",
         room: "Phòng 301",
         courseName: "Kỹ năng bán hàng B2B",
-        teacherName: "Nguyễn Minh Anh",
+        instructorName: "Nguyễn Minh Anh",
         attendanceCount: 31,
         status: "completed",
       },
@@ -205,7 +205,7 @@ export const classes: ClassItem[] = [
     classCode: "CLS-002",
     className: "Lean Ops K02",
     courseName: "Quản lý sản xuất tinh gọn",
-    teacherName: "Trần Quốc Huy",
+    instructorName: "Trần Quốc Huy",
     studentCount: 24,
     maxStudents: 30,
     schedule: "Thứ 3, 5 - 18:30",
@@ -222,7 +222,7 @@ export const classes: ClassItem[] = [
         time: "18:30",
         room: "Online",
         courseName: "Quản lý sản xuất tinh gọn",
-        teacherName: "Trần Quốc Huy",
+        instructorName: "Trần Quốc Huy",
         attendanceCount: 0,
         status: "scheduled",
       },
@@ -253,7 +253,7 @@ export const classes: ClassItem[] = [
     classCode: "CLS-003",
     className: "Onboarding U01",
     courseName: "Onboarding người dùng mới",
-    teacherName: "Phạm Hà Linh",
+    instructorName: "Phạm Hà Linh",
     studentCount: 18,
     maxStudents: 25,
     schedule: "Thứ 6 - 09:00",
@@ -270,7 +270,7 @@ export const classes: ClassItem[] = [
         time: "09:00",
         room: "Phòng Lab",
         courseName: "Onboarding người dùng mới",
-        teacherName: "Phạm Hà Linh",
+        instructorName: "Phạm Hà Linh",
         attendanceCount: 12,
         status: "scheduled",
       },
@@ -301,7 +301,7 @@ export const classes: ClassItem[] = [
     classCode: "CLS-004",
     className: "Safety Workshop S04",
     courseName: "An toàn lao động nhà xưởng",
-    teacherName: "Lê Hoàng Nam",
+    instructorName: "Lê Hoàng Nam",
     studentCount: 48,
     maxStudents: 50,
     schedule: "Thứ 7 - 08:00",

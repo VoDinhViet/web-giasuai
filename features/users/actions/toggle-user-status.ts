@@ -1,7 +1,5 @@
 "use server"
 
-import { revalidatePath } from "next/cache"
-
 import { api } from "@/lib/api"
 import type { ActionResponse } from "@/types/api"
 import type { User } from "../types"
@@ -16,8 +14,6 @@ export async function toggleUserStatus(
     })
 
     revalidateUsersCache()
-    revalidatePath("/manage/users")
-    revalidatePath(`/manage/users/${userId}`)
 
     return {
       success: true,

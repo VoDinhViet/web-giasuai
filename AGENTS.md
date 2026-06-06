@@ -12,7 +12,10 @@
 
 - This is a Next.js App Router project using TypeScript, React, Tailwind CSS v4, and shadcn/ui.
 - shadcn/ui config is in `components.json`.
-- Detailed project coding rules are in `docs/coding-rules.md`.
+- Detailed project coding rules are in `docs/coding-rules.md` and `docs/rules/`.
+- Project-local skills are in `.agents/skills/`.
+- The official shadcn/ui skill is installed at `.agents/skills/shadcn/`.
+- shadcn MCP project config is in `.mcp.json`; Codex user-level MCP config still lives outside the repo.
 - Prefer existing project patterns before adding new abstractions.
 
 ## Workflow

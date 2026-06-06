@@ -56,7 +56,6 @@ export function CreateProductDialog({
           onSuccess={(product) => {
             setOpen(false)
             router.push(`/manage/products/${product.id}` as Route)
-            router.refresh()
           }}
           onSubmit={async (value, imageFile) => {
             const product = await createProduct(value)

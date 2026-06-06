@@ -99,7 +99,6 @@ export function EditSupplierPage({
       }
 
       router.push("/manage/suppliers" as Route)
-      router.refresh()
     },
   })
 

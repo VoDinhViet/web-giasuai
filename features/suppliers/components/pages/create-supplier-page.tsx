@@ -114,7 +114,6 @@ export function CreateSupplierPage({
 
       clearDraft()
       router.push("/manage/suppliers" as Route)
-      router.refresh()
     },
   })
 

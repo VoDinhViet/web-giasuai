@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, type ReactNode } from "react"
-import { useRouter } from "next/navigation"
 import { Pencil } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -38,7 +37,6 @@ export function EditOrderDialog({
   trigger,
 }: EditOrderDialogProps) {
   const [open, setOpen] = useState(false)
-  const router = useRouter()
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -96,7 +94,6 @@ export function EditOrderDialog({
           }}
           onSuccess={() => {
             setOpen(false)
-            router.refresh()
           }}
         />
       </DialogContent>

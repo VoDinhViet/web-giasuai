@@ -1,3 +1,4 @@
+import { Plus, Upload } from "lucide-react"
 import Link from "next/link"
 import type { Route } from "next"
 
@@ -5,9 +6,8 @@ import { PageTitleBar } from "@/components/page-title-bar"
 import { Button } from "@/components/ui/button"
 import { getCourses } from "@/features/courses/actions/get-courses"
 import { getCourseStats } from "@/features/courses/actions/get-course-stats"
-import { CoursesPage } from "@/features/courses/components/pages/courses-page"
+import { CoursesPage } from "@/features/courses/components/courses-page"
 import { loadCoursesSearchParams } from "@/features/courses/lib/load-courses-search-params"
-import { Upload } from "lucide-react"
 
 export const dynamic = "force-dynamic"
 
@@ -25,12 +25,20 @@ export default async function CoursesRoute({
       <PageTitleBar
         title="Quản lý khóa học"
         actions={
-          <Button type="button" asChild>
-            <Link href={"/manage/courses/create" as Route}>
-              <Upload className="size-4" />
-              Tạo khóa học
-            </Link>
-          </Button>
+          <div className="flex flex-wrap items-center gap-2">
+            <Button type="button" variant="outline" asChild>
+              <Link href={"/manage/courses/import" as Route}>
+                <Upload className="size-4" />
+                Import Excel
+              </Link>
+            </Button>
+            <Button type="button" asChild>
+              <Link href={"/manage/courses/create" as Route}>
+                <Plus className="size-4" />
+                Tạo khóa học
+              </Link>
+            </Button>
+          </div>
         }
         breadcrumbItems={[
           { label: "Bảng điều khiển", href: "/manage" },

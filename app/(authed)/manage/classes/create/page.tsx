@@ -5,12 +5,12 @@ import type { Route } from "next"
 import { PageTitleBar } from "@/components/page-title-bar"
 import { Button } from "@/components/ui/button"
 import { getClassFormOptions } from "@/features/classes/actions/get-class-form-options"
-import { ClassCreatePage } from "@/features/classes/components/pages/class-create-page"
+import { CreateClassForm } from "@/features/classes/components/create/create-class-form"
 
 export const dynamic = "force-dynamic"
 
 export default async function CreateClassRoute() {
-  const { courseOptions, teacherOptions } = await getClassFormOptions()
+  const { teacherOptions } = await getClassFormOptions()
 
   return (
     <div className="flex w-full flex-col gap-5">
@@ -30,10 +30,7 @@ export default async function CreateClassRoute() {
           { label: "Thêm lớp học" },
         ]}
       />
-      <ClassCreatePage
-        courseOptions={courseOptions}
-        teacherOptions={teacherOptions}
-      />
+      <CreateClassForm teacherOptions={teacherOptions} />
     </div>
   )
 }

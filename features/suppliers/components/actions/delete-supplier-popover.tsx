@@ -2,7 +2,6 @@
 
 import * as React from "react"
 import { AlertTriangle, Trash2 } from "lucide-react"
-import { useRouter } from "next/navigation"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -30,13 +29,11 @@ export function DeleteSupplierPopover({
 }: DeleteSupplierPopoverProps) {
   const [open, setOpen] = React.useState(false)
   const [isPending, startTransition] = React.useTransition()
-  const router = useRouter()
 
   function handleDelete() {
     startTransition(async () => {
       await deleteSupplier(supplier.id)
       setOpen(false)
-      router.refresh()
     })
   }
 

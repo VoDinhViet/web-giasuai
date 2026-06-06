@@ -1,5 +1,5 @@
 import { PageTitleBar } from "@/components/page-title-bar"
-import { CourseCreatePage } from "@/features/courses/components/pages/course-create-page"
+import { CourseCreatePage } from "@/features/courses/components/create/create-page"
 
 export default function CourseCreateRoute() {
   return (

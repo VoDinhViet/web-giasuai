@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation"
 
 import { PageTitleBar } from "@/components/page-title-bar"
-import { CourseLessonsPage } from "@/features/courses/components/pages/course-lessons-page"
+import { CourseLessonsPage } from "@/features/courses/components/lessons/lessons-page"
 import { getCourseByCode } from "@/features/courses/constants/course-data"
 
 export default async function CourseLessonsRoute({

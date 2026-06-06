@@ -18,7 +18,7 @@ export async function getClassFormOptions(): Promise<ClassFormOptions> {
       limit: 50,
       page: 1,
       q: "",
-      role: UserRole.TEACHER,
+      role: UserRole.INSTRUCTOR,
       isLocked: "false",
     }),
   ])
@@ -31,6 +31,7 @@ export async function getClassFormOptions(): Promise<ClassFormOptions> {
     teacherOptions: teachersResponse.data.map((teacher) => ({
       value: teacher.id,
       label: teacher.fullName,
+      description: teacher.email,
     })),
   }
 }

@@ -2,7 +2,6 @@
 
 import * as React from "react"
 import { Check } from "lucide-react"
-import { useRouter } from "next/navigation"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -29,7 +28,6 @@ export function BomQtyField({
   const [value, setValue] = React.useState(qty)
   const [error, setError] = React.useState<string | null>(null)
   const [isPending, startTransition] = React.useTransition()
-  const router = useRouter()
   const canEdit = Boolean(revisionId && bomLineId)
   const isChanged = value.trim() !== qty
   const requiresInteger = itemType === ProductItemType.WIP
@@ -60,7 +58,6 @@ export function BomQtyField({
           qty: value,
           unitId,
         })
-        router.refresh()
       } catch {
         setError("Không thể cập nhật số lượng")
       }

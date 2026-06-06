@@ -1,7 +1,7 @@
 export enum UserRole {
   ADMIN = "ADMIN",
-  TEACHER = "TEACHER",
-  STUDENT = "STUDENT",
+  INSTRUCTOR = "INSTRUCTOR",
+  LEARNER = "LEARNER",
 }
 
 export type Permission = string

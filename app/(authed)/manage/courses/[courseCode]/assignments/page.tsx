@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation"
 
 import { PageTitleBar } from "@/components/page-title-bar"
-import { CourseAssignmentsPage } from "@/features/courses/components/pages/course-assignments-page"
+import { CourseAssignmentsPage } from "@/features/courses/components/assignments/assignments-page"
 import { getCourseByCode } from "@/features/courses/constants/course-data"
 
 export default async function CourseAssignmentsRoute({

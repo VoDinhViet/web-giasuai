@@ -1,8 +1,8 @@
 import { z } from "zod"
 
 import type {
-  ClassAdmissionMode,
-  ClassLearningMode,
+  ClassFormat,
+  ClassJoinPolicy,
   ClassStatus,
   ClassWeekday,
 } from "../types"
@@ -14,17 +14,17 @@ export const classStatusOptions = [
   { value: "PAUSED", label: "Tạm dừng" },
 ] satisfies Array<{ value: ClassStatus; label: string }>
 
-export const classLearningModeOptions = [
+export const classFormatOptions = [
   { value: "OFFLINE", label: "Tại lớp" },
   { value: "ONLINE", label: "Online" },
   { value: "HYBRID", label: "Kết hợp" },
-] satisfies Array<{ value: ClassLearningMode; label: string }>
+] satisfies Array<{ value: ClassFormat; label: string }>
 
-export const classAdmissionModeOptions = [
+export const classJoinPolicyOptions = [
   { value: "INVITE_ONLY", label: "Chỉ mời vào lớp" },
   { value: "REQUEST_APPROVAL", label: "Duyệt yêu cầu" },
   { value: "OPEN", label: "Mở tự đăng ký" },
-] satisfies Array<{ value: ClassAdmissionMode; label: string }>
+] satisfies Array<{ value: ClassJoinPolicy; label: string }>
 
 export const classWeekdayOptions = [
   { value: "MONDAY", label: "T2" },
@@ -60,20 +60,15 @@ export const createClassSchema = z
       .max(32, { message: "Mã lớp tối đa 32 ký tự" }),
     name: z.string().trim().min(1, { message: "Vui lòng nhập tên lớp" }),
     courseId: z.string().uuid({ message: "Khóa học không hợp lệ" }).optional(),
-    teacherId: z
+    instructorId: z
       .string()
-      .uuid({ message: "Giáo viên không hợp lệ" })
-      .optional(),
+      .min(1, { message: "Vui lòng chọn giáo viên" })
+      .uuid({ message: "Giáo viên không hợp lệ" }),
     maxStudents: z
       .number()
       .int({ message: "Sĩ số phải là số nguyên" })
       .min(1, { message: "Sĩ số tối thiểu là 1" })
       .max(500, { message: "Sĩ số tối đa là 500" }),
-    room: z
-      .string()
-      .trim()
-      .max(120, { message: "Phòng học tối đa 120 ký tự" })
-      .transform(emptyStringToUndefined),
     meetingUrl: z
       .string()
       .trim()
@@ -100,14 +95,14 @@ export const createClassSchema = z
     status: z.enum(["ACTIVE", "UPCOMING", "COMPLETED", "PAUSED"], {
       message: "Vui lòng chọn trạng thái",
     }),
-    learningMode: z.enum(["OFFLINE", "ONLINE", "HYBRID"], {
+    format: z.enum(["OFFLINE", "ONLINE", "HYBRID"], {
       message: "Vui lòng chọn hình thức học",
     }),
-    admissionMode: z.enum(["INVITE_ONLY", "REQUEST_APPROVAL", "OPEN"], {
+    joinPolicy: z.enum(["INVITE_ONLY", "REQUEST_APPROVAL", "OPEN"], {
       message: "Vui lòng chọn cách ghi danh",
     }),
-    allowWaitlist: z.boolean(),
-    sendReminder: z.boolean(),
+    waitlistEnabled: z.boolean(),
+    reminderEnabled: z.boolean(),
     autoCreateSessions: z.boolean(),
     note: z
       .string()
@@ -136,3 +131,32 @@ export const createClassSchema = z
 
 export type CreateClassInput = z.input<typeof createClassSchema>
 export type CreateClassReqDto = z.output<typeof createClassSchema>
+export type UpdateClassInput = CreateClassInput
+export type UpdateClassReqDto = CreateClassReqDto
+
+export const addClassCourseSchema = z.object({
+  courseId: z
+    .string()
+    .min(1, { message: "Vui lòng chọn khóa học" })
+    .uuid({ message: "Khóa học không hợp lệ" }),
+  required: z.boolean(),
+})
+
+export type AddClassCourseInput = z.input<typeof addClassCourseSchema>
+export type AddClassCourseReqDto = z.output<typeof addClassCourseSchema>
+
+export const inviteUserToClassSchema = z.object({
+  email: z
+    .string()
+    .trim()
+    .min(1, { message: "Vui lòng nhập email học viên" })
+    .email({ message: "Email không hợp lệ" }),
+  note: z
+    .string()
+    .trim()
+    .max(1000, { message: "Ghi chú tối đa 1000 ký tự" })
+    .transform(emptyStringToUndefined),
+})
+
+export type InviteUserToClassInput = z.input<typeof inviteUserToClassSchema>
+export type InviteUserToClassReqDto = z.output<typeof inviteUserToClassSchema>

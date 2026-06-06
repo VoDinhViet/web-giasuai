@@ -33,8 +33,6 @@ export function ProductDeleteDialog({
         setOpen(false)
         if (redirectTo) {
           router.push(redirectTo)
-        } else {
-          router.refresh()
         }
       } catch {
         setError("Không thể xóa sản phẩm. Vui lòng thử lại.")

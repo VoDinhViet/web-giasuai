@@ -3,7 +3,6 @@
 import * as React from "react"
 import { useForm } from "@tanstack/react-form"
 import { Pencil, Plus, Save, X } from "lucide-react"
-import { useRouter } from "next/navigation"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -55,7 +54,6 @@ export function CreateProductRevisionDialog({
 }: CreateProductRevisionDialogProps) {
   const [open, setOpen] = React.useState(false)
   const [submitError, setSubmitError] = React.useState<string | null>(null)
-  const router = useRouter()
   const form = useForm({
     defaultValues: {
       revisionNo: "",
@@ -71,7 +69,6 @@ export function CreateProductRevisionDialog({
       try {
         await createProductRevision(productId, value)
         setOpen(false)
-        router.refresh()
       } catch {
         setSubmitError("Không thể tạo revision. Vui lòng thử lại.")
       }
@@ -204,7 +201,6 @@ export function EditProductRevisionDialog({
 }: EditProductRevisionDialogProps) {
   const [open, setOpen] = React.useState(false)
   const [submitError, setSubmitError] = React.useState<string | null>(null)
-  const router = useRouter()
   const form = useForm({
     defaultValues: {
       revisionNo: revision.revisionNo,
@@ -219,7 +215,6 @@ export function EditProductRevisionDialog({
       try {
         await updateProductRevision(productId, revision.id, value)
         setOpen(false)
-        router.refresh()
       } catch {
         setSubmitError("Không thể cập nhật revision. Vui lòng thử lại.")
       }

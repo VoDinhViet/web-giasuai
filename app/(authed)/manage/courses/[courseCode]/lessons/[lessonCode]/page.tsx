@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation"
 
 import { PageTitleBar } from "@/components/page-title-bar"
-import { CourseLessonEditorPage } from "@/features/courses/components/pages/course-lesson-editor-page"
+import { CourseLessonEditorPage } from "@/features/courses/components/lesson-editor/lesson-editor-page"
 import { getCourseByCode } from "@/features/courses/constants/course-data"
 
 export default async function CourseLessonEditorRoute({

@@ -2,7 +2,6 @@
 
 import * as React from "react"
 import { Trash2 } from "lucide-react"
-import { useRouter } from "next/navigation"
 
 import { Button } from "@/components/ui/button"
 import { deleteBomLine } from "../../actions/delete-bom-line"
@@ -23,7 +22,6 @@ export function DeleteBomLineDialog({
   const [open, setOpen] = React.useState(false)
   const [error, setError] = React.useState<string | null>(null)
   const [isPending, startTransition] = React.useTransition()
-  const router = useRouter()
   const canDelete = Boolean(revisionId && node.bomLineId)
 
   function handleDelete() {
@@ -36,7 +34,6 @@ export function DeleteBomLineDialog({
       try {
         await deleteBomLine(productId, revisionId, node.bomLineId as string)
         setOpen(false)
-        router.refresh()
       } catch {
         setError("Không thể xóa node BOM. Vui lòng thử lại.")
       }

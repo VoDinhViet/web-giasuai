@@ -2,7 +2,6 @@
 
 import * as React from "react"
 import { Plus, Route, Save, Trash2, X } from "lucide-react"
-import { useRouter } from "next/navigation"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -71,7 +70,6 @@ export function RoutingDialog({
   const [isLoading, setIsLoading] = React.useState(false)
   const [submitError, setSubmitError] = React.useState<string | null>(null)
   const [isPending, startTransition] = React.useTransition()
-  const router = useRouter()
   const canManageRouting =
     Boolean(revisionId) &&
     (node.itemType === ProductItemType.FG ||
@@ -161,7 +159,6 @@ export function RoutingDialog({
           })),
         })
         setOpen(false)
-        router.refresh()
       } catch {
         setSubmitError("Không thể lưu routing. Kiểm tra lại dữ liệu đã nhập.")
       }

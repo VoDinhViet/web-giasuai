@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useTransition } from "react"
-import { useRouter } from "next/navigation"
 import { FileText, Trash2, Upload } from "lucide-react"
 import { useDropzone } from "react-dropzone"
 
@@ -28,7 +27,6 @@ type OrderPdfFilesCardProps = {
 export function OrderPdfFilesCard({ editable, order }: OrderPdfFilesCardProps) {
   const [error, setError] = useState<string | null>(null)
   const [isPending, startTransition] = useTransition()
-  const router = useRouter()
   const { getInputProps, getRootProps, isDragActive } = useDropzone({
     accept: {
       "application/pdf": [".pdf"],
@@ -50,7 +48,6 @@ export function OrderPdfFilesCard({ editable, order }: OrderPdfFilesCardProps) {
           const formData = new FormData()
           formData.set("file", pdfFile)
           await uploadOrderPdf(order.id, formData)
-          router.refresh()
         } catch {
           setError("Không thể upload file PO PDF.")
         }
@@ -63,7 +60,6 @@ export function OrderPdfFilesCard({ editable, order }: OrderPdfFilesCardProps) {
     startTransition(async () => {
       try {
         await deleteOrderFile(order.id, fileId)
-        router.refresh()
       } catch {
         setError("Không thể xóa file PO PDF.")
       }

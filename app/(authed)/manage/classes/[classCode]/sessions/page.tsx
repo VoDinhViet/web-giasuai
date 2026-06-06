@@ -3,7 +3,7 @@ import { notFound } from "next/navigation"
 import { PageTitleBar } from "@/components/page-title-bar"
 import { getClass } from "@/features/classes/actions/get-class"
 import { getClassSessions } from "@/features/classes/actions/get-class-sessions"
-import { ClassSessionsPage } from "@/features/classes/components/pages/class-sessions-page"
+import { ClassSessionsPage } from "@/features/classes/components/sessions/class-sessions-page"
 
 export default async function ClassSessionsRoute({
   params,

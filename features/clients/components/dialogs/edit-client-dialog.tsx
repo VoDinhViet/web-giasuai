@@ -2,7 +2,6 @@
 
 import * as React from "react"
 import { Pencil } from "lucide-react"
-import { useRouter } from "next/navigation"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -28,7 +27,6 @@ type EditClientDialogProps = {
 
 export function EditClientDialog({ client }: EditClientDialogProps) {
   const [open, setOpen] = React.useState(false)
-  const router = useRouter()
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -63,7 +61,6 @@ export function EditClientDialog({ client }: EditClientDialogProps) {
           onCancel={() => setOpen(false)}
           onSuccess={() => {
             setOpen(false)
-            router.refresh()
           }}
           onSubmit={(value) => updateClient(client.id, value)}
         />

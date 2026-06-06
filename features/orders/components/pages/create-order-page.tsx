@@ -126,7 +126,6 @@ export function CreateOrderPage({ formOptions }: CreateOrderPageProps) {
         }
 
         router.push(`/manage/orders/${order.id}` as Route)
-        router.refresh()
       } catch {
         setSubmitError("Không thể tạo đơn hàng. Vui lòng thử lại.")
       }

@@ -8,7 +8,7 @@ import {
 } from "lucide-react"
 
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { LoginForm } from "@/features/auth/login/components/login-form"
+import { LoginForm } from "@/features/auth/components/login/login-form"
 
 export default async function LoginPage() {
   return (

@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, type ReactNode } from "react"
-import { useRouter } from "next/navigation"
 import { Pencil } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -43,7 +42,6 @@ export function EditProductDialog({
   trigger,
 }: EditProductDialogProps) {
   const [open, setOpen] = useState(false)
-  const router = useRouter()
   const isLocked = product.status === ProductStatus.LOCKED
 
   return (
@@ -90,7 +88,6 @@ export function EditProductDialog({
           onCancel={() => setOpen(false)}
           onSuccess={() => {
             setOpen(false)
-            router.refresh()
           }}
           onSubmit={async (value, imageFile, shouldDeleteImage) => {
             const updatedProduct = await updateProduct(product.id, value)

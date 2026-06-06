@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { useRouter } from "next/navigation"
 import { useForm } from "@tanstack/react-form"
 import { Plus, Save, Search, X } from "lucide-react"
 
@@ -67,7 +66,6 @@ export function AddBomNodeDialog({
   const [productSearch, setProductSearch] = useState("")
   const [selectedChildItemId, setSelectedChildItemId] = useState("")
   const [submitError, setSubmitError] = useState<string | null>(null)
-  const router = useRouter()
   const canAddNode =
     parentNode.itemType === ProductItemType.FG ||
     parentNode.itemType === ProductItemType.WIP
@@ -100,7 +98,6 @@ export function AddBomNodeDialog({
       try {
         await createBomLine(productId, revisionId, parentNode.productId, value)
         setOpen(false)
-        router.refresh()
       } catch {
         setSubmitError("Không thể thêm node BOM. Vui lòng thử lại.")
       }

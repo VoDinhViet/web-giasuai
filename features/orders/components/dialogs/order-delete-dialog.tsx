@@ -47,8 +47,6 @@ export function OrderDeleteDialog({
 
         if (redirectTo) {
           router.push(redirectTo)
-        } else {
-          router.refresh()
         }
       } catch {
         setError("Không thể xóa đơn hàng. Vui lòng thử lại.")

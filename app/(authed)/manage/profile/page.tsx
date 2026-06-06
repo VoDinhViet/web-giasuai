@@ -2,7 +2,7 @@ import { redirect } from "next/navigation"
 
 import { PageTitleBar } from "@/components/page-title-bar"
 import { getCurrentUser } from "@/features/auth/actions/get-current-user"
-import { ProfilePage } from "@/features/profile/components/pages/profile-page"
+import { ProfilePage } from "@/features/users/components/detail/profile-page"
 
 export default async function ProfileRoute() {
   const currentUserResponse = await getCurrentUser()

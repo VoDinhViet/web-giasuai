@@ -7,6 +7,7 @@ export function buildClassesApiQuery(params: ClassesSearchParams) {
     q: params.q || undefined,
     status: params.status === "all" ? undefined : params.status,
     courseId: params.courseId === "all" ? undefined : params.courseId,
-    teacherId: params.teacherId === "all" ? undefined : params.teacherId,
+    instructorId:
+      params.instructorId === "all" ? undefined : params.instructorId,
   }
 }
