@@ -299,7 +299,7 @@ export function CourseImportPage() {
         <TemplateStructureCard />
       </section>
 
-      <Card data-tone="info">
+      <Card>
         <CardHeader>
           <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
             <div>

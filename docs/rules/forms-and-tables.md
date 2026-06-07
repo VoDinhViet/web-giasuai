@@ -10,6 +10,14 @@
 - Validate input at action/API boundaries.
 - Do not trust calculated values from the client.
 
+## Toasts
+
+- Use `toast` from `sonner` for client-side user feedback after mutations.
+- `Toaster` is already mounted in `app/layout.tsx`; do not mount another `Toaster`.
+- Keep toast messages short and user-facing Vietnamese.
+- Use `toast.success(...)` for completed mutations and `toast.error(...)` for failed mutations.
+- Do not replace field errors, validation messages, or authorization handling with toast-only feedback.
+
 ## Tables
 
 - Use `@tanstack/react-table` for data tables.

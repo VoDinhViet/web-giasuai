@@ -65,11 +65,11 @@ export function AppTopbar({
   return (
     <header
       className={cn(
-        "-mx-4 -mt-6 flex min-h-20 items-center justify-between gap-4 border-b border-border/70 bg-card px-4 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8",
+        "-mx-4 -mt-6 flex min-h-20 min-w-0 max-w-full items-center justify-between gap-4 overflow-hidden border-b border-border/70 bg-card px-4 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8",
         className
       )}
     >
-      <div className="flex min-w-0 items-center gap-4">
+      <div className="flex min-w-0 flex-1 items-center gap-4">
         <TopbarSidebarTrigger />
         <div className="min-w-0">
           {title ? (
@@ -84,7 +84,7 @@ export function AppTopbar({
           ) : null}
         </div>
       </div>
-      <div className="flex shrink-0 items-center gap-3">
+      <div className="flex min-w-0 shrink-0 items-center gap-3">
         {actions ? (
           <div className="flex flex-wrap items-center gap-3">{actions}</div>
         ) : null}
@@ -134,7 +134,7 @@ function TopbarSidebarTrigger() {
       variant="ghost"
       size="icon-sm"
       aria-label="Mở hoặc thu gọn menu"
-      className="size-8 shrink-0 text-primary hover:bg-primary/5 hover:text-primary"
+      className="size-8 shrink-0 text-muted-foreground hover:bg-muted hover:text-foreground"
       onClick={toggleSidebar}
     >
       <Menu className="size-5" />
@@ -159,7 +159,7 @@ function NotificationButton() {
       variant="ghost"
       size="icon-sm"
       aria-label="Thông báo"
-      className="relative text-primary hover:bg-primary/5 hover:text-primary"
+      className="relative text-muted-foreground hover:bg-muted hover:text-foreground"
     >
       <Bell className="size-5" />
       <span className="absolute top-0 right-0 flex size-4 items-center justify-center rounded-full bg-destructive text-[9px] leading-none font-bold text-primary-foreground">
@@ -176,7 +176,7 @@ function HelpButton() {
       variant="ghost"
       size="icon-sm"
       aria-label="Trợ giúp"
-      className="text-primary hover:bg-primary/5 hover:text-primary"
+      className="text-muted-foreground hover:bg-muted hover:text-foreground"
     >
       <CircleHelp className="size-5" />
     </Button>

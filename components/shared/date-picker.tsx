@@ -15,13 +15,15 @@ import {
 } from "@/components/ui/popover"
 import { cn } from "@/lib/utils"
 
-export interface DatePickerProps
-  extends Omit<React.ComponentPropsWithoutRef<"button">, "value" | "onChange"> {
+export interface DatePickerProps extends Omit<
+  React.ComponentPropsWithoutRef<"button">,
+  "value" | "onChange"
+> {
   value?: string
   placeholder?: string
   isInvalid?: boolean
   onChange: (value: string) => void
-  
+
   captionLayout?: "dropdown" | "dropdown-months" | "dropdown-years" | "label"
   minYear?: number
   maxYear?: number
@@ -55,15 +57,22 @@ export function DatePicker({
 
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
+      <input
+        name={buttonProps.name}
+        value={value ?? ""}
+        type="hidden"
+        readOnly
+      />
       <PopoverTrigger asChild>
         <Button
           type="button"
           variant="outline"
           disabled={disabled}
           className={cn(
-            "w-full justify-between text-left font-normal",
+            "w-full justify-between bg-card text-left font-normal hover:bg-card",
             !selectedDate && "text-muted-foreground",
-            isInvalid && "border-destructive focus-visible:ring-destructive/20 focus-visible:border-destructive",
+            isInvalid &&
+              "border-destructive focus-visible:border-destructive focus-visible:ring-destructive/20",
             className
           )}
           aria-invalid={isInvalid}

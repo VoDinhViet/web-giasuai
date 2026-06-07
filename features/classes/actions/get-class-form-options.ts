@@ -3,35 +3,37 @@
 import { getCourses } from "@/features/courses/actions/get-courses"
 import { getUsers } from "@/features/users/actions/get-users"
 import { UserRole } from "@/features/users/types"
-import type { ClassFormOptions } from "../types"
+import type { ClassFormOption, CourseOptions } from "../types"
 
-export async function getClassFormOptions(): Promise<ClassFormOptions> {
-  const [coursesResponse, teachersResponse] = await Promise.all([
-    getCourses({
-      limit: 50,
-      page: 1,
-      q: "",
-      status: "all",
-      category: "all",
-    }),
-    getUsers({
-      limit: 50,
-      page: 1,
-      q: "",
-      role: UserRole.INSTRUCTOR,
-      isLocked: "false",
-    }),
-  ])
+export async function getCourseOptions(): Promise<CourseOptions> {
+  const coursesResponse = await getCourses({
+    limit: 50,
+    page: 1,
+    q: "",
+    status: "all",
+    category: "all",
+  })
 
   return {
     courseOptions: coursesResponse.data.map((course) => ({
       value: course.id,
       label: `${course.code} - ${course.name}`,
     })),
-    teacherOptions: teachersResponse.data.map((teacher) => ({
-      value: teacher.id,
-      label: teacher.fullName,
-      description: teacher.email,
-    })),
   }
+}
+
+export async function getInstructorOptions(): Promise<ClassFormOption[]> {
+  const instructorsResponse = await getUsers({
+    limit: 50,
+    page: 1,
+    q: "",
+    role: UserRole.INSTRUCTOR,
+    isLocked: "false",
+  })
+
+  return instructorsResponse.data.map((instructor) => ({
+    value: instructor.id,
+    label: instructor.fullName,
+    description: instructor.email,
+  }))
 }

@@ -33,6 +33,7 @@
 - Use Server Components by default.
 - Add `"use client"` only when hooks, browser APIs, event handlers, or client-side state are needed.
 - For App Router `page.tsx` props, use generated `PageProps<"/route">` with the exact URL path and omit route groups such as `(authed)`. Do not hand-write `params` or `searchParams` prop types.
+- Do not use `as Route` type assertion for Next.js `Link` component `href` attribute.
 - Put route files under `app`.
 - Put reusable UI primitives under `components/ui`.
 - Put shared components under `components`.

@@ -4,7 +4,7 @@ import { PageTitleBar } from "@/components/page-title-bar"
 import { getClass } from "@/features/classes/actions/get-class"
 import { getClassCourses } from "@/features/classes/actions/get-class-courses"
 import { getClassLearners } from "@/features/classes/actions/get-class-learners"
-import { ClassDetailPage } from "@/features/classes/components/detail/class-detail-page"
+import { ClassDetailPage } from "@/features/classes/components/class-detail/class-detail-page"
 import { loadClassDetailSearchParams } from "@/features/classes/lib/load-classes-search-params"
 
 export default async function ClassDetailRoute({

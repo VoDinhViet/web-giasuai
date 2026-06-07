@@ -7,7 +7,6 @@ import {
   Bot,
   CheckCircle2,
   CircleDollarSign,
-  Clock3,
   FileQuestion,
   GraduationCap,
   LifeBuoy,
@@ -432,7 +431,7 @@ export function ManageDashboardPage() {
       </section>
 
       <section className="grid gap-5">
-        <Card data-tone="info">
+        <Card>
           <CardHeader>
             <SectionTitle icon={Users} title="Tổng quan dữ liệu" />
             <CardDescription>Quy mô hệ thống hiện tại.</CardDescription>
@@ -693,23 +692,6 @@ function ProgressMetric({
         </CardDescription>
       </CardHeader>
     </Card>
-  )
-}
-
-function BarList({ rows }: { rows: [string, string, string][] }) {
-  return (
-    <div className="grid gap-3">
-      {rows.map(([label, value, helper]) => (
-        <Card key={label} size="sm" data-tone="default">
-          <CardHeader>
-            <CardTitle>{label}</CardTitle>
-            <CardDescription>
-              {value} {helper}
-            </CardDescription>
-          </CardHeader>
-        </Card>
-      ))}
-    </div>
   )
 }
 

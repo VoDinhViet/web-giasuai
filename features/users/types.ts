@@ -23,6 +23,7 @@ export interface User {
   username: string
   fullName: string
   role: UserRole
+  permissions?: Permission[]
   isLocked: boolean
   createdAt: string
   profile: UserProfile | null

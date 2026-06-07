@@ -2,17 +2,15 @@
 
 import * as React from "react"
 
-import { UserRole, type Permission, type User } from "@/features/users/types"
-
-const permissionsByRole: Record<UserRole, Permission[]> = {
-  [UserRole.ADMIN]: ["*"],
-  [UserRole.INSTRUCTOR]: ["courses:read", "courses:write"],
-  [UserRole.LEARNER]: ["courses:read"],
-}
+import type { Permission, User } from "@/features/users/types"
+import {
+  getPermissions,
+  has,
+} from "@/lib/auth/permission"
 
 type AuthContextValue = {
   user: User
-  permissions: Permission[]
+  permissions: readonly Permission[]
   hasPermission: (permission: Permission) => boolean
 }
 
@@ -25,14 +23,13 @@ type AuthProviderProps = {
 
 export function AuthProvider({ children, initialUser }: AuthProviderProps) {
   const currentUserPermissions = React.useMemo(
-    () => permissionsByRole[initialUser.role] ?? [],
-    [initialUser.role]
+    () => getPermissions(initialUser),
+    [initialUser]
   )
 
-  const hasPermission = React.useCallback(
+  const canUsePermission = React.useCallback(
     (permission: Permission) =>
-      currentUserPermissions.includes("*") ||
-      currentUserPermissions.includes(permission),
+      has(currentUserPermissions, permission),
     [currentUserPermissions]
   )
 
@@ -40,9 +37,9 @@ export function AuthProvider({ children, initialUser }: AuthProviderProps) {
     () => ({
       user: initialUser,
       permissions: currentUserPermissions,
-      hasPermission,
+      hasPermission: canUsePermission,
     }),
-    [currentUserPermissions, hasPermission, initialUser]
+    [canUsePermission, currentUserPermissions, initialUser]
   )
 
   return (

@@ -1,6 +1,5 @@
 import { Plus } from "lucide-react"
 import Link from "next/link"
-import type { Route } from "next"
 
 import { PageTitleBar } from "@/components/page-title-bar"
 import { Button } from "@/components/ui/button"
@@ -21,13 +20,13 @@ export default async function ClassesRoute({
   ])
 
   return (
-    <div className="flex w-full flex-col gap-5">
+    <div className="flex min-w-0 max-w-full flex-col gap-5">
       <PageTitleBar
-        title="Quản lý danh sách lớp học"
+        title="Quản lý lớp học"
         actions={
           <Button type="button" asChild>
-            <Link href={"/manage/classes/create" as Route}>
-              <Plus className="size-4" />
+            <Link href="/manage/classes/create">
+              <Plus data-icon="inline-start" />
               Thêm lớp học
             </Link>
           </Button>

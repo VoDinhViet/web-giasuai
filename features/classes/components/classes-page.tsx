@@ -1,8 +1,14 @@
+"use client"
+
+import { useTransition } from "react"
+
+import { Card } from "@/components/ui/card"
 import type { Pagination } from "@/types/api"
 import type { ClassStats } from "../actions/get-class-stats"
 import type { Class } from "../types"
 import { ClassesStats } from "./classes-stats"
-import { ClassesTable } from "./shared/classes-table"
+import { ClassesTable } from "./classes-table"
+import { ClassesTableFilter } from "./classes-table-filter"
 
 type ClassesPageProps = {
   stats: ClassStats
@@ -11,15 +17,23 @@ type ClassesPageProps = {
 }
 
 export function ClassesPage({ stats, classes, pagination }: ClassesPageProps) {
-  return (
-    <div className="flex w-full flex-col gap-5">
-      <p className="max-w-3xl text-sm leading-6 text-muted-foreground">
-        Quản lý danh sách lớp học trước. Chọn một lớp trong bảng để mở màn quản
-        lý chi tiết cho giáo viên theo dõi học viên và khóa học trong lớp.
-      </p>
+  const [isPending, startTransition] = useTransition()
 
+  return (
+    <div className="flex min-w-0 max-w-full flex-col gap-5">
       <ClassesStats stats={stats} />
-      <ClassesTable classes={classes} pagination={pagination} />
+      <Card className="min-w-0 max-w-full gap-0 overflow-hidden py-0" aria-busy={isPending}>
+        <ClassesTableFilter
+          isPending={isPending}
+          startTransition={startTransition}
+        />
+        <ClassesTable
+          classes={classes}
+          pagination={pagination}
+          isPending={isPending}
+          startTransition={startTransition}
+        />
+      </Card>
     </div>
   )
 }

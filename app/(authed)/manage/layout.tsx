@@ -19,8 +19,8 @@ export default function ManageLayout({
     >
       <AppSidebar />
       <SidebarInset className="bg-background">
-        <div className="flex min-h-svh min-w-0 flex-col text-foreground">
-          <main className="min-w-0 flex-1 px-4 py-6 sm:px-6 lg:px-8">
+        <div className="flex min-h-svh w-full min-w-0 max-w-full flex-col text-foreground">
+          <main className="w-full min-w-0 max-w-full flex-1 overflow-x-clip px-4 py-6 sm:px-6 lg:px-8">
             {children}
           </main>
         </div>

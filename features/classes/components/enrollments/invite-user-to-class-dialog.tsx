@@ -126,13 +126,16 @@ export function InviteUserToClassDialog({
             >
               Hủy
             </Button>
-            <form.AppForm>
-              <form.SubscribeButton
-                icon={<Mail className="size-4" />}
-                label="Gửi lời mời"
-                pendingLabel="Đang gửi..."
-              />
-            </form.AppForm>
+            <form.Subscribe
+              selector={(state) => [state.canSubmit, state.isSubmitting]}
+            >
+              {([canSubmit, isSubmitting]) => (
+                <Button type="submit" disabled={!canSubmit || isSubmitting}>
+                  <Mail data-icon="inline-start" />
+                  {isSubmitting ? "Đang gửi..." : "Gửi lời mời"}
+                </Button>
+              )}
+            </form.Subscribe>
           </DialogFooter>
         </form>
       </DialogContent>

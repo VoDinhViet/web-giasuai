@@ -1,5 +1,3 @@
-import type { ReactNode } from "react"
-
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
@@ -10,19 +8,11 @@ import { getUserRoleLabel } from "@/features/users/utils/user-role.util"
 import { ProfileStatCard, type ProfileStatItem } from "./profile-stat-card"
 
 type ProfileHeroCardProps = {
-  actions?: ReactNode
   stats: ProfileStatItem[]
   user: User
 }
 
-export function ProfileHeroCard({
-  actions,
-  stats,
-  user,
-}: ProfileHeroCardProps) {
-  const avatarSrc = resolveApiAssetUrl(user.profile?.avatarUrl ?? "")
-  const initials = getNameInitials(user.fullName || user.email)
-
+export function ProfileHeroCard({ stats, user }: ProfileHeroCardProps) {
   return (
     <Card data-tone="primary" className="text-primary-foreground">
       <CardHeader>
@@ -30,11 +20,14 @@ export function ProfileHeroCard({
           <div className="flex min-w-0 items-center gap-5 sm:gap-6">
             <div className="relative shrink-0">
               <Avatar className="size-28! border-4 border-primary-foreground/25 bg-primary-foreground/10 shadow-sm sm:!size-32">
-                {avatarSrc ? (
-                  <AvatarImage src={avatarSrc} alt={user.fullName} />
+                {typeof user.profile?.avatarUrl === "string" && user.profile.avatarUrl ? (
+                  <AvatarImage
+                    src={resolveApiAssetUrl(user.profile.avatarUrl) ?? undefined}
+                    alt={user.fullName}
+                  />
                 ) : null}
                 <AvatarFallback className="bg-primary-foreground text-3xl font-bold text-primary sm:text-4xl">
-                  {initials}
+                  {getNameInitials(user.fullName || user.email)}
                 </AvatarFallback>
               </Avatar>
             </div>
@@ -56,10 +49,6 @@ export function ProfileHeroCard({
                 động gần đây.
               </p>
             </div>
-          </div>
-
-          <div className="flex shrink-0 flex-wrap gap-2">
-            {actions}
           </div>
         </div>
       </CardHeader>

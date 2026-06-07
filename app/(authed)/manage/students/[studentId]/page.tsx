@@ -4,7 +4,7 @@ import { PageTitleBar } from "@/components/page-title-bar"
 import { getCurrentUser } from "@/features/auth/actions/get-current-user"
 import { StudentDetailPage } from "@/features/students/components/pages/student-detail-page"
 import { getStudentById } from "@/features/students/constants/student-data"
-import { UserRole } from "@/features/users/types"
+import { canAccess } from "@/lib/auth/permission"
 
 export default async function StudentDetailRoute({
   params,
@@ -14,7 +14,8 @@ export default async function StudentDetailRoute({
 
   if (
     currentUserResponse.success &&
-    currentUserResponse.data?.role === UserRole.LEARNER
+    currentUserResponse.data &&
+    !canAccess(currentUserResponse.data, "/manage/students")
   ) {
     redirect("/manage/student-dashboard")
   }

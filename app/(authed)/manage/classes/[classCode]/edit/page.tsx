@@ -2,16 +2,20 @@ import { notFound } from "next/navigation"
 
 import { PageTitleBar } from "@/components/page-title-bar"
 import { getClass } from "@/features/classes/actions/get-class"
-import { getClassFormOptions } from "@/features/classes/actions/get-class-form-options"
-import { ClassEditPage } from "@/features/classes/components/edit/class-edit-page"
+import {
+  getCourseOptions,
+  getInstructorOptions,
+} from "@/features/classes/actions/get-class-form-options"
+import { ClassEditPage } from "@/features/classes/components/class-edit/class-edit-page"
 
 export default async function EditClassRoute({
   params,
 }: PageProps<"/manage/classes/[classCode]/edit">) {
   const { classCode } = await params
-  const [classDetail, formOptions] = await Promise.all([
+  const [classDetail, formOptions, instructorOptions] = await Promise.all([
     getClass(classCode).catch(() => null),
-    getClassFormOptions(),
+    getCourseOptions(),
+    getInstructorOptions(),
   ])
 
   if (!classDetail) {
@@ -35,7 +39,7 @@ export default async function EditClassRoute({
       <ClassEditPage
         classDetail={classDetail}
         courseOptions={formOptions.courseOptions}
-        teacherOptions={formOptions.teacherOptions}
+        instructorOptions={instructorOptions}
       />
     </div>
   )

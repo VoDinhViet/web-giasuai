@@ -1,8 +1,8 @@
 "use server"
 
 import { api } from "@/lib/api"
+import type { User } from "@/features/users/types"
 import type { PaginatedResponse } from "@/types/api"
-import type { ClassLearner } from "../types"
 
 type GetClassLearnersParams = {
   page: number
@@ -13,15 +13,12 @@ type GetClassLearnersParams = {
 export async function getClassLearners(
   classCode: string,
   params: GetClassLearnersParams
-): Promise<PaginatedResponse<ClassLearner>> {
-  return api<PaginatedResponse<ClassLearner>>(
-    `/api/v1/classes/${classCode}/learners`,
-    {
-      query: {
-        page: params.page,
-        limit: params.limit,
-        q: params.q || undefined,
-      },
-    }
-  )
+): Promise<PaginatedResponse<User>> {
+  return api<PaginatedResponse<User>>(`/api/v1/classes/${classCode}/learners`, {
+    query: {
+      page: params.page,
+      limit: params.limit,
+      q: params.q || undefined,
+    },
+  })
 }

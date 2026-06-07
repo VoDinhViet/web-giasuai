@@ -1,4 +1,7 @@
+import { Save } from "lucide-react"
+
 import { withForm } from "@/components/form/app-form"
+import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
@@ -48,12 +51,32 @@ export const ProfileFormCard = withForm({
     user,
   }) {
     return (
-      <Card data-tone="info">
+      <Card>
         <CardHeader>
-          <CardTitle>Thông tin hiển thị</CardTitle>
-          <CardDescription>
-            Dùng cho lớp học, gia sư và thông báo hệ thống.
-          </CardDescription>
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div className="grid gap-1.5">
+              <CardTitle>Thông tin hiển thị</CardTitle>
+              <CardDescription>
+                Dùng cho lớp học, gia sư và thông báo hệ thống.
+              </CardDescription>
+            </div>
+
+            {canEdit ? (
+              <form.Subscribe
+                selector={(state) => [state.canSubmit, state.isSubmitting]}
+              >
+                {([canSubmit, isSubmitting]) => (
+                  <Button
+                    type="submit"
+                    disabled={!canSubmit || isSubmitting}
+                  >
+                    <Save data-icon="inline-start" />
+                    {isSubmitting ? "Đang lưu" : "Lưu thay đổi"}
+                  </Button>
+                )}
+              </form.Subscribe>
+            ) : null}
+          </div>
         </CardHeader>
 
         <CardContent>

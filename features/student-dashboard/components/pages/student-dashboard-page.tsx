@@ -94,13 +94,13 @@ export function StudentDashboardPage({ user }: StudentDashboardPageProps) {
                 Theo dõi tiến độ học, lịch ôn tập, module đã hoàn thành và gợi ý từ AI Tutor.
               </CardDescription>
               <div className="mt-4 flex shrink-0 flex-wrap gap-2">
-                <Button type="button" variant="inverse" asChild>
+                <Button type="button" variant="secondary" asChild>
                   <Link href={"/manage/ai-assistant" as Route}>
                     <Bot />
                     Hỏi AI Tutor
                   </Link>
                 </Button>
-                <Button type="button" variant="inverse" asChild>
+                <Button type="button" variant="secondary" asChild>
                   <Link href={"/courses/CRS-001/learn" as Route}>
                     <PlayCircle />
                     Tiếp tục học
@@ -129,7 +129,7 @@ export function StudentDashboardPage({ user }: StudentDashboardPageProps) {
 
       <section className="grid items-start gap-5 xl:grid-cols-[minmax(0,1fr)_25rem]">
         <div className="grid items-start gap-5">
-          <Card data-tone="info">
+          <Card>
             <CardHeader>
               <SectionHeader
                 icon={TrendingUp}
@@ -301,7 +301,7 @@ export function StudentDashboardPage({ user }: StudentDashboardPageProps) {
             </CardContent>
           </Card>
 
-          <Card data-tone="info">
+          <Card>
             <CardHeader>
               <SectionHeader
                 icon={CalendarDays}

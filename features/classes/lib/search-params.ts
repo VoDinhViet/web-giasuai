@@ -17,3 +17,9 @@ export const classDetailSearchParams = {
   coursePage: parseAsInteger.withDefault(1),
   courseQ: parseAsString.withDefault(""),
 }
+
+export const assignClassCourseSearchParams = {
+  limit: parseAsInteger.withDefault(10),
+  page: parseAsInteger.withDefault(1),
+  q: parseAsString.withDefault(""),
+}

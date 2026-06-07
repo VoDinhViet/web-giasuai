@@ -86,13 +86,13 @@ export function StudentCourseLearningPage({ course }: StudentCourseLearningPageP
                 {course.description}
               </CardDescription>
               <div className="mt-5 flex flex-wrap gap-2">
-                <Button type="button" variant="inverse" asChild>
+                <Button type="button" variant="secondary" asChild>
                   <Link href="#current-lesson">
                     <PlayCircle className="size-4" />
                     Học tiếp
                   </Link>
                 </Button>
-                <Button type="button" variant="onPrimary" asChild>
+                <Button type="button" variant="secondary" asChild>
                   <Link href={"/manage/ai-assistant" as Route}>
                     <BrainCircuit className="size-4" />
                     Hỏi AI Tutor

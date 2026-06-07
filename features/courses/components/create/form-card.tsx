@@ -1,6 +1,7 @@
 import { BookOpenCheck, Save } from "lucide-react"
 
 import { withForm } from "@/components/form/app-form"
+import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
@@ -65,7 +66,7 @@ export const CreateCourseFormCard = withForm({
   props: createCourseFormDefaultProps,
   render: function RenderCreateCourseFormCard({ form, submitError }) {
     return (
-      <Card data-tone="info">
+      <Card>
         <CardHeader>
           <div className="flex items-center gap-2">
             <BookOpenCheck className="size-4" />
@@ -254,13 +255,16 @@ export const CreateCourseFormCard = withForm({
         </CardContent>
 
         <CardFooter className="justify-end border-t">
-          <form.AppForm>
-            <form.SubscribeButton
-              icon={<Save className="size-4" />}
-              label="Tạo khóa học"
-              pendingLabel="Đang tạo..."
-            />
-          </form.AppForm>
+          <form.Subscribe
+            selector={(state) => [state.canSubmit, state.isSubmitting]}
+          >
+            {([canSubmit, isSubmitting]) => (
+              <Button type="submit" disabled={!canSubmit || isSubmitting}>
+                <Save data-icon="inline-start" />
+                {isSubmitting ? "Đang tạo..." : "Tạo khóa học"}
+              </Button>
+            )}
+          </form.Subscribe>
         </CardFooter>
       </Card>
     )

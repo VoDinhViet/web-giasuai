@@ -39,7 +39,8 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar"
 import { useAuth } from "@/features/auth/components/auth-provider"
-import { UserRole } from "@/features/users/types"
+import type { PermissionInput } from "@/lib/auth/permission"
+import { can } from "@/lib/auth/permission"
 
 type MenuItem = {
   label: string
@@ -47,7 +48,7 @@ type MenuItem = {
   href?: string
   activePaths?: string[]
   exact?: boolean
-  hiddenForRoles?: UserRole[]
+  requiredPermission?: PermissionInput
 }
 
 type MenuGroup = {
@@ -74,7 +75,7 @@ const menuGroups: MenuGroup[] = [
         icon: Users,
         href: "/manage/users",
         activePaths: ["/manage/users", "/manage/students", "/manage/profile"],
-        hiddenForRoles: [UserRole.LEARNER],
+        requiredPermission: "users:read",
       },
       { label: "Quản lý khóa học", icon: FileText, href: "/manage/courses" },
       { label: "Thư viện học liệu", icon: FileStack, href: "/manage/library" },
@@ -145,7 +146,7 @@ export function AppSidebar() {
             key={group.label}
             group={group}
             pathname={pathname}
-            userRole={user.role}
+            user={user}
           />
         ))}
       </SidebarContent>
@@ -179,14 +180,14 @@ function SidebarBrand() {
 function MenuGroup({
   group,
   pathname,
-  userRole,
+  user,
 }: {
   group: MenuGroup
   pathname: string
-  userRole: UserRole
+  user: ReturnType<typeof useAuth>["user"]
 }) {
   const visibleItems = group.items.filter(
-    (item) => !item.hiddenForRoles?.includes(userRole)
+    (item) => can(user, item.requiredPermission)
   )
 
   if (visibleItems.length === 0) {

@@ -15,3 +15,5 @@
 - Dùng shadcn `Label` cho label form/filter thay vì tự viết `label`/`span` cùng style lặp lại.
 - Nếu style label dùng chung toàn app, cập nhật `components/ui/label.tsx` thay vì lặp `className` ở từng màn.
 - Với table nội bộ, ưu tiên UI gọn: không thêm icon vào cell nếu icon không giúp thao tác hoặc đọc dữ liệu.
+- Không dùng ép kiểu `as Route` (type assertion) cho thuộc tính `href` của component `Link` Next.js.
+

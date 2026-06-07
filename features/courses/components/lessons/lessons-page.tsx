@@ -212,7 +212,7 @@ export function CourseLessonsPage({ course }: CourseLessonsPageProps) {
         </div>
 
         <aside className="grid content-start gap-5">
-          <Card data-tone="info">
+          <Card>
             <CardHeader>
               <CardTitle>Cấu trúc mỗi bài</CardTitle>
               <CardDescription>

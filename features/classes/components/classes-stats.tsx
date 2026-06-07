@@ -5,12 +5,8 @@ import {
   type LucideIcon,
 } from "lucide-react"
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardTitle,
-} from "@/components/ui/card"
+import { formatNumber } from "@/lib/number.util"
+import { cn } from "@/lib/utils"
 import type { ClassStats } from "../actions/get-class-stats"
 
 type ClassesStatsProps = {
@@ -22,58 +18,74 @@ type ClassStat = {
   value: string
   helper: string
   icon: LucideIcon
+  tone: ClassStatTone
+}
+
+type ClassStatTone = "primary" | "info" | "success"
+
+const classStatToneClassNames: Record<ClassStatTone, string> = {
+  primary: "bg-primary/10 text-primary",
+  info: "bg-secondary/10 text-secondary",
+  success: "bg-success/10 text-success",
 }
 
 export function ClassesStats({ stats }: ClassesStatsProps) {
   const classStats: ClassStat[] = [
     {
       label: "Tổng lớp học",
-      value: stats.total.toLocaleString("vi-VN"),
+      value: formatNumber(stats.total),
       helper: "Toàn bộ lớp học",
       icon: GraduationCap,
+      tone: "primary",
     },
     {
       label: "Học viên",
-      value: stats.learners.toLocaleString("vi-VN"),
+      value: formatNumber(stats.learners),
       helper: "Đang hoạt động",
       icon: Users,
+      tone: "info",
     },
     {
       label: "Sắp mở",
-      value: stats.upcoming.toLocaleString("vi-VN"),
+      value: formatNumber(stats.upcoming),
       helper: "Chuẩn bị khai giảng",
       icon: CalendarDays,
+      tone: "success",
     },
   ]
 
   return (
-    <section className="grid gap-3 md:grid-cols-3">
+    <section className="grid min-w-0 max-w-full gap-3 md:grid-cols-[repeat(3,minmax(0,1fr))]">
       {classStats.map((stat) => {
         const Icon = stat.icon
 
         return (
-          <Card
+          <div
             key={stat.label}
-            size="sm"
-            className="transition-colors hover:border-primary/25 hover:bg-surface-container-lowest"
+            className="min-w-0 rounded-lg border border-border/70 bg-card p-4 text-sm text-card-foreground shadow-[0_1px_2px_rgba(0,0,0,0.03)] transition-colors hover:border-border sm:p-5"
           >
-            <CardContent className="grid gap-3">
-              <div className="flex items-start justify-between gap-3">
-                <div className="min-w-0">
-                  <CardTitle className="text-xs font-semibold tracking-[0.08em] text-muted-foreground uppercase">
-                    {stat.label}
-                  </CardTitle>
-                  <p className="mt-2 text-2xl leading-8 font-semibold text-foreground">
-                    {stat.value}
-                  </p>
-                </div>
-                <span className="flex size-9 shrink-0 items-center justify-center rounded bg-primary/10 text-primary">
-                  <Icon className="size-4" />
-                </span>
-              </div>
-              <CardDescription>{stat.helper}</CardDescription>
-            </CardContent>
-          </Card>
+            <div className="flex items-start justify-between gap-4">
+              <h3 className="pt-0.5 text-xs leading-5 font-semibold tracking-[0.08em] text-muted-foreground uppercase">
+                {stat.label}
+              </h3>
+              <span
+                className={cn(
+                  "flex size-10 shrink-0 items-center justify-center rounded-md",
+                  classStatToneClassNames[stat.tone]
+                )}
+              >
+                <Icon className="size-4.5 stroke-[2.25]" />
+              </span>
+            </div>
+            <div className="mt-4">
+              <p className="text-[1.7rem] leading-8 font-semibold tracking-tight text-foreground">
+                {stat.value}
+              </p>
+              <p className="mt-1.5 text-xs leading-5 text-muted-foreground">
+                {stat.helper}
+              </p>
+            </div>
+          </div>
         )
       })}
     </section>

@@ -4,7 +4,7 @@ import { api } from "@/lib/api"
 import { omitEmptyFields } from "@/lib/object.util"
 import type { ActionResponse } from "@/types/api"
 import {
-  createClassSchema,
+  updateClassSchema,
   type UpdateClassInput,
   type UpdateClassReqDto,
 } from "../schemas/class.schema"
@@ -15,11 +15,14 @@ export async function updateClass(
   input: UpdateClassInput
 ): Promise<ActionResponse<ClassDetail>> {
   try {
-    const reqDto: UpdateClassReqDto = createClassSchema.parse(input)
-    const updatedClass = await api<ClassDetail>(`/api/v1/classes/${classCode}`, {
-      method: "PATCH",
-      body: omitEmptyFields({ ...reqDto }),
-    })
+    const reqDto: UpdateClassReqDto = updateClassSchema.parse(input)
+    const updatedClass = await api<ClassDetail>(
+      `/api/v1/classes/${classCode}`,
+      {
+        method: "PATCH",
+        body: omitEmptyFields({ ...reqDto }),
+      }
+    )
 
     return {
       success: true,

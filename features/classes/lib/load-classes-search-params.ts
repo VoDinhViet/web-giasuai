@@ -18,10 +18,20 @@ export const classDetailServerSearchParams = {
   courseQ: parseAsString.withDefault(""),
 }
 
+export const assignClassCourseServerSearchParams = {
+  limit: parseAsInteger.withDefault(10),
+  page: parseAsInteger.withDefault(1),
+  q: parseAsString.withDefault(""),
+}
+
 export const loadClassesSearchParams = createLoader(classesServerSearchParams)
 
 export const loadClassDetailSearchParams = createLoader(
   classDetailServerSearchParams
+)
+
+export const loadAssignClassCourseSearchParams = createLoader(
+  assignClassCourseServerSearchParams
 )
 
 export type ClassesSearchParams = Awaited<
@@ -30,4 +40,8 @@ export type ClassesSearchParams = Awaited<
 
 export type ClassDetailSearchParams = Awaited<
   ReturnType<typeof loadClassDetailSearchParams>
+>
+
+export type AssignClassCourseSearchParams = Awaited<
+  ReturnType<typeof loadAssignClassCourseSearchParams>
 >
