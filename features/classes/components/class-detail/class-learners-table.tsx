@@ -2,12 +2,13 @@
 
 import type { ColumnDef } from "@tanstack/react-table"
 import { useQueryStates } from "nuqs"
-import type { Route } from "next"
 import Link from "next/link"
+import { DateTime } from "luxon"
 
 import { DataTable } from "@/components/shared/data-table"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import type { User } from "@/features/users/types"
 import type { Pagination } from "@/types/api"
 import { classDetailSearchParams } from "../../lib/search-params"
@@ -20,27 +21,57 @@ type ClassLearnersTableProps = {
 
 const columns: ColumnDef<User>[] = [
   {
-    accessorKey: "username",
-    header: "Mã HV",
-    cell: ({ row }) => (
-      <span className="font-medium text-foreground">
-        {row.original.username}
-      </span>
-    ),
-  },
-  {
     accessorKey: "fullName",
     header: "Học viên",
     cell: ({ row }) => (
-      <div className="min-w-0">
-        <Link
-          href={`/manage/users/${row.original.id}` as Route}
-          className="font-medium text-foreground hover:text-primary hover:underline"
-        >
-          {row.original.fullName}
-        </Link>
-        <p className="text-xs text-muted-foreground">{row.original.email}</p>
+      <div className="flex items-center gap-3">
+        <Avatar className="size-9 border border-border/70">
+          <AvatarImage
+            src={row.original.profile?.avatarUrl ?? undefined}
+            alt={row.original.fullName}
+          />
+          <AvatarFallback className="font-semibold">
+            {row.original.fullName.charAt(0).toUpperCase()}
+          </AvatarFallback>
+        </Avatar>
+        <div className="min-w-0">
+          <Link
+            href={`/manage/users/${row.original.id}`}
+            className="font-semibold text-foreground hover:text-primary hover:underline"
+          >
+            {row.original.fullName}
+          </Link>
+          <p className="text-xs text-muted-foreground mt-0.5">
+            {row.original.username}
+          </p>
+        </div>
       </div>
+    ),
+  },
+  {
+    accessorKey: "email",
+    header: "Liên hệ",
+    cell: ({ row }) => (
+      <div className="text-sm">
+        <a
+          href={`mailto:${row.original.email}`}
+          className="block font-medium text-foreground hover:text-primary hover:underline truncate max-w-56"
+        >
+          {row.original.email}
+        </a>
+        <p className="text-xs text-muted-foreground mt-0.5">
+          {row.original.profile?.phone ?? "Chưa cập nhật SĐT"}
+        </p>
+      </div>
+    ),
+  },
+  {
+    accessorKey: "createdAt",
+    header: "Ngày tham gia",
+    cell: ({ row }) => (
+      <span className="text-sm text-foreground">
+        {DateTime.fromISO(row.original.createdAt).toFormat("dd/MM/yyyy")}
+      </span>
     ),
   },
   {
@@ -65,7 +96,7 @@ const columns: ColumnDef<User>[] = [
     cell: ({ row }) => (
       <div className="text-right">
         <Button type="button" variant="outline" size="sm" asChild>
-          <Link href={`/manage/users/${row.original.id}` as Route}>
+          <Link href={`/manage/users/${row.original.id}`}>
             Chi tiết
           </Link>
         </Button>
@@ -74,9 +105,18 @@ const columns: ColumnDef<User>[] = [
   },
 ]
 
+const DEFAULT_PAGINATION: Pagination = {
+  limit: 10,
+  currentPage: 1,
+  nextPage: 0,
+  previousPage: 0,
+  totalRecords: 0,
+  totalPages: 0,
+}
+
 export function ClassLearnersTable({
   learners,
-  pagination,
+  pagination = DEFAULT_PAGINATION,
   isLoading = false,
 }: ClassLearnersTableProps) {
   const [, setParams] = useQueryStates(classDetailSearchParams, {
@@ -87,16 +127,7 @@ export function ClassLearnersTable({
     <DataTable
       columns={columns}
       rows={learners}
-      pagination={
-        pagination ?? {
-          limit: 10,
-          currentPage: 1,
-          nextPage: 0,
-          previousPage: 0,
-          totalRecords: 0,
-          totalPages: 0,
-        }
-      }
+      pagination={pagination}
       isLoading={isLoading}
       rowLabel="học viên"
       tableClassName="min-w-160"

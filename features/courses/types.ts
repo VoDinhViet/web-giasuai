@@ -9,7 +9,15 @@ export type CourseLessonType =
   | "RESOURCE"
 export type CourseLessonStatus = "PUBLISHED" | "DRAFT" | "LOCKED"
 
-export type CourseListItem = {
+export interface Course {
+  id: string
+  code: string
+  name: string
+  category: string
+  lessonCount: number
+}
+
+export interface CourseListItem {
   id: string
   code: string
   name: string
@@ -22,7 +30,7 @@ export type CourseListItem = {
   status: CourseStatus
 }
 
-export type CourseDetail = {
+export interface CourseDetail {
   id: string
   code: string
   name: string
@@ -37,7 +45,7 @@ export type CourseDetail = {
   status: CourseStatus
 }
 
-export type CourseChapter = {
+export interface CourseChapter {
   id: string
   chapterCode: string
   chapterTitle: string
@@ -45,7 +53,7 @@ export type CourseChapter = {
   lessonCount: number
 }
 
-export type CourseLessonStructureItem = {
+export interface CourseLessonStructureItem {
   id: string
   chapterCode: string
   lessonCode: string
@@ -58,13 +66,13 @@ export type CourseLessonStructureItem = {
   updatedAt: string | null
 }
 
-export type CourseStructure = {
+export interface CourseStructure {
   course: CourseDetail
   chapters: CourseChapter[]
   lessons: CourseLessonStructureItem[]
 }
 
-export type LessonTheoryPartFile = {
+export interface LessonTheoryPartFile {
   id: string
   fileName: string
   contentType: string
@@ -73,7 +81,7 @@ export type LessonTheoryPartFile = {
   uploadedAt: string | null
 }
 
-export type LessonTheoryPart = {
+export interface LessonTheoryPart {
   id: string
   title: string
   content: string | null
@@ -81,7 +89,7 @@ export type LessonTheoryPart = {
   files: LessonTheoryPartFile[]
 }
 
-export type LessonSimulation = {
+export interface LessonSimulation {
   id: string | null
   title: string | null
   fileName: string | null
@@ -92,7 +100,7 @@ export type LessonSimulation = {
   status: "READY" | "PROCESSING" | "FAILED" | null
 }
 
-export type LessonExerciseQuestion = {
+export interface LessonExerciseQuestion {
   id: string
   questionText: string
   options: string[]
@@ -102,7 +110,7 @@ export type LessonExerciseQuestion = {
   order: number
 }
 
-export type LessonExercise = {
+export interface LessonExercise {
   id: string | null
   title: string
   maxScore: number
@@ -110,18 +118,18 @@ export type LessonExercise = {
   questions: LessonExerciseQuestion[]
 }
 
-export type CourseLessonContent = {
+export interface CourseLessonContent {
   summary: string | null
   theoryParts: LessonTheoryPart[]
   simulation: LessonSimulation | null
   exercise: LessonExercise | null
 }
 
-export type CourseLessonDetail = CourseLessonStructureItem & {
+export interface CourseLessonDetail extends CourseLessonStructureItem {
   content: CourseLessonContent
 }
 
-export type CourseImportRow = {
+export interface CourseImportRow {
   rowNumber: number
   courseCode: string
   courseName: string
@@ -130,7 +138,7 @@ export type CourseImportRow = {
   note: string
 }
 
-export type ChapterImportRow = {
+export interface ChapterImportRow {
   rowNumber: number
   courseCode: string
   chapterCode: string
@@ -140,7 +148,7 @@ export type ChapterImportRow = {
   note: string
 }
 
-export type LessonImportRow = {
+export interface LessonImportRow {
   rowNumber: number
   chapterCode: string
   lessonCode: string
@@ -151,7 +159,7 @@ export type LessonImportRow = {
   note: string
 }
 
-export type CourseImportPreview = {
+export interface CourseImportPreview {
   courses: CourseImportRow[]
   chapters: ChapterImportRow[]
   lessons: LessonImportRow[]

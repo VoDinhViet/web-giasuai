@@ -8,14 +8,14 @@ import {
   type CreateClassInput,
   type CreateClassReqDto,
 } from "../schemas/class.schema"
-import type { ClassDetail } from "../types"
+import type { Class } from "../types"
 
 export async function createClass(
   input: CreateClassInput
-): Promise<ActionResponse<ClassDetail>> {
+): Promise<ActionResponse<Class>> {
   try {
     const reqDto: CreateClassReqDto = createClassSchema.parse(input)
-    const createdClass = await api<ClassDetail>("/api/v1/classes", {
+    const createdClass = await api<Class>("/api/v1/classes", {
       method: "POST",
       body: omitEmptyFields({ ...reqDto }),
     })

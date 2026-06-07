@@ -33,7 +33,7 @@ export default async function ClassEnrollmentsRoute({
         ]}
       />
       <ClassEnrollmentsPage
-        classDetail={classDetail}
+        class={classDetail}
         enrollments={enrollments}
       />
     </div>

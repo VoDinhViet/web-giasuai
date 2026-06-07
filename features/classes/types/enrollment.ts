@@ -8,7 +8,7 @@ export type ClassEnrollmentStatus =
   | "REJECTED"
 export type ClassEnrollmentSource = "CODE" | "INVITE"
 
-export type ClassEnrollment = {
+export interface ClassEnrollment {
   id: string
   learnerId: string
   studentCode: string

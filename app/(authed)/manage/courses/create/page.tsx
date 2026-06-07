@@ -1,7 +1,7 @@
 import { PageTitleBar } from "@/components/page-title-bar"
-import { CourseCreatePage } from "@/features/courses/components/create/create-page"
+import { CreateCoursePage } from "@/features/courses/components/create/import-page"
 
-export default function CourseCreateRoute() {
+export default function CourseImportRoute() {
   return (
     <div className="flex min-w-0 flex-col gap-5">
       <PageTitleBar
@@ -12,7 +12,7 @@ export default function CourseCreateRoute() {
           { label: "Tạo khóa học" },
         ]}
       />
-      <CourseCreatePage />
+      <CreateCoursePage />
     </div>
   )
 }

@@ -1,6 +1,5 @@
-import { Plus, Upload } from "lucide-react"
+import { Plus } from "lucide-react"
 import Link from "next/link"
-import type { Route } from "next"
 
 import { PageTitleBar } from "@/components/page-title-bar"
 import { Button } from "@/components/ui/button"
@@ -26,14 +25,8 @@ export default async function CoursesRoute({
         title="Quản lý khóa học"
         actions={
           <div className="flex flex-wrap items-center gap-2">
-            <Button type="button" variant="outline" asChild>
-              <Link href={"/manage/courses/import" as Route}>
-                <Upload className="size-4" />
-                Import Excel
-              </Link>
-            </Button>
             <Button type="button" asChild>
-              <Link href={"/manage/courses/create" as Route}>
+              <Link href="/manage/courses/create">
                 <Plus className="size-4" />
                 Tạo khóa học
               </Link>

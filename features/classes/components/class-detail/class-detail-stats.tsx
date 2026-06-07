@@ -1,22 +1,22 @@
 import { BookOpenCheck, CalendarDays, Users } from "lucide-react"
 
-import type { ClassDetail } from "../../types"
+import type { Class } from "../../types"
 
 type ClassDetailStatsProps = {
-  classDetail: ClassDetail
+  class: Class
 }
 
-export function ClassDetailStats({ classDetail }: ClassDetailStatsProps) {
+export function ClassDetailStats(props: ClassDetailStatsProps) {
   const studentCount =
-    classDetail.studentCount ?? classDetail.students?.length ?? 0
-  const courseCount = classDetail.courses?.length ?? 0
-  const sessionCount = classDetail.sessions?.length ?? 0
+    props.class.studentCount ?? props.class.students?.length ?? 0
+  const courseCount = props.class.courses?.length ?? 0
+  const sessionCount = props.class.sessions?.length ?? 0
 
   return (
     <section className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
       <ClassDetailStatsItem
         label="Sĩ số"
-        value={`${studentCount}/${classDetail.maxStudents}`}
+        value={`${studentCount}/${props.class.maxStudents}`}
         helper="Hiện tại"
         icon={Users}
       />
@@ -34,7 +34,7 @@ export function ClassDetailStats({ classDetail }: ClassDetailStatsProps) {
       />
       <ClassDetailStatsItem
         label="Tiến độ"
-        value={getStatusLabel(classDetail.status)}
+        value={getStatusLabel(props.class.status)}
         helper="Vận hành"
         icon={Users}
       />
@@ -42,13 +42,13 @@ export function ClassDetailStats({ classDetail }: ClassDetailStatsProps) {
   )
 }
 
-function getStatusLabel(status: ClassDetail["status"]) {
+function getStatusLabel(status: Class["status"]) {
   const labels = {
     ACTIVE: "Đang học",
     UPCOMING: "Sắp học",
     COMPLETED: "Hoàn tất",
     PAUSED: "Tạm dừng",
-  } satisfies Record<ClassDetail["status"], string>
+  } satisfies Record<Class["status"], string>
 
   return labels[status]
 }

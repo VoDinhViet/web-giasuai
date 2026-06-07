@@ -8,12 +8,12 @@ export function TemplateChecklistItem({
   description: string
 }) {
   return (
-    <div className="rounded border border-border/70 bg-background p-3">
+    <div className="rounded-lg border bg-muted/20 p-3">
       <div className="flex items-start gap-3">
-        <CheckCircle2 className="mt-0.5 size-3.5 shrink-0 text-primary" />
+        <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-muted-foreground" />
         <div className="min-w-0">
           <p className="text-sm font-semibold text-foreground">{title}</p>
-          <p className="mt-1 text-xs leading-5 text-muted-foreground">
+          <p className="mt-1 text-xs text-muted-foreground">
             {description}
           </p>
         </div>

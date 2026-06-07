@@ -2,7 +2,7 @@ import type { Nullable } from "@/types/common"
 
 export type ClassSessionStatus = "SCHEDULED" | "COMPLETED" | "CANCELLED"
 
-export type ClassSession = {
+export interface ClassSession {
   id: string
   code: string
   title: string

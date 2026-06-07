@@ -37,7 +37,7 @@ export default async function EditClassRoute({
         ]}
       />
       <ClassEditPage
-        classDetail={classDetail}
+        class={classDetail}
         courseOptions={formOptions.courseOptions}
         instructorOptions={instructorOptions}
       />

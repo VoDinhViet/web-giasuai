@@ -17,24 +17,21 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import type { ClassDetail, ClassSession, ClassSessionStatus } from "../../types"
+import type { Class, ClassSession, ClassSessionStatus } from "../../types"
 
 type ClassSessionsPageProps = {
-  classDetail: ClassDetail
+  class: Class
   sessions: ClassSession[]
 }
 
-export function ClassSessionsPage({
-  classDetail,
-  sessions,
-}: ClassSessionsPageProps) {
-  const completedSessions = sessions.filter(
+export function ClassSessionsPage(props: ClassSessionsPageProps) {
+  const completedSessions = props.sessions.filter(
     (session) => session.status === "COMPLETED"
   ).length
-  const scheduledSessions = sessions.filter(
+  const scheduledSessions = props.sessions.filter(
     (session) => session.status === "SCHEDULED"
   ).length
-  const nextSession = sessions.find((session) => session.status === "SCHEDULED")
+  const nextSession = props.sessions.find((session) => session.status === "SCHEDULED")
 
   return (
     <div className="flex w-full flex-col gap-5">
@@ -43,10 +40,10 @@ export function ClassSessionsPage({
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-2">
               <span className="rounded bg-primary/10 px-2.5 py-1 text-xs font-semibold text-primary ring-1 ring-primary/15">
-                {classDetail.code}
+                {props.class.code}
               </span>
               <span className="rounded bg-muted px-2.5 py-1 text-xs font-semibold text-muted-foreground ring-1 ring-border/80">
-                {classDetail.name}
+                {props.class.name}
               </span>
             </div>
             <h1 className="mt-3 text-2xl leading-8 font-bold text-foreground lg:text-3xl lg:leading-10">
@@ -68,7 +65,7 @@ export function ClassSessionsPage({
       <section className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
         <MetricCard
           label="Tổng buổi"
-          value={sessions.length.toString()}
+          value={props.sessions.length.toString()}
           helper="Trong lớp hiện tại"
           icon={CalendarDays}
         />
@@ -86,7 +83,7 @@ export function ClassSessionsPage({
         />
         <MetricCard
           label="Sĩ số"
-          value={`${classDetail.studentCount ?? 0}/${classDetail.maxStudents}`}
+          value={`${props.class.studentCount ?? 0}/${props.class.maxStudents}`}
           helper="Theo lớp học"
           icon={UserCheck}
         />
@@ -130,7 +127,7 @@ export function ClassSessionsPage({
               </TableRow>
             </TableHeader>
             <TableBody>
-              {sessions.map((session) => (
+              {props.sessions.map((session) => (
                 <TableRow
                   key={session.code}
                   className="h-14 border-border/45 hover:bg-primary/5"
@@ -196,14 +193,14 @@ export function ClassSessionsPage({
               description="Ngữ cảnh lịch học."
             />
             <dl className="mt-4 grid gap-3 text-sm">
-              <InfoRow label="Lớp" value={classDetail.name} />
+              <InfoRow label="Lớp" value={props.class.name} />
               <InfoRow
                 label="Giáo viên"
-                value={classDetail.instructor.fullName}
+                value={props.class.instructor.fullName}
               />
               <InfoRow
                 label="Lịch mặc định"
-                value={classDetail.schedule ?? "Chưa lên lịch"}
+                value={props.class.schedule ?? "Chưa lên lịch"}
               />
             </dl>
           </section>

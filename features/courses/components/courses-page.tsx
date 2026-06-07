@@ -14,7 +14,6 @@ export function CoursesPage({ stats, courses, pagination }: CoursesPageProps) {
   return (
     <div className="flex w-full flex-col gap-5">
       <CourseStatsSection stats={stats} />
-
       <CoursesTable courses={courses} pagination={pagination} />
     </div>
   )

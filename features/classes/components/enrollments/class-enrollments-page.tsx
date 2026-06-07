@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import type { Route } from "next"
+
 import type { LucideIcon } from "lucide-react"
 import {
   CheckCircle2,
@@ -19,22 +19,19 @@ import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { updateClassEnrollmentStatus } from "../../actions/update-class-enrollment-status"
 import type {
-  ClassDetail,
+  Class,
   ClassEnrollment,
   ClassEnrollmentStatus,
 } from "../../types"
 import { InviteUserToClassDialog } from "./invite-user-to-class-dialog"
 
 type ClassEnrollmentsPageProps = {
-  classDetail: ClassDetail
+  class: Class
   enrollments: ClassEnrollment[]
 }
 
-export function ClassEnrollmentsPage({
-  classDetail,
-  enrollments,
-}: ClassEnrollmentsPageProps) {
-  const [requests, setRequests] = React.useState(enrollments)
+export function ClassEnrollmentsPage(props: ClassEnrollmentsPageProps) {
+  const [requests, setRequests] = React.useState(props.enrollments)
   const [submitError, setSubmitError] = React.useState<string | null>(null)
   const pendingCount = requests.filter(
     (request) => request.status === "PENDING"
@@ -46,7 +43,7 @@ export function ClassEnrollmentsPage({
     (request) => request.status === "REJECTED"
   ).length
   const availableSeats = Math.max(
-    classDetail.maxStudents - (classDetail.studentCount ?? 0),
+    props.class.maxStudents - (props.class.studentCount ?? 0),
     0
   )
 
@@ -57,7 +54,7 @@ export function ClassEnrollmentsPage({
     setSubmitError(null)
 
     const result = await updateClassEnrollmentStatus({
-      classCode: classDetail.code,
+      classCode: props.class.code,
       enrollmentId,
       status,
     })
@@ -84,7 +81,7 @@ export function ClassEnrollmentsPage({
             <div className="min-w-0">
               <div className="flex flex-wrap gap-2">
                 <span className="rounded bg-primary/10 px-2.5 py-1 text-xs font-semibold text-primary ring-1 ring-primary/15">
-                  {classDetail.code}
+                  {props.class.code}
                 </span>
                 <span className="rounded bg-muted px-2.5 py-1 text-xs font-semibold text-muted-foreground ring-1 ring-border/80">
                   Còn {availableSeats} chỗ
@@ -94,18 +91,18 @@ export function ClassEnrollmentsPage({
                 Phê duyệt học viên vào lớp
               </h1>
               <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">
-                Kiểm tra yêu cầu tham gia lớp {classDetail.name}, duyệt hoặc từ
+                Kiểm tra yêu cầu tham gia lớp {props.class.name}, duyệt hoặc từ
                 chối trước khi học viên vào lớp.
               </p>
             </div>
             <div className="flex shrink-0 flex-wrap gap-2">
               <Button type="button" variant="outline" asChild>
-                <Link href={`/manage/classes/${classDetail.code}` as Route}>
+                <Link href={`/manage/classes/${props.class.code}`}>
                   Về chi tiết lớp
                 </Link>
               </Button>
               <InviteUserToClassDialog
-                classCode={classDetail.code}
+                classCode={props.class.code}
                 onInvited={(enrollment) =>
                   setRequests((currentRequests) => [
                     enrollment,
@@ -140,7 +137,7 @@ export function ClassEnrollmentsPage({
           />
           <SummaryCard
             label="Sĩ số"
-            value={`${classDetail.studentCount ?? 0}/${classDetail.maxStudents}`}
+            value={`${props.class.studentCount ?? 0}/${props.class.maxStudents}`}
             helper="Hiện tại"
             icon={Users}
           />
@@ -244,7 +241,7 @@ export function ClassEnrollmentsPage({
             />
             <InfoBox
               title="Không trùng lịch"
-              value={classDetail.schedule ?? "Chưa lên lịch"}
+              value={props.class.schedule ?? "Chưa lên lịch"}
             />
             <InfoBox
               title="Đúng mục tiêu"
@@ -272,10 +269,10 @@ export function ClassEnrollmentsPage({
             description="Tóm tắt để duyệt đúng ngữ cảnh."
           />
           <div className="mt-4 grid gap-3">
-            <InfoBox title="Tên lớp" value={classDetail.name} />
+            <InfoBox title="Tên lớp" value={props.class.name} />
             <InfoBox
               title="Giáo viên"
-              value={classDetail.instructor.fullName}
+              value={props.class.instructor.fullName}
             />
           </div>
         </section>

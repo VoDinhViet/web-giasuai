@@ -24,7 +24,7 @@ export default async function ClassDetailRoute({
           { label: classDetail.code },
         ]}
       />
-      <ClassDetailPage classDetail={classDetail} />
+      <ClassDetailPage class={classDetail} />
     </div>
   )
 }

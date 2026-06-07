@@ -6,7 +6,7 @@ export enum UserRole {
 
 export type Permission = string
 
-export type Role = {
+export interface Role {
   id: string
   code: string
   name: string
@@ -48,7 +48,7 @@ export type StatusFilter = "all" | UserStatus
 
 export type UserFormMode = "create" | "edit"
 
-export type UserFormState = {
+export interface UserFormState {
   fullName: string
   email: string
   username: string

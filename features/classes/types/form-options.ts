@@ -1,9 +1,9 @@
-export type ClassFormOption = {
+export interface ClassFormOption {
   value: string
   label: string
   description?: string
 }
 
-export type CourseOptions = {
+export interface CourseOptions {
   courseOptions: ClassFormOption[]
 }

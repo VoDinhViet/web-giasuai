@@ -50,14 +50,14 @@ import {
 } from "../../schemas/class.schema"
 import type {
   ClassJoinPolicy,
-  ClassDetail,
+  Class,
   ClassFormOption,
   ClassFormat,
   ClassWeekday,
 } from "../../types"
 
 type EditClassFormProps = {
-  classDetail: ClassDetail
+  class: Class
   courseOptions: ClassFormOption[]
   instructorOptions: ClassFormOption[]
 }
@@ -65,7 +65,7 @@ type EditClassFormProps = {
 const noneOptionValue = "none"
 
 export function EditClassForm({
-  classDetail,
+  class: classObj,
   courseOptions,
   instructorOptions,
 }: EditClassFormProps) {
@@ -73,14 +73,14 @@ export function EditClassForm({
   const [submitError, setSubmitError] = useState<string | null>(null)
 
   const form = useForm({
-    defaultValues: getClassFormValues(classDetail),
+    defaultValues: getClassFormValues(classObj),
     validators: {
       onSubmit: updateClassSchema,
     },
     onSubmit: async ({ value }) => {
       setSubmitError(null)
 
-      const saveClassResult = await updateClass(classDetail.code, value)
+      const saveClassResult = await updateClass(classObj.code, value)
 
       if (!saveClassResult.success || !saveClassResult.data) {
         setSubmitError(saveClassResult.message ?? "Không thể cập nhật lớp học.")
@@ -777,7 +777,7 @@ export function EditClassForm({
                 variant="outline"
                 disabled={isSubmitting}
                 onClick={() =>
-                  router.push(`/manage/classes/${classDetail.code}`)
+                  router.push(`/manage/classes/${classObj.code}`)
                 }
               >
                 Hủy bỏ
@@ -1035,26 +1035,26 @@ function RequiredFieldLabel({ children, htmlFor }: RequiredFieldLabelProps) {
   )
 }
 
-function getClassFormValues(classDetail: ClassDetail): UpdateClassInput {
+function getClassFormValues(classObj: Class): UpdateClassInput {
   return {
-    code: classDetail.code,
-    name: classDetail.name,
-    courseId: classDetail.courses?.[0]?.courseId ?? undefined,
-    instructorId: classDetail.instructor.id,
-    maxStudents: classDetail.maxStudents,
-    meetingUrl: classDetail.meetingUrl ?? "",
-    startDate: toDateInputValue(classDetail.startDate),
-    endDate: toDateInputValue(classDetail.endDate),
-    startTime: classDetail.startTime ?? "19:00",
-    endTime: classDetail.endTime ?? "20:30",
-    repeatDays: classDetail.repeatDays,
-    status: classDetail.status,
-    format: classDetail.format,
-    joinPolicy: classDetail.joinPolicy,
-    waitlistEnabled: classDetail.waitlistEnabled,
-    reminderEnabled: classDetail.reminderEnabled,
-    autoCreateSessions: classDetail.autoCreateSessions,
-    note: classDetail.note ?? "",
+    code: classObj.code,
+    name: classObj.name,
+    courseId: classObj.courses?.[0]?.id ?? undefined,
+    instructorId: classObj.instructor.id,
+    maxStudents: classObj.maxStudents,
+    meetingUrl: classObj.meetingUrl ?? "",
+    startDate: toDateInputValue(classObj.startDate),
+    endDate: toDateInputValue(classObj.endDate),
+    startTime: classObj.startTime ?? "19:00",
+    endTime: classObj.endTime ?? "20:30",
+    repeatDays: classObj.repeatDays,
+    status: classObj.status,
+    format: classObj.format,
+    joinPolicy: classObj.joinPolicy,
+    waitlistEnabled: classObj.waitlistEnabled,
+    reminderEnabled: classObj.reminderEnabled,
+    autoCreateSessions: classObj.autoCreateSessions,
+    note: classObj.note ?? "",
   }
 }
 

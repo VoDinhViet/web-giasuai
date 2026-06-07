@@ -32,7 +32,7 @@ export default async function ClassSessionsRoute({
           { label: "Buổi học" },
         ]}
       />
-      <ClassSessionsPage classDetail={classDetail} sessions={sessions} />
+      <ClassSessionsPage class={classDetail} sessions={sessions} />
     </div>
   )
 }

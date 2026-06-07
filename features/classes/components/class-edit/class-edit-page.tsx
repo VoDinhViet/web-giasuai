@@ -1,22 +1,18 @@
-import type { ClassDetail, ClassFormOption } from "../../types"
+import type { Class, ClassFormOption } from "../../types"
 import { EditClassForm } from "./edit-class-form"
 
 type ClassEditPageProps = {
-  classDetail: ClassDetail
+  class: Class
   courseOptions: ClassFormOption[]
   instructorOptions: ClassFormOption[]
 }
 
-export function ClassEditPage({
-  classDetail,
-  courseOptions,
-  instructorOptions,
-}: ClassEditPageProps) {
+export function ClassEditPage(props: ClassEditPageProps) {
   return (
     <EditClassForm
-      classDetail={classDetail}
-      courseOptions={courseOptions}
-      instructorOptions={instructorOptions}
+      class={props.class}
+      courseOptions={props.courseOptions}
+      instructorOptions={props.instructorOptions}
     />
   )
 }

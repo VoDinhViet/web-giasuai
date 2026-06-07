@@ -43,7 +43,7 @@ export default async function AssignClassCoursesRoute({
         ]}
       />
       <AssignCoursesPage
-        classDetail={classDetail}
+        class={classDetail}
         unassignedCourses={unassignedCoursesResponse.data}
         unassignedCoursesPagination={unassignedCoursesResponse.pagination}
       />

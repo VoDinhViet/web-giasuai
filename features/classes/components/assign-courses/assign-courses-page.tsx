@@ -15,14 +15,14 @@ import {
   type AssignClassCourseInput,
 } from "../../schemas/class.schema"
 import type {
-  ClassDetail,
+  Class,
   UnassignedClassCourse,
 } from "../../types"
 import { UnassignedCoursePicker } from "./unassigned-course-picker"
 import { AssignActionsCard } from "./assign-actions-card"
 
 type AssignCoursesPageProps = {
-  classDetail: ClassDetail
+  class: Class
   unassignedCourses: UnassignedClassCourse[]
   unassignedCoursesPagination: Pagination
 }
@@ -32,11 +32,7 @@ const assignCoursesDefaultValues: AssignClassCourseInput = {
   required: true,
 }
 
-export function AssignCoursesPage({
-  classDetail,
-  unassignedCourses,
-  unassignedCoursesPagination,
-}: AssignCoursesPageProps) {
+export function AssignCoursesPage(props: AssignCoursesPageProps) {
   const router = useRouter()
 
   const form = useAppForm({
@@ -46,14 +42,14 @@ export function AssignCoursesPage({
     },
     onSubmit: async ({ value }) => {
       const res = await assignClassCourse({
-        classCode: classDetail.code,
+        classCode: props.class.code,
         input: value,
       })
 
       if (!res.success) return toast.error(res.message)
 
       toast.success(res.message)
-      router.push(`/manage/classes/${classDetail.code}`)
+      router.push(`/manage/classes/${props.class.code}`)
       router.refresh()
     },
   })
@@ -77,8 +73,8 @@ export function AssignCoursesPage({
             return (
               <Field data-invalid={isInvalid}>
                 <UnassignedCoursePicker
-                  courses={unassignedCourses}
-                  pagination={unassignedCoursesPagination}
+                  courses={props.unassignedCourses}
+                  pagination={props.unassignedCoursesPagination}
                   selectedCourseId={field.state.value}
                   onSelect={field.handleChange}
                 />
@@ -94,8 +90,8 @@ export function AssignCoursesPage({
       <aside className="grid gap-5 xl:sticky xl:top-5 xl:self-start">
         <AssignActionsCard
           form={form}
-          classCode={classDetail.code}
-          unassignedCourses={unassignedCourses}
+          classCode={props.class.code}
+          unassignedCourses={props.unassignedCourses}
         />
       </aside>
     </form>

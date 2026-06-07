@@ -14,12 +14,16 @@ type ClassDetailLearnersProps = {
   classCode: string
 }
 
-export function ClassDetailLearners({
-  classCode,
-}: ClassDetailLearnersProps) {
+export function ClassDetailLearners({ classCode }: ClassDetailLearnersProps) {
   const [params] = useQueryStates(classDetailSearchParams)
 
-  const swrKey = ["class-learners", classCode, params.learnerPage, params.learnerPageSize, params.learnerQ]
+  const swrKey = [
+    "class-learners",
+    classCode,
+    params.learnerPage,
+    params.learnerPageSize,
+    params.learnerQ,
+  ]
 
   const { data, isLoading, isValidating } = useSWR<PaginatedResponse<User>>(
     swrKey,

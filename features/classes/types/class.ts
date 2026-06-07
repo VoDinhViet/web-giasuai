@@ -15,30 +15,15 @@ export type ClassWeekday =
   | "SATURDAY"
   | "SUNDAY"
 
-export type Class = {
+export interface Class {
   id: string
   code: string
   name: string
+  instructorId: string
   instructor: User
   studentCount: number
   maxStudents: number
   schedule?: Nullable<string>
-  startDate: Nullable<string>
-  endDate: Nullable<string>
-  startTime: Nullable<string>
-  endTime: Nullable<string>
-  repeatDays: ClassWeekday[]
-  status: ClassStatus
-}
-
-export type ClassDetail = {
-  id: string
-  code: string
-  name: string
-  instructor: User
-  studentCount: number
-  maxStudents: number
-  schedule: Nullable<string>
   meetingUrl: Nullable<string>
   startDate: Nullable<string>
   endDate: Nullable<string>
@@ -52,6 +37,8 @@ export type ClassDetail = {
   reminderEnabled: boolean
   autoCreateSessions: boolean
   note: Nullable<string>
+  createdAt: string
+  updatedAt: string
   students?: User[]
   courses?: ClassCourse[]
   sessions?: ClassSession[]

@@ -8,15 +8,15 @@ import {
   type UpdateClassInput,
   type UpdateClassReqDto,
 } from "../schemas/class.schema"
-import type { ClassDetail } from "../types"
+import type { Class } from "../types"
 
 export async function updateClass(
   classCode: string,
   input: UpdateClassInput
-): Promise<ActionResponse<ClassDetail>> {
+): Promise<ActionResponse<Class>> {
   try {
     const reqDto: UpdateClassReqDto = updateClassSchema.parse(input)
-    const updatedClass = await api<ClassDetail>(
+    const updatedClass = await api<Class>(
       `/api/v1/classes/${classCode}`,
       {
         method: "PATCH",

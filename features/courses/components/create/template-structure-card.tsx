@@ -12,26 +12,26 @@ import { TemplateChecklistItem } from "./template-checklist-item"
 
 export function TemplateStructureCard() {
   return (
-    <Card data-tone="default">
+    <Card className="h-full">
       <CardHeader>
         <SectionTitle icon={FileText} title="Cấu trúc file mẫu" />
         <CardDescription>
-          Nhập đúng mã liên kết để hệ thống ghép khóa, chương và bài học.
+          Nhập đúng liên kết mã để ghép nối tự động khóa học, chương và bài học.
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="grid gap-3">
+        <div className="space-y-3">
           <TemplateChecklistItem
-            title="Sheet AI module"
-            description="Module ID, Tên module, Miêu tả nội dung"
+            title="Dữ liệu Khóa học"
+            description="Mã khóa, tên khóa học, phân loại, ghi chú"
           />
           <TemplateChecklistItem
-            title="Cột AI lý thuyết"
-            description="Kết quả cần đạt, Module phụ thuộc, Ghi chú"
+            title="Dữ liệu Chương"
+            description="Mã chương, tên chương, thứ tự, mã khóa liên kết"
           />
           <TemplateChecklistItem
-            title="Cột thời lượng"
-            description="Thời gian học, Thời gian làm bài tập"
+            title="Dữ liệu Bài học"
+            description="Mã bài học, tên bài, loại bài, thời lượng, mã chương"
           />
         </div>
       </CardContent>
