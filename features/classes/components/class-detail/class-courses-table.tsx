@@ -5,7 +5,7 @@ import { BookOpenCheck } from "lucide-react"
 import type { Route } from "next"
 import Link from "next/link"
 import { useQueryStates } from "nuqs"
-import { useTransition } from "react"
+import * as React from "react"
 
 import { DataTable } from "@/components/shared/data-table"
 import { Badge } from "@/components/ui/badge"
@@ -17,6 +17,7 @@ import type { ClassCourse } from "../../types"
 type ClassCoursesTableProps = {
   courses: ClassCourse[]
   pagination?: Pagination
+  isLoading?: boolean
 }
 
 const columns: ColumnDef<ClassCourse>[] = [
@@ -71,11 +72,10 @@ const columns: ColumnDef<ClassCourse>[] = [
 export function ClassCoursesTable({
   courses,
   pagination,
+  isLoading = false,
 }: ClassCoursesTableProps) {
-  const [isPending, startTransition] = useTransition()
   const [, setParams] = useQueryStates(classDetailSearchParams, {
-    shallow: false,
-    startTransition,
+    shallow: true,
   })
 
   return (
@@ -92,7 +92,7 @@ export function ClassCoursesTable({
           totalPages: 0,
         }
       }
-      isLoading={isPending}
+      isLoading={isLoading}
       rowLabel="khóa học"
       tableClassName="min-w-170"
       onPageChange={(coursePage) => setParams({ coursePage })}

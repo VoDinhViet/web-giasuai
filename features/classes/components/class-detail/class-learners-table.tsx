@@ -2,7 +2,6 @@
 
 import type { ColumnDef } from "@tanstack/react-table"
 import { useQueryStates } from "nuqs"
-import { useTransition } from "react"
 import type { Route } from "next"
 import Link from "next/link"
 
@@ -16,6 +15,7 @@ import { classDetailSearchParams } from "../../lib/search-params"
 type ClassLearnersTableProps = {
   learners: User[]
   pagination?: Pagination
+  isLoading?: boolean
 }
 
 const columns: ColumnDef<User>[] = [
@@ -77,11 +77,10 @@ const columns: ColumnDef<User>[] = [
 export function ClassLearnersTable({
   learners,
   pagination,
+  isLoading = false,
 }: ClassLearnersTableProps) {
-  const [isPending, startTransition] = useTransition()
   const [, setParams] = useQueryStates(classDetailSearchParams, {
-    shallow: false,
-    startTransition,
+    shallow: true,
   })
 
   return (
@@ -98,7 +97,7 @@ export function ClassLearnersTable({
           totalPages: 0,
         }
       }
-      isLoading={isPending}
+      isLoading={isLoading}
       rowLabel="học viên"
       tableClassName="min-w-160"
       onPageChange={(learnerPage) => setParams({ learnerPage })}
