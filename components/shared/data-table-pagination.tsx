@@ -123,12 +123,12 @@ export function DataTablePagination({
             disabled={isDisabled}
             onValueChange={(value) => onPageSizeChange(Number(value))}
           >
-            <SelectTrigger className="h-9 w-28">
+            <SelectTrigger className="h-8 w-28 text-xs">
               <SelectValue placeholder={`${pageSize} / trang`} />
             </SelectTrigger>
             <SelectContent side="top">
               {pageSizeOptions.map((size) => (
-                <SelectItem key={size} value={`${size}`}>
+                <SelectItem key={size} value={`${size}`} className="text-xs">
                   {size} / trang
                 </SelectItem>
               ))}

@@ -173,13 +173,19 @@ export function UnassignedCoursePicker({
               disabled={isPending || !canPreviousPage}
               aria-label="Trang trước"
               onClick={() => setFilters({ page: pagination.previousPage })}
+              className="h-8 w-8"
             >
-              <ChevronLeft />
+              <ChevronLeft className="size-4" />
             </Button>
 
-            <span className="min-w-24 text-center text-sm font-medium text-foreground">
-              Trang {currentPage} / {totalPages}
-            </span>
+            <div className="flex items-center gap-1.5 px-1 text-sm font-medium text-muted-foreground select-none">
+              <span>Trang</span>
+              <span className="flex h-8 min-w-8 items-center justify-center rounded-md border border-border bg-muted/40 px-2 font-semibold text-foreground shadow-xs">
+                {currentPage}
+              </span>
+              <span>/</span>
+              <span className="text-foreground/80">{totalPages}</span>
+            </div>
 
             <Button
               type="button"
@@ -188,8 +194,9 @@ export function UnassignedCoursePicker({
               disabled={isPending || !canNextPage}
               aria-label="Trang sau"
               onClick={() => setFilters({ page: pagination.nextPage })}
+              className="h-8 w-8"
             >
-              <ChevronRight />
+              <ChevronRight className="size-4" />
             </Button>
           </div>
 
@@ -198,12 +205,12 @@ export function UnassignedCoursePicker({
             disabled={isPending}
             onValueChange={(value) => setFilters({ limit: Number(value), page: 1 })}
           >
-            <SelectTrigger className="h-9 w-28">
+            <SelectTrigger className="h-8 w-28 text-xs">
               <SelectValue placeholder={`${limit} / trang`} />
             </SelectTrigger>
             <SelectContent side="top">
               {pageSizeOptions.map((pageSize) => (
-                <SelectItem key={pageSize} value={`${pageSize}`}>
+                <SelectItem key={pageSize} value={`${pageSize}`} className="text-xs">
                   {pageSize} / trang
                 </SelectItem>
               ))}
