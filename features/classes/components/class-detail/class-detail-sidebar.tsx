@@ -1,6 +1,39 @@
 import { CalendarDays, GraduationCap } from "lucide-react"
 
-import type { ClassDetail } from "../../types"
+import type { ClassDetail, ClassSession } from "../../types"
+
+const FAKE_SESSIONS: ClassSession[] = [
+  {
+    id: "session-1",
+    code: "SES001",
+    title: "Buổi 1: Giới thiệu tổng quan & Thiết lập môi trường",
+    courseId: null,
+    courseName: null,
+    instructorId: null,
+    instructorName: null,
+    sessionDate: "08/06/2026",
+    startTime: "19:00",
+    endTime: "21:00",
+    timeRange: "19:00 - 21:00",
+    room: "Phòng Zoom A (Trực tuyến)",
+    status: "SCHEDULED",
+  },
+  {
+    id: "session-2",
+    code: "SES002",
+    title: "Buổi 2: Các khái niệm cơ bản & Thực hành Lab 1",
+    courseId: null,
+    courseName: null,
+    instructorId: null,
+    instructorName: null,
+    sessionDate: "10/06/2026",
+    startTime: "19:00",
+    endTime: "21:00",
+    timeRange: "19:00 - 21:00",
+    room: "Phòng Zoom A (Trực tuyến)",
+    status: "SCHEDULED",
+  },
+]
 
 type ClassDetailSidebarProps = {
   classDetail: ClassDetail
@@ -59,6 +92,10 @@ function UpcomingSessions({
 }: {
   classDetail: ClassDetail
 }) {
+  const sessions = classDetail.sessions && classDetail.sessions.length > 0
+    ? classDetail.sessions
+    : FAKE_SESSIONS
+
   return (
     <section className="rounded border border-border/80 bg-card p-5 shadow-xs">
       <div className="flex items-start gap-3">
@@ -75,8 +112,8 @@ function UpcomingSessions({
         </div>
       </div>
       <div className="mt-4 grid gap-3">
-        {(classDetail.sessions ?? []).length > 0 ? (
-          (classDetail.sessions ?? []).map((session) => (
+        {sessions.length > 0 ? (
+          sessions.map((session) => (
             <div
               key={session.title}
               className="rounded border border-border/70 bg-background p-3"
