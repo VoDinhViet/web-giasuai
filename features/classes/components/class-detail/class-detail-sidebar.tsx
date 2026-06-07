@@ -13,14 +13,14 @@ export function ClassDetailSidebar({
 }: ClassDetailSidebarProps) {
   return (
     <aside className="space-y-5">
-      <ClassInfoSection classDetail={classDetail} />
-      <UpcomingSessionsSection classDetail={classDetail} />
-      {canViewStudentInsights ? <LearnerSummarySection classDetail={classDetail} /> : null}
+      <ClassInfo classDetail={classDetail} />
+      <UpcomingSessions classDetail={classDetail} />
+      {canViewStudentInsights ? <LearnerSummary classDetail={classDetail} /> : null}
     </aside>
   )
 }
 
-function ClassInfoSection({ classDetail }: { classDetail: ClassDetail }) {
+function ClassInfo({ classDetail }: { classDetail: ClassDetail }) {
   return (
     <section className="rounded border border-border/80 bg-card p-5 shadow-xs">
       <div className="flex items-start gap-3">
@@ -54,7 +54,7 @@ function ClassInfoSection({ classDetail }: { classDetail: ClassDetail }) {
   )
 }
 
-function UpcomingSessionsSection({
+function UpcomingSessions({
   classDetail,
 }: {
   classDetail: ClassDetail
@@ -102,7 +102,7 @@ function UpcomingSessionsSection({
   )
 }
 
-function LearnerSummarySection({ classDetail }: { classDetail: ClassDetail }) {
+function LearnerSummary({ classDetail }: { classDetail: ClassDetail }) {
   const studentCount = classDetail.studentCount ?? classDetail.students?.length ?? 0
 
   return (
