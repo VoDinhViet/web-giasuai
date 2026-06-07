@@ -1,7 +1,7 @@
 import type { User } from "@/features/users/types"
 import type { PaginatedResponse } from "@/types/api"
 import type { ClassCourse, ClassDetail } from "../../types"
-import { ClassDetailCoursesSection } from "./class-detail-courses-section"
+import { ClassDetailCourses } from "./class-detail-courses"
 import { ClassDetailLearnersSection } from "./class-detail-learners-section"
 import { ClassDetailSidebar } from "./class-detail-sidebar"
 import { ClassDetailStats } from "./class-detail-stats"
@@ -34,7 +34,7 @@ export function ClassDetailPage({
             learners={learners}
             pagination={classLearners?.pagination}
           />
-          <ClassDetailCoursesSection
+          <ClassDetailCourses
             courses={courses}
             pagination={classCourses?.pagination}
           />

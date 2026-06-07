@@ -5,15 +5,15 @@ import type { Pagination } from "@/types/api"
 import type { ClassCourse } from "../../types"
 import { ClassCoursesTable } from "./class-courses-table"
 
-type ClassDetailCoursesSectionProps = {
+type ClassDetailCoursesProps = {
   courses: ClassCourse[]
   pagination?: Pagination
 }
 
-export function ClassDetailCoursesSection({
+export function ClassDetailCourses({
   courses,
   pagination,
-}: ClassDetailCoursesSectionProps) {
+}: ClassDetailCoursesProps) {
   return (
     <Card className="border-border/80 py-0 shadow-xs">
       <CardContent className="px-0">
