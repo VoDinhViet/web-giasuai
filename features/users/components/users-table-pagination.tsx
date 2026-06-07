@@ -80,13 +80,10 @@ export function UsersTablePagination({
             <ChevronLeft className="size-4" />
           </Button>
 
-          <div className="flex items-center gap-1.5 px-1 text-sm font-medium text-muted-foreground select-none">
-            <span>Trang</span>
-            <span className="flex h-8 min-w-8 items-center justify-center rounded-md border border-border bg-muted/40 px-2 font-semibold text-foreground shadow-xs">
-              {currentPage.toLocaleString("vi-VN")}
-            </span>
-            <span>/</span>
-            <span className="text-foreground/80">{totalPages.toLocaleString("vi-VN")}</span>
+          <div className="flex items-center justify-center px-3 text-sm font-medium select-none">
+            <span className="text-foreground font-semibold">{currentPage.toLocaleString("vi-VN")}</span>
+            <span className="mx-1.5 text-muted-foreground/40 font-normal">/</span>
+            <span className="text-muted-foreground">{totalPages.toLocaleString("vi-VN")}</span>
           </div>
 
           <Button
