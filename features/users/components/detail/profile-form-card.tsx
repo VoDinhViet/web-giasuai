@@ -34,6 +34,7 @@ const profileFormDefaultUser: User = {
   role: UserRole.LEARNER,
   isLocked: false,
   createdAt: "",
+  updatedAt: "",
   profile: null,
 }
 

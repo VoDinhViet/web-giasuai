@@ -1,3 +1,5 @@
+import type { AuditFields, Nullable } from "@/types/common"
+
 export enum UserRole {
   ADMIN = "ADMIN",
   INSTRUCTOR = "INSTRUCTOR",
@@ -17,42 +19,27 @@ export interface Role {
   updatedAt?: string
 }
 
-export interface User {
-  id: string
+export interface User extends AuditFields {
   email: string
   username: string
   fullName: string
   role: UserRole
   permissions?: Permission[]
   isLocked: boolean
-  createdAt: string
-  profile: UserProfile | null
+  profile: Nullable<UserProfile>
 }
 
 export interface UserProfile {
   userId: string
-  phone: string | null
-  location: string | null
-  bio: string | null
-  avatarUrl: string | null
-  createdAt: string | null
-  updatedAt: string | null
+  phone: Nullable<string>
+  location: Nullable<string>
+  bio: Nullable<string>
+  avatarUrl: Nullable<string>
+  createdAt: Nullable<string>
+  updatedAt: Nullable<string>
 }
 
 export enum UserStatus {
   ACTIVE = "ACTIVE",
   INACTIVE = "INACTIVE",
-}
-
-export type StatusFilter = "all" | UserStatus
-
-export type UserFormMode = "create" | "edit"
-
-export interface UserFormState {
-  fullName: string
-  email: string
-  username: string
-  password?: string
-  role: UserRole
-  isLocked: boolean
 }

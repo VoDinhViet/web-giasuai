@@ -7,10 +7,9 @@ type ClassDetailStatsProps = {
 }
 
 export function ClassDetailStats(props: ClassDetailStatsProps) {
-  const studentCount =
-    props.class.studentCount ?? props.class.students?.length ?? 0
-  const courseCount = props.class.courses?.length ?? 0
-  const sessionCount = props.class.sessions?.length ?? 0
+  const studentCount = props.class.studentCount
+  const courseCount = 0
+  const sessionCount = 0
 
   return (
     <section className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">

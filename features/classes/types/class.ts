@@ -1,7 +1,5 @@
 import type { User } from "@/features/users/types"
-import type { Nullable } from "@/types/common"
-import type { ClassCourse } from "./course"
-import type { ClassSession } from "./session"
+import type { AuditFields, Nullable } from "@/types/common"
 
 export type ClassStatus = "ACTIVE" | "UPCOMING" | "COMPLETED" | "PAUSED"
 export type ClassFormat = "OFFLINE" | "ONLINE" | "HYBRID"
@@ -15,8 +13,7 @@ export type ClassWeekday =
   | "SATURDAY"
   | "SUNDAY"
 
-export interface Class {
-  id: string
+export interface Class extends AuditFields {
   code: string
   name: string
   instructorId: string
@@ -37,9 +34,4 @@ export interface Class {
   reminderEnabled: boolean
   autoCreateSessions: boolean
   note: Nullable<string>
-  createdAt: string
-  updatedAt: string
-  students?: User[]
-  courses?: ClassCourse[]
-  sessions?: ClassSession[]
 }

@@ -1039,7 +1039,7 @@ function getClassFormValues(classObj: Class): UpdateClassInput {
   return {
     code: classObj.code,
     name: classObj.name,
-    courseId: classObj.courses?.[0]?.id ?? undefined,
+    courseId: undefined,
     instructorId: classObj.instructor.id,
     maxStudents: classObj.maxStudents,
     meetingUrl: classObj.meetingUrl ?? "",
