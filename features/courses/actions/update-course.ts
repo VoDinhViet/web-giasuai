@@ -6,15 +6,15 @@ import {
   updateCourseSchema,
   type UpdateCourseInput,
 } from "../schemas/course-form.schema"
-import type { CourseDetail } from "../types"
+import type { Course } from "../types"
 import { revalidateCoursePaths } from "../utils/course-revalidation.util"
 
 export async function updateCourse(
-  courseCode: string,
+  courseId: string,
   input: UpdateCourseInput
-): Promise<CourseDetail> {
+): Promise<Course> {
   const reqDto = updateCourseSchema.parse(input)
-  const course = await api<CourseDetail>(`/api/v1/courses/${courseCode}`, {
+  const course = await api<Course>(`/api/v1/courses/${courseId}`, {
     method: "PATCH",
     body: omitEmptyFields({
       code: reqDto.code,
@@ -29,7 +29,7 @@ export async function updateCourse(
     }),
   })
 
-  revalidateCoursePaths(course.code)
+  revalidateCoursePaths(course.id)
 
   return course
 }

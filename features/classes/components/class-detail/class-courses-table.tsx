@@ -4,7 +4,6 @@ import type { ColumnDef } from "@tanstack/react-table"
 import { BookOpenCheck } from "lucide-react"
 import Link from "next/link"
 import { useQueryStates } from "nuqs"
-import * as React from "react"
 
 import { DataTable } from "@/components/shared/data-table"
 import { Badge } from "@/components/ui/badge"
@@ -14,76 +13,81 @@ import { classDetailSearchParams } from "../../lib/search-params"
 import type { ClassCourse } from "../../types"
 
 type ClassCoursesTableProps = {
+  classCode: string
   courses: ClassCourse[]
   pagination?: Pagination
   isLoading?: boolean
 }
 
-const columns: ColumnDef<ClassCourse>[] = [
-  {
-    accessorKey: "code",
-    header: "Mã khóa",
-    cell: ({ row }) => (
-      <span className="font-medium text-foreground">
-        {row.original.code}
-      </span>
-    ),
-  },
-  {
-    accessorKey: "name",
-    header: "Khóa học",
-    cell: ({ row }) => (
-      <span className="block max-w-96 truncate font-semibold text-foreground">
-        {row.original.name}
-      </span>
-    ),
-  },
-  {
-    accessorKey: "required",
-    header: "Loại",
-    cell: ({ row }) => <CourseTypeBadge required={row.original.required} />,
-  },
-  {
-    accessorKey: "completedLessons",
-    header: "Tiến độ",
-    cell: ({ row }) => {
-      const completed = row.original.completedLessons
-      const total = row.original.lessonCount
-      const percent = total > 0 ? Math.round((completed / total) * 100) : 0
-
-      return (
-        <div className="min-w-40 space-y-1.5 py-1">
-          <div className="flex items-center justify-between text-xs">
-            <span className="font-semibold text-foreground">{percent}%</span>
-            <span className="text-muted-foreground">
-              {completed}/{total} bài học
-            </span>
-          </div>
-          <div className="h-1.5 w-full rounded-full bg-muted/80 overflow-hidden">
-            <div
-              className="h-full bg-primary rounded-full transition-all duration-300"
-              style={{ width: `${percent}%` }}
-            />
-          </div>
-        </div>
-      )
+function getColumns(classCode: string): ColumnDef<ClassCourse>[] {
+  return [
+    {
+      accessorKey: "code",
+      header: "Mã khóa",
+      cell: ({ row }) => (
+        <span className="font-medium text-foreground">
+          {row.original.code}
+        </span>
+      ),
     },
-  },
-  {
-    id: "actions",
-    header: () => <span className="block text-right">Thao tác</span>,
-    cell: ({ row }) => (
-      <div className="flex justify-end">
-        <Button type="button" variant="outline" size="sm" asChild>
-          <Link href={`/courses/${row.original.code}/learn`}>
-            <BookOpenCheck className="size-3.5" />
-            Vào học
-          </Link>
-        </Button>
-      </div>
-    ),
-  },
-]
+    {
+      accessorKey: "name",
+      header: "Khóa học",
+      cell: ({ row }) => (
+        <span className="block max-w-96 truncate font-semibold text-foreground">
+          {row.original.name}
+        </span>
+      ),
+    },
+    {
+      accessorKey: "required",
+      header: "Loại",
+      cell: ({ row }) => <CourseTypeBadge required={row.original.required} />,
+    },
+    {
+      accessorKey: "completedLessons",
+      header: "Tiến độ",
+      cell: ({ row }) => {
+        const completed = row.original.completedLessons
+        const total = row.original.lessonCount
+        const percent = total > 0 ? Math.round((completed / total) * 100) : 0
+
+        return (
+          <div className="min-w-40 space-y-1.5 py-1">
+            <div className="flex items-center justify-between text-xs">
+              <span className="font-semibold text-foreground">{percent}%</span>
+              <span className="text-muted-foreground">
+                {completed}/{total} bài học
+              </span>
+            </div>
+            <div className="h-1.5 w-full rounded-full bg-muted/80 overflow-hidden">
+              <div
+                className="h-full bg-primary rounded-full transition-all duration-300"
+                style={{ width: `${percent}%` }}
+              />
+            </div>
+          </div>
+        )
+      },
+    },
+    {
+      id: "actions",
+      header: () => <span className="block text-right">Thao tác</span>,
+      cell: ({ row }) => (
+        <div className="flex justify-end">
+          {row.original.code !== "CRS-002" && (
+            <Button type="button" variant="outline" size="sm" asChild>
+              <Link href={`/classes/${classCode}/courses/${row.original.id}/learn`}>
+                <BookOpenCheck className="size-3.5" />
+                Vào học
+              </Link>
+            </Button>
+          )}
+        </div>
+      ),
+    },
+  ]
+}
 
 const DEFAULT_PAGINATION: Pagination = {
   limit: 10,
@@ -95,6 +99,7 @@ const DEFAULT_PAGINATION: Pagination = {
 }
 
 export function ClassCoursesTable({
+  classCode,
   courses,
   pagination = DEFAULT_PAGINATION,
   isLoading = false,
@@ -105,7 +110,7 @@ export function ClassCoursesTable({
 
   return (
     <DataTable
-      columns={columns}
+      columns={getColumns(classCode)}
       rows={courses}
       pagination={pagination}
       isLoading={isLoading}

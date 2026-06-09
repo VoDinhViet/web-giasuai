@@ -1,11 +1,11 @@
 import { revalidatePath } from "next/cache"
 
-export function revalidateCoursePaths(courseCode: string, lessonCode?: string) {
+export function revalidateCoursePaths(courseId: string, lessonId?: string) {
   revalidatePath("/manage/courses")
-  revalidatePath(`/manage/courses/${courseCode}/lessons`)
-  revalidatePath(`/manage/courses/${courseCode}/assignments`)
+  revalidatePath(`/manage/courses/${courseId}`)
+  revalidatePath(`/manage/courses/${courseId}/assignments`)
 
-  if (lessonCode) {
-    revalidatePath(`/manage/courses/${courseCode}/lessons/${lessonCode}`)
+  if (lessonId) {
+    revalidatePath(`/manage/lessons/${lessonId}/edit`)
   }
 }

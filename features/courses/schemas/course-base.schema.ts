@@ -8,14 +8,3 @@ export const courseLevelSchema = z.enum([
   "ADVANCED",
   "ALL_LEVELS",
 ])
-
-export const courseLessonTypeSchema = z.enum([
-  "VIDEO",
-  "READING",
-  "EXERCISE",
-  "WORKSHOP",
-  "QUIZ",
-  "RESOURCE",
-])
-
-export const courseLessonStatusSchema = z.enum(["PUBLISHED", "DRAFT", "LOCKED"])

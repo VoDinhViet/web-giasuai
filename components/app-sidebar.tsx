@@ -62,7 +62,7 @@ const menuGroups: MenuGroup[] = [
     items: [
       { label: "Bảng điều khiển", icon: LayoutDashboard, href: "/manage", exact: true },
       { label: "Dashboard học viên", icon: Sparkles, href: "/manage/student-dashboard" },
-      { label: "Vào học", icon: MonitorPlay, href: "/courses/CRS-001/learn", activePaths: ["/courses"] },
+      { label: "Vào học", icon: MonitorPlay, href: "/classes/CLS-001/courses/CRS-001/learn", activePaths: ["/classes"] },
       { label: "Tham gia lớp", icon: DoorOpen, href: "/manage/join-class" },
     ],
   },

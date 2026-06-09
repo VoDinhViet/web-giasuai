@@ -1,9 +1,6 @@
 import { z } from "zod"
 
-import {
-  courseLessonStatusSchema,
-  courseLessonTypeSchema,
-} from "./course-base.schema"
+import { lessonStatusSchema, lessonTypeSchema } from "@/features/lessons/schemas"
 
 export const createCourseChapterSchema = z.object({
   chapterCode: z.string().trim().optional(),
@@ -16,24 +13,24 @@ export const updateCourseChapterSchema = z.object({
   order: z.number().min(0).optional(),
 })
 
-export const createCourseLessonSchema = z.object({
+export const createLessonSchema = z.object({
   chapterCode: z.string().trim().optional(),
   lessonCode: z.string().trim().min(1),
   lessonTitle: z.string().trim().min(1),
-  lessonType: courseLessonTypeSchema.optional(),
+  lessonType: lessonTypeSchema.optional(),
   durationMinutes: z.number().min(0).optional(),
-  status: courseLessonStatusSchema.optional(),
+  status: lessonStatusSchema.optional(),
   resourceCount: z.number().min(0).optional(),
   position: z.number().min(0).optional(),
 })
 
-export const updateCourseLessonSchema = z.object({
+export const updateLessonSchema = z.object({
   chapterCode: z.string().trim().optional(),
   lessonCode: z.string().trim().min(1).optional(),
   lessonTitle: z.string().trim().min(1).optional(),
-  lessonType: courseLessonTypeSchema.optional(),
+  lessonType: lessonTypeSchema.optional(),
   durationMinutes: z.number().min(0).optional(),
-  status: courseLessonStatusSchema.optional(),
+  status: lessonStatusSchema.optional(),
   resourceCount: z.number().min(0).optional(),
   position: z.number().min(0).optional(),
 })
@@ -64,8 +61,8 @@ export type CreateCourseChapterInput = z.infer<
 export type UpdateCourseChapterInput = z.infer<
   typeof updateCourseChapterSchema
 >
-export type CreateCourseLessonInput = z.infer<typeof createCourseLessonSchema>
-export type UpdateCourseLessonInput = z.infer<typeof updateCourseLessonSchema>
+export type CreateLessonInput = z.infer<typeof createLessonSchema>
+export type UpdateLessonInput = z.infer<typeof updateLessonSchema>
 export type ReorderCourseStructureInput = z.infer<
   typeof reorderCourseStructureSchema
 >

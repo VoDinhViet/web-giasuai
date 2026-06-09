@@ -7,14 +7,14 @@ import {
 } from "lucide-react"
 
 export type CourseStatus = "published" | "draft" | "archived"
-export type CourseLessonStatus = "published" | "draft" | "locked"
+export type LessonStatus = "published" | "draft" | "locked"
 
-export type CourseLesson = {
+export type Lesson = {
   lessonCode: string
   title: string
   duration: string
   type: "Video" | "Bài đọc" | "Bài tập" | "Workshop" | "Quiz" | "Tài liệu"
-  status: CourseLessonStatus
+  status: LessonStatus
   resourceCount: number
   updatedAt: string
 }
@@ -48,7 +48,7 @@ export type Course = {
   audience: string
   level: string
   completionRate: number
-  lessons: CourseLesson[]
+  lessons: Lesson[]
   assignments: CourseAssignment[]
 }
 
@@ -119,35 +119,7 @@ export const courses: Course[] = [
       { assignmentCode: "ASM-003", title: "Dự án kịch bản tư vấn", lessonCode: "L-003", type: "Dự án", dueDate: "28/06/2026", submissionCount: 12, gradedCount: 0, averageScore: 0, status: "open" },
     ],
   },
-  {
-    courseCode: "CRS-002",
-    courseName: "Quản lý sản xuất tinh gọn",
-    category: "Vận hành",
-    author: "Trần Quốc Huy",
-    learnerCount: 84,
-    lessonCount: 12,
-    duration: "16 giờ",
-    startDate: "18/06/2026",
-    status: "published",
-    description:
-      "Nội dung tập trung vào cách nhận diện lãng phí, chuẩn hóa quy trình và điều phối nguồn lực để tối ưu vận hành lớp học hoặc trung tâm đào tạo.",
-    objectives: [
-      "Nhận diện điểm nghẽn trong vận hành hằng ngày.",
-      "Thiết kế quy trình chuẩn và chỉ số kiểm soát.",
-      "Tổ chức họp cải tiến ngắn, có hành động rõ ràng.",
-    ],
-    audience: "Quản lý vận hành, trưởng nhóm, điều phối viên học vụ",
-    level: "Trung cấp",
-    completionRate: 68,
-    lessons: [
-      { lessonCode: "L-011", title: "Nguyên lý tinh gọn", duration: "50 phút", type: "Video", status: "published", resourceCount: 2, updatedAt: "28/05/2026" },
-      { lessonCode: "L-012", title: "Bản đồ quy trình", duration: "40 phút", type: "Bài đọc", status: "published", resourceCount: 2, updatedAt: "28/05/2026" },
-      { lessonCode: "L-013", title: "Thực hành loại bỏ lãng phí", duration: "70 phút", type: "Workshop", status: "draft", resourceCount: 1, updatedAt: "30/05/2026" },
-    ],
-    assignments: [
-      { assignmentCode: "ASM-011", title: "Bản đồ quy trình hiện tại", lessonCode: "L-012", type: "Bài tập", dueDate: "24/06/2026", submissionCount: 40, gradedCount: 21, averageScore: 7.9, status: "grading" },
-    ],
-  },
+
   {
     courseCode: "CRS-003",
     courseName: "Onboarding người dùng mới",
@@ -236,7 +208,3 @@ export const courses: Course[] = [
     ],
   },
 ]
-
-export function getCourseByCode(courseCode: string) {
-  return courses.find((course) => course.courseCode === courseCode)
-}

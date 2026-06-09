@@ -18,10 +18,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import type {
-  Course,
-  CourseAssignment,
-  CourseAssignmentStatus,
+import type { Course } from "@/features/courses/types"
+import {
+  courses as mockCourses,
+  type CourseAssignment,
+  type CourseAssignmentStatus,
 } from "../../constants/course-data"
 
 type CourseAssignmentsPageProps = {
@@ -29,23 +30,26 @@ type CourseAssignmentsPageProps = {
 }
 
 export function CourseAssignmentsPage({ course }: CourseAssignmentsPageProps) {
-  const totalSubmissions = course.assignments.reduce(
+  const mockCourseData = mockCourses.find((c) => c.courseCode === course.code)
+  const assignments = mockCourseData?.assignments ?? []
+
+  const totalSubmissions = assignments.reduce(
     (total, assignment) => total + assignment.submissionCount,
     0
   )
-  const totalGraded = course.assignments.reduce(
+  const totalGraded = assignments.reduce(
     (total, assignment) => total + assignment.gradedCount,
     0
   )
-  const gradingCount = course.assignments.filter(
+  const gradingCount = assignments.filter(
     (assignment) => assignment.status === "grading"
   ).length
-  const averageScore = course.assignments.length
+  const averageScore = assignments.length
     ? (
-        course.assignments.reduce(
+        assignments.reduce(
           (total, assignment) => total + assignment.averageScore,
           0
-        ) / course.assignments.length
+        ) / assignments.length
       ).toFixed(1)
     : "0"
 
@@ -56,10 +60,10 @@ export function CourseAssignmentsPage({ course }: CourseAssignmentsPageProps) {
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-2">
               <span className="rounded bg-primary/10 px-2.5 py-1 text-xs font-semibold text-primary ring-1 ring-primary/15">
-                {course.courseCode}
+                {course.code}
               </span>
               <span className="rounded bg-muted px-2.5 py-1 text-xs font-semibold text-muted-foreground ring-1 ring-border/80">
-                {course.courseName}
+                {course.name}
               </span>
             </div>
             <h1 className="mt-3 text-2xl leading-8 font-bold text-foreground lg:text-3xl lg:leading-10">
@@ -81,7 +85,7 @@ export function CourseAssignmentsPage({ course }: CourseAssignmentsPageProps) {
       <section className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
         <MetricCard
           label="Tổng bài tập"
-          value={course.assignments.length.toString()}
+          value={assignments.length.toString()}
           helper="Trong khóa học"
           icon={ClipboardCheck}
         />
@@ -149,7 +153,7 @@ export function CourseAssignmentsPage({ course }: CourseAssignmentsPageProps) {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {course.assignments.map((assignment) => (
+              {assignments.map((assignment) => (
                 <TableRow
                   key={assignment.assignmentCode}
                   className="h-14 border-border/45 hover:bg-primary/5"
@@ -209,7 +213,7 @@ export function CourseAssignmentsPage({ course }: CourseAssignmentsPageProps) {
               description="Các bài tập còn tồn đọng."
             />
             <div className="mt-4 grid gap-3">
-              {course.assignments
+              {assignments
                 .filter((assignment) => assignment.status === "grading")
                 .map((assignment) => (
                   <AssignmentCard

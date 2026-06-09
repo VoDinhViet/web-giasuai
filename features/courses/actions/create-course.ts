@@ -6,14 +6,14 @@ import {
   createCourseSchema,
   type CreateCourseInput,
 } from "../schemas/course-form.schema"
-import type { CourseDetail } from "../types"
+import type { Course } from "../types"
 import { revalidateCoursePaths } from "../utils/course-revalidation.util"
 
 export async function createCourse(
   input: CreateCourseInput
-): Promise<CourseDetail> {
+): Promise<Course> {
   const reqDto = createCourseSchema.parse(input)
-  const course = await api<CourseDetail>("/api/v1/courses", {
+  const course = await api<Course>("/api/v1/courses", {
     method: "POST",
     body: omitEmptyFields({
       code: reqDto.code,

@@ -44,8 +44,7 @@ const weeklyProgress = [
 ]
 
 const modules = [
-  { name: "Kỹ năng bán hàng B2B", progress: 100, status: "Hoàn thành", href: "/courses/CRS-001/learn" },
-  { name: "Quản lý sản xuất tinh gọn", progress: 72, status: "Đang học", href: "/courses/CRS-002/learn" },
+  { name: "Kỹ năng bán hàng B2B", progress: 100, status: "Hoàn thành", href: "/classes/CLS-001/courses/CRS-001/learn" },
   { name: "Khảo sát hàm số", progress: 48, status: "Cần luyện thêm", href: "/manage/weaknesses" },
 ]
 
@@ -101,7 +100,7 @@ export function StudentDashboardPage({ user }: StudentDashboardPageProps) {
                   </Link>
                 </Button>
                 <Button type="button" variant="secondary" asChild>
-                  <Link href={"/courses/CRS-001/learn" as Route}>
+                  <Link href="/classes/CLS-001/courses/CRS-001/learn">
                     <PlayCircle />
                     Tiếp tục học
                   </Link>
@@ -172,9 +171,15 @@ export function StudentDashboardPage({ user }: StudentDashboardPageProps) {
                       <div className="h-2 overflow-hidden rounded bg-muted">
                         <div className="h-full rounded bg-primary" style={{ width: `${module.progress}%` }} />
                       </div>
-                      <Button type="button" variant="outline" size="sm" asChild>
-                        <Link href={module.href as Route}>Chi tiết</Link>
-                      </Button>
+                      {module.href.includes("CRS-002") ? (
+                        <Button type="button" variant="outline" size="sm" disabled>
+                          Chi tiết
+                        </Button>
+                      ) : (
+                        <Button type="button" variant="outline" size="sm" asChild>
+                          <Link href={module.href as Route}>Chi tiết</Link>
+                        </Button>
+                      )}
                     </CardContent>
                   </Card>
                 ))}

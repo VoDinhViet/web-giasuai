@@ -58,6 +58,7 @@ export function ClassDetailCourses({
         </div>
       </div>
       <ClassCoursesTable
+        classCode={classCode}
         courses={courses}
         pagination={pagination}
         isLoading={isFetching}

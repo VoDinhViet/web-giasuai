@@ -53,10 +53,10 @@ function createCourseInputsFromImportPreview(
     const chapterCodes = new Set(
       courseChapters.map((chapter) => chapter.chapterCode)
     )
-    const courseLessons = importPreview.lessons.filter((lesson) =>
+    const lessons = importPreview.lessons.filter((lesson) =>
       chapterCodes.has(lesson.chapterCode)
     )
-    const durationMinutes = courseLessons.reduce(
+    const durationMinutes = lessons.reduce(
       (total, lesson) =>
         total + getImportedLessonDurationMinutes(lesson.duration),
       0
@@ -75,7 +75,7 @@ function createCourseInputsFromImportPreview(
         chapterTitle: chapter.chapterTitle,
         order: chapter.order,
       })),
-      lessons: courseLessons.map((lesson, index) => ({
+      lessons: lessons.map((lesson, index) => ({
         chapterCode: lesson.chapterCode,
         lessonCode: lesson.lessonCode,
         lessonTitle: lesson.lessonTitle,

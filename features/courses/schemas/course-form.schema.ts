@@ -3,7 +3,7 @@ import { z } from "zod"
 import { courseLevelSchema, courseStatusSchema } from "./course-base.schema"
 import {
   createCourseChapterSchema,
-  createCourseLessonSchema,
+  createLessonSchema,
 } from "./course-structure.schema"
 
 export const updateCourseSchema = z.object({
@@ -20,7 +20,7 @@ export const updateCourseSchema = z.object({
 
 export const createCourseSchema = updateCourseSchema.extend({
   chapters: z.array(createCourseChapterSchema).optional(),
-  lessons: z.array(createCourseLessonSchema).optional(),
+  lessons: z.array(createLessonSchema).optional(),
 })
 
 export type CreateCourseInput = z.infer<typeof createCourseSchema>

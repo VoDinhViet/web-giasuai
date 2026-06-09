@@ -32,14 +32,7 @@ const invitedClasses = [
     schedule: "Thứ 2, 4 - 19:00",
     seatText: "32/36 học viên",
   },
-  {
-    inviteCode: "INV-K02",
-    classCode: "CLS-002",
-    className: "Lean Ops K02",
-    teacherName: "Trần Quốc Huy",
-    schedule: "Thứ 3, 5 - 18:30",
-    seatText: "24/30 học viên",
-  },
+
 ]
 
 const requestHistory = [
